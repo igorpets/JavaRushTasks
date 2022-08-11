@@ -22,11 +22,7 @@ public class UniversityGroup {
     }
 
     public void exclude(String excludedStudent) {
-        for (String student : students) {
-            if (student.equals(excludedStudent)) {
-                students.remove(student);
-            }
-        }
+        students.removeIf(x-> x.equals(excludedStudent));
     }
 
     public static void main(String[] args) {
