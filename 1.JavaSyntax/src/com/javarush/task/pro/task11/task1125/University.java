@@ -26,9 +26,10 @@ public class University {
     }
 
     public static void main(String[] args) {
+        University uni = new University();
         //напишите тут ваш код
-        addStudent("Максим Федоренко");
-        addStudent("Олег Кесарчук");
-        printStudents();
+        uni.addStudent("Максим Федоренко");
+        uni.addStudent("Олег Кесарчук");
+        uni.printStudents();
     }
 }
