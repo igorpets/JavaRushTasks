@@ -1,4 +1,4 @@
-package com.javarush.task.pro.task11.task1109;
+package com.javarush.task.pro.task11.task1105;
 
 /* 
 Объекты внутренних и вложенных классов
