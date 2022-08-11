@@ -9,5 +9,5 @@ public class Coffee {
     }
 }
 
-public class Sugar {
+class Sugar {
 }
