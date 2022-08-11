@@ -5,13 +5,13 @@ target/
 #.idea/
 #.idea
 .repository/
-*.iml
-*.iws
+#*.iml
+#*.iws
 #*.jrtc
 #*.java
 *.class
 #*.info
-*.properties
+#*.properties
 *.jar
 
 #/1.JavaSyntax/
@@ -21,6 +21,6 @@ target/
 #/5.OnlineInternship/
 /out/
 #/JavaRushPlugin.properties
-/Instruction.png
+#/Instruction.png
 /out.log
 /out.log.*
