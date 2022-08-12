@@ -5,9 +5,10 @@ package com.javarush.task.pro.task11.task1126;
 */
 
 public class Student {
-    private String name;
+    String name;
 
-    public void Student(String name) {
-        name = name;
+    public Student(String name) {
+        this.name = name;
     }
+
 }
