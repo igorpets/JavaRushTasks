@@ -26,6 +26,12 @@ public class CustomStringArrayList {
 
     private void grow() {
         //напишите тут ваш код
+        capacity = capacity + capacity/2;
+        String[] temp = new String[capacity];
+        for(int i = 0; i < size; i++) {
+            temp[i] = elements[i];
+        }
+        elements = temp;
     }
 
 }
