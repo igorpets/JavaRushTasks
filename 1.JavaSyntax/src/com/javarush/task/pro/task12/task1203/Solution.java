@@ -10,8 +10,10 @@ public class Solution {
     static int third = 1000;
 
     public static void main(String[] args) {
-        System.out.println(first == second);
+        System.out.println(first.equals(second));
         System.out.println(third == second);
         System.out.println(third == first);
+        //int min = Integer.MIN_VALUE;
+        //System.out.println(Integer.toHexString(min));
     }
 }
