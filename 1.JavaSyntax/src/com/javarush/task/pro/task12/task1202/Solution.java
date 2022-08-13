@@ -17,4 +17,12 @@ public class Solution {
     Boolean booleanValueBox;
 
     //напишите тут ваш код
+    byte byteValue = byteValueBox.byteValue();
+    short shortValue = shortValueBox.shortValue();
+    int intValue = integerValueBox.intValue();
+    long longValue = longValueBox.longValue();
+    float floatValue = floatValueBox.floatValue();
+    double doubleValue = doubleValueBox.doubleValue();
+    char charValue = characterValueBox.charValue();
+    boolean booleanValue = booleanValueBox.booleanValue();
 }
