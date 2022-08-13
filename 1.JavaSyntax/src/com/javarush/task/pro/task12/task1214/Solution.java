@@ -12,5 +12,6 @@ public class Solution {
 
     public static void main(String[] args) {
         //напишите тут ваш код
+        programmingLanguages.remove("Pascal");
     }
 }
