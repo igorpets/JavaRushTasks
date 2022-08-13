@@ -18,6 +18,9 @@ public class Solution {
 
     public static void createNewPlanet(String planetName) {
         //напишите тут ваш код
+        int index = planets.indexOf("Земля")+1;
+        planets.add(index, planetName);
+
     }
 
     public static void addPlanets() {
