@@ -1,8 +1,8 @@
-package com.sapper;
+package sapper;
 
 import com.javarush.engine.cell.*;
 
-public class MinesweeperGame extends Game {
+public class Sapper extends Game {
     /**
      * Режимы игры.
      */
@@ -43,7 +43,7 @@ public class MinesweeperGame extends Game {
     /**
      * Текст "💣" для отображения Мины на игровом поле.
      */
-    private final String text_mine = "\uD83D\uDCA3";
+    private final String MINE_TXT = "\uD83D\uDCA3";
     /**
      * Выбранный текущий размер игрового поля.
      */
@@ -51,7 +51,7 @@ public class MinesweeperGame extends Game {
     /**
      * Максимальный размер игрового поля (видимое поле +1 на поля-зоголовки).
      */
-    private static final int SIDE = 9;
+    private final int MAX_SIZE = 25;
     /**
      * Смещение меню от верхнего края, для расположения "по центру".
      */
@@ -112,7 +112,7 @@ public class MinesweeperGame extends Game {
     @Override
     public void initialize() {
         showGrid(true);
-        setScreenSize(SIDE + 1, SIDE + 1);
+        setScreenSize(MAX_SIZE + 1, MAX_SIZE + 1);
         mode_switch();
     }
 
@@ -262,7 +262,7 @@ public class MinesweeperGame extends Game {
         }
         // Отображаем метки на Минах.
         if (cell_type == CellType.CHECKED_MINE || cell_type == CellType.CHECKED_EMPTY)
-            show_type = text_mine;
+            show_type = MINE_TXT;
         int offset = 1 + area_offset;
         // Отображаем новое состояние ячейки.
         setCellValueEx(x + offset, y + offset, show_color, show_type, Color.BROWN, 60);
@@ -309,7 +309,7 @@ public class MinesweeperGame extends Game {
                     int size_menu_number = y - menu_y_offset;
                     size = 10 + 5 * size_menu_number;
                     // Вычисляем смещение от края
-                    area_offset = (SIDE - size) / 2;
+                    area_offset = (MAX_SIZE - size) / 2;
                     mode_switch();
                 }
                 break;
@@ -337,13 +337,13 @@ public class MinesweeperGame extends Game {
                     mode = Mode.GAME_BLOCKED;
                     game_result = Result.RESULT_DEFEAT;
                     // Отображаем взорванную мину.
-                    setCellValueEx(x, y, Color.RED, text_mine, Color.BLACK, 60);
+                    setCellValueEx(x, y, Color.RED, MINE_TXT, Color.BLACK, 60);
                     // Отображаем ошибки отмеченных мин, если есть.
                     for (int i = 0; i < size; i++) {
                         for (int k = 0; k < size; k++) {
                             if (area[i][k] == CellType.CHECKED_EMPTY) {
                                 setCellValueEx(i + 1 + area_offset, k + 1 + area_offset,
-                                        Color.RED, text_mine, Color.BLUE, 60);
+                                        Color.RED, MINE_TXT, Color.BLUE, 60);
                             }
                         }
                     }
@@ -423,7 +423,7 @@ public class MinesweeperGame extends Game {
         // Игра завершена, готовимся к рестарту.
         mode = Mode.GAME_NEW;
         clear_screen();
-        int message_y = (SIDE + 1) / 2 - 2;
+        int message_y = (MAX_SIZE + 1) / 2 - 2;
         if (game_result == Result.RESULT_VICTORY)
             one_menu_to_screen(5, message_y, "Вы победили!   ");
         else {
@@ -506,8 +506,8 @@ public class MinesweeperGame extends Game {
      * Закрашиваем все игровое поле черным цветом.
      */
     private void clear_screen() {
-        for (int i = 0; i < SIDE + 1; i++) {
-            for (int k = 0; k < SIDE + 1; k++) {
+        for (int i = 0; i < MAX_SIZE + 1; i++) {
+            for (int k = 0; k < MAX_SIZE + 1; k++) {
                 setCellValueEx(i, k, Color.BLACK, "", Color.BLACK, 60);
             }
         }
