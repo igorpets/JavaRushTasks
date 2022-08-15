@@ -1,57 +1,73 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MinesweeperGame extends Game {
-    /**
-     * Максимальный размер игрового поля (видимое поле +1 на поля-зоголовки).
-     */
     private static final int SIDE = 9;
-    private int countMinesOnField = 0;
-    /**
-     * Массив для хранения содержимого всех ячеек игрового поля.
-     */
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
-    /**
-     * Текст "💣" для отображения Мины на игровом поле.
-     */
-    private final String MINE_TXT = "\uD83D\uDCA3";
+    private int countMinesOnField;
 
-    /**
-     * Входная точка в игру, вызывается из родительского класса Game.
-     */
     @Override
     public void initialize() {
+        setScreenSize(SIDE, SIDE);
         createGame();
     }
 
     private void createGame() {
-        showGrid(true);
-        setScreenSize(SIDE, SIDE);
-        countMinesOnField = 0;
         for (int y = 0; y < SIDE; y++) {
             for (int x = 0; x < SIDE; x++) {
-                boolean is_mine;
-                if (getRandomNumber(10) <= 0) is_mine = true;
-                else is_mine = false;
-                gameField[y][x] = new GameObject(x, y, is_mine);
-                if (is_mine) {
+                boolean isMine = getRandomNumber(10) < 1;
+                if (isMine) {
                     countMinesOnField++;
-                    setCellValueEx(x, y, Color.LIGHTCYAN, MINE_TXT, Color.BLACK, 50);
-                } else {
-                    setCellValueEx(x, y, Color.LIGHTCYAN, "", Color.BLACK, 50);
                 }
+                gameField[y][x] = new GameObject(x, y, isMine);
+                setCellColor(x, y, Color.ORANGE);
+            }
+        }
+        countMineNeighbors();
+    }
+
+    private List<GameObject> getNeighbors(GameObject gameObject) {
+        List<GameObject> result = new ArrayList<>();
+        gameObject.countMineNeighbors = 0;
+        for (int y = gameObject.y - 1; y <= gameObject.y + 1; y++) {
+            for (int x = gameObject.x - 1; x <= gameObject.x + 1; x++) {
+                if (y < 0 || y >= SIDE) {
+                    continue;
+                }
+                if (x < 0 || x >= SIDE) {
+                    continue;
+                }
+                if (gameField[y][x] == gameObject) {
+                    continue;
+                }
+                GameObject res = gameField[y][x];
+                result.add(res);
+                if (res.isMine) gameObject.countMineNeighbors++;
+            }
+        }
+        return result;
+    }
+
+    private void countMineNeighbors() {
+        for (int y = 0; y < SIDE; y++) {
+            for (int x = 0; x < SIDE; x++) {
+                GameObject obj = gameField[y][x];
+                if (!obj.isMine)
+                    getNeighbors(obj);
             }
         }
     }
 
-    /**
-     * Закрашиваем все игровое поле черным цветом.
-     */
-    private void clear_screen() {
-        for (int i = 0; i < SIDE + 1; i++) {
-            for (int k = 0; k < SIDE + 1; k++) {
-                setCellValueEx(i, k, Color.BLACK, "", Color.BLACK, 60);
+    private void countMines(GameObject cobj) {
+        cobj.countMineNeighbors = 0;
+        for (int y = cobj.y - 1; y <= cobj.y + 1; y++) {
+            for (int x = cobj.x - 1; x < cobj.x + 1; x++) {
+                if (gameField[y][x].isMine) cobj.countMineNeighbors++;
             }
         }
     }

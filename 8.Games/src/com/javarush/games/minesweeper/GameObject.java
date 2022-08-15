@@ -4,6 +4,7 @@ public class GameObject {
     public int x;
     public int y;
     public boolean isMine;
+    public int countMineNeighbors;
     public GameObject(int _x, int _y, boolean _isMine) {
         x = _x;
         y = _y;
