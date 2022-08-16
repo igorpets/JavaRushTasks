@@ -13,6 +13,7 @@ public class MinesweeperGame extends Game {
     private int countMinesOnField;
     private int countFlags;
     private int countClosedTiles = SIDE * SIDE;
+    private int score;
     /**
      * Текст "💣" для отображения Мины на игровом поле.
      */
@@ -42,6 +43,7 @@ public class MinesweeperGame extends Game {
         countFlags = countMinesOnField;
         countMineNeighbors();
         countClosedTiles = SIDE * SIDE;
+        score = 0;
         isGameStopped = false;
     }
 
@@ -92,6 +94,8 @@ public class MinesweeperGame extends Game {
             return;
         }
         countClosedTiles--;
+        score += 5;
+        setScore(score);
         // Не мина, открываем рекурсивно все нулевые поля.
         if (obj.countMineNeighbors == 0) {
             List<GameObject> neighbors = getNeighbors(obj);
