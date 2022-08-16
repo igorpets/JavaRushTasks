@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper;
+package sapper;
 
 public class GameObject {
     public int x;

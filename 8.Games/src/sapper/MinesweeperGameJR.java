@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper;
+package sapper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
@@ -6,7 +6,7 @@ import com.javarush.engine.cell.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MinesweeperGame extends Game {
+public class MinesweeperGameJR extends Game {
     private static final int SIDE = 9;
     private boolean isGameStopped = false;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];

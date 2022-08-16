@@ -39,6 +39,7 @@ public class Solution {
         System.out.println("Начинаем разбирать пирамиду...");
 
         //напишите тут ваш код
+        while (!glasses.isEmpty()) glasses.remove(glasses.size()-1);
 
         if(glasses.size() == 0) {
             System.out.println("Пирамида разобрана!");

@@ -1,4 +1,4 @@
-package sapper;
+package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
 
@@ -16,8 +16,7 @@ public class Sapper extends Game {
         // Основаная игра - поиск мин на игровом поле.
         GAME_MAIN_FORM,
         // Временная блокировка после взрыва.
-        GAME_BLOCKED,
-        GAME_FINAL
+        GAME_BLOCKED
     }
 
     /**
@@ -47,7 +46,7 @@ public class Sapper extends Game {
     /**
      * Текст "🚩" для отображения Флага на игровом поле.
      */
-    private static final String FLAG = "\uD83D\uDEA9";
+    private static final String FLAG_TXT = "\uD83D\uDEA9";
     /**
      * Выбранный текущий размер игрового поля.
      */
@@ -72,10 +71,6 @@ public class Sapper extends Game {
      * Число меток "Мина" на текущем игровом поле.
      */
     private int mine_checked_count;
-    /**
-     * Число правильно найденных мин.
-     */
-    private int mine_find_count;
     /**
      * Число удачно открытых пустых ячеек, требуемое для Победы.
      */
@@ -109,7 +104,8 @@ public class Sapper extends Game {
      * 600 - максимальное число пустых ячеек.
      */
     private double base_points = 16.5d;
-
+    /** Признак первого клика по игровому полю. */
+    private boolean is_first_open = true;
     /**
      * Входная точка в игру, вызывается из родительского класса Game.
      */
@@ -194,6 +190,7 @@ public class Sapper extends Game {
     private void minesweeper_init() {
         System.out.println("Minesweeper_init() start...");
         mode = Mode.GAME_MAIN_FORM;
+        is_first_open = true;
         area = new CellType[size][size];
         // Отображаем адресные ячейки.
         for (int m = 0; m < size; m++) {
@@ -204,7 +201,6 @@ public class Sapper extends Game {
         }
         // Инициализируем счетные параметры игры.
         mine_checked_count = 0;
-        mine_find_count = 0;
         // Определяем количество пустых ячеек, для Победы требуется открыть их все.
         need_open_empty = size * size - mine_count;
         game_result = Result.RESULT_IN_PROGRESS;
@@ -220,15 +216,7 @@ public class Sapper extends Game {
         }
 
         // Устанавливаем на игровое поле заданное количество мин.
-        int mine_installed = mine_count;
-        while (mine_installed > 0) {
-            int mine_x = (int) Math.round(Math.random() * (size - 1));
-            int mine_y = (int) Math.round(Math.random() * (size - 1));
-            if (area[mine_x][mine_y] == CellType.EMPTY) {
-                area[mine_x][mine_y] = CellType.MINE;
-                mine_installed--;
-            }
-        }
+        install_mines(mine_count);
 
         // Отображаем все игровые ячейки size*size.
         for (int i = 0; i < size; i++) {
@@ -237,12 +225,24 @@ public class Sapper extends Game {
             }
         }
         // Для легкого уровня отображаем число мин, иначе просто закрашиваем.
-        show_count_mines();
+        show_count_need_to_open();
 
-        // Запускаем таймера на снижение базовых очков (ScorePoints).
-        setTurnTimer(5000);
+        // Запускаем таймера на снижение базовых очков (ScorePoints) каждую секунду.
+        setTurnTimer(1000);
         // Начинаем игру! Теперь доступна работа мышью.
         mode = Mode.GAME_MAIN_FORM;
+    }
+
+    /** Устанавливаем на игровое поле заданное количество мин. */
+    private void install_mines(int mine_installed) {
+        while (mine_installed > 0) {
+            int mine_x = (int) Math.round(Math.random() * (size - 1));
+            int mine_y = (int) Math.round(Math.random() * (size - 1));
+            if (area[mine_x][mine_y] == CellType.EMPTY) {
+                area[mine_x][mine_y] = CellType.MINE;
+                mine_installed--;
+            }
+        }
     }
 
     // Отображение нового состояния ячейки на игровом поле.
@@ -266,17 +266,17 @@ public class Sapper extends Game {
         }
         // Отображаем метки на Минах.
         if (cell_type == CellType.CHECKED_MINE || cell_type == CellType.CHECKED_EMPTY)
-            show_type = MINE_TXT;
+            show_type = FLAG_TXT;
         int offset = 1 + area_offset;
         // Отображаем новое состояние ячейки.
         setCellValueEx(x + offset, y + offset, show_color, show_type, Color.BROWN, 60);
         return find_mines;
     }
 
-    // Отображаем количество ненайденных мин.
-    private void show_count_mines() {
+    // Отображаем количество неоткрытых пустых ячеек.
+    private void show_count_need_to_open() {
         setCellValueEx(area_offset, area_offset, Color.AQUAMARINE,
-                String.valueOf(mine_count - mine_checked_count), Color.RED, 50);
+                String.valueOf(need_open_empty), Color.RED, 50);
     }
 
     /**
@@ -323,7 +323,7 @@ public class Sapper extends Game {
                 if (y >= menu_y_offset && y <= menu_y_offset + 3) {
                     // Определяем уровень сложности текущей игры от 0 до 3.
                     complexity = y - menu_y_offset;
-                    mine_count = size * size / (8 - complexity) - 1;
+                    mine_count = size * size / (10 - complexity);
                     mode_switch();
                 }
                 break;
@@ -332,12 +332,22 @@ public class Sapper extends Game {
                 int cell_y = y - 1 - area_offset;
                 if (cell_x < 0 || cell_x >= size || cell_y < 0 || cell_y >= size) return;
                 CellType cell_type = area[cell_x][cell_y];
+                if (is_first_open) {
+                    is_first_open = false;
+                    if (cell_type == CellType.MINE) {
+                        {
+                            // Если это первый клик и попали на мину, то убираем ее в новое место.
+                            cell_type = CellType.EMPTY;
+                            install_mines(1);
+                        }
+                    }
+                }
                 if (cell_type == CellType.EMPTY) {
                     area[cell_x][cell_y] = CellType.OPEN_EMPTY;
                     open_by_empty(cell_x, cell_y);
-                    show_count_mines();
                     // Открыли пустую ячейку, добавляем очки!
                     add_points();
+                    show_count_need_to_open();
                 } else if (cell_type == CellType.MINE) {
                     // Останавливаем игру.
                     mode = Mode.GAME_BLOCKED;
@@ -364,7 +374,7 @@ public class Sapper extends Game {
      * Функция проверки условий Победы, если выполнены, то игра завершается.
      */
     private void check_victory() {
-        if (mine_find_count >= mine_count && need_open_empty <= 0) {
+        if (need_open_empty <= 0) {
             // Победа! завершаем игру.
             mode = Mode.GAME_BLOCKED;
             game_result = Result.RESULT_VICTORY;
@@ -380,7 +390,8 @@ public class Sapper extends Game {
     public void onTurn(int step) {
         if (game_result == Result.RESULT_IN_PROGRESS) {
             // каждые 5 секунд уменьшаем базовое число для выдачи новых очков.
-            base_points = base_points * 99.0d / 100.0d;
+            base_points = base_points * 99.5d / 100.0d;
+            System.out.println(base_points);
         } else {
             stopTurnTimer();
             // Отображаем окно "Вы проиграли!" или "Вы победили!".
@@ -431,9 +442,9 @@ public class Sapper extends Game {
         clear_screen();
         int message_y = (MAX_SIZE + 1) / 2 - 2;
         if (game_result == Result.RESULT_VICTORY)
-            one_menu_to_screen(5, message_y, "Вы победили!   ");
+            one_menu_to_screen(6, message_y, "Вы  победили!");
         else {
-            one_menu_to_screen(5, message_y, "Вы проиграли!  ");
+            one_menu_to_screen(6, message_y, "Вы проиграли!");
             // При поражении делим полученные очки на 2.
             points = points / 2.0d;
             setScore(get_int_points());
@@ -488,8 +499,6 @@ public class Sapper extends Game {
                 if (mine_count > mine_checked_count) {
                     area[x][y] = CellType.CHECKED_MINE;
                     mine_checked_count++;
-                    mine_find_count++;
-                    check_victory();
                 }
                 break;
             case CHECKED_EMPTY:
@@ -501,11 +510,10 @@ public class Sapper extends Game {
                 // Снимаем отметку мины.
                 area[x][y] = CellType.MINE;
                 mine_checked_count--;
-                mine_find_count--;
                 break;
         }
         show_cell(x, y);
-        show_count_mines();
+        show_count_need_to_open();
     }
 
     /**

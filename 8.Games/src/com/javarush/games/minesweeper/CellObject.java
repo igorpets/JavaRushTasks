@@ -1,4 +1,4 @@
-package sapper;
+package com.javarush.games.minesweeper;
 
 public class CellObject {
     public int x;
