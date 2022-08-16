@@ -8,12 +8,12 @@ import java.util.List;
 
 public class MinesweeperGame extends Game {
     private static final int SIDE = 9;
-    private boolean isGameStopped;
+    private boolean isGameStopped = false;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
-    private int countMinesOnField;
-    private int countFlags;
+    private int countMinesOnField = 0;
+    private int countFlags = 0;
     private int countClosedTiles = SIDE * SIDE;
-    private int score;
+    private int score = 0;
     /**
      * Текст "💣" для отображения Мины на игровом поле.
      */
@@ -37,14 +37,11 @@ public class MinesweeperGame extends Game {
                     countMinesOnField++;
                 }
                 gameField[y][x] = new GameObject(x, y, isMine);
-                setCellColor(x, y, Color.ANTIQUEWHITE);
+                setCellValueEx(x, y, Color.ANTIQUEWHITE, "");
             }
         }
-        countFlags = countMinesOnField;
         countMineNeighbors();
-        countClosedTiles = SIDE * SIDE;
-        score = 0;
-        isGameStopped = false;
+        countFlags = countMinesOnField;
     }
 
     private List<GameObject> getNeighbors(GameObject gameObject) {
@@ -160,9 +157,22 @@ public class MinesweeperGame extends Game {
         showMessageDialog(Color.LIGHTGREEN, "Вы победили!", Color.BROWN, 50);
     }
 
+    /**
+     * Перезапуск игры.
+     */
+    private void restart() {
+        countMinesOnField = 0;
+        score = 0;
+        countClosedTiles = SIDE * SIDE;
+        createGame();
+        isGameStopped = false;
+        setScore(score);
+    }
+
     @Override
     public void onMouseLeftClick(int x, int y) {
-        openTile(x, y);
+        if (isGameStopped) restart();
+        else openTile(x, y);
     }
 
     @Override
