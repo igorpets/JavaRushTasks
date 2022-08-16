@@ -10,6 +10,10 @@ public class MinesweeperGame extends Game {
     private static final int SIDE = 9;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
     private int countMinesOnField;
+    /**
+     * Текст "💣" для отображения Мины на игровом поле.
+     */
+    private static final String MINE = "\uD83D\uDCA3";
 
     @Override
     public void initialize() {
@@ -25,7 +29,7 @@ public class MinesweeperGame extends Game {
                     countMinesOnField++;
                 }
                 gameField[y][x] = new GameObject(x, y, isMine);
-                setCellColor(x, y, Color.ORANGE);
+                setCellColor(x, y, Color.ANTIQUEWHITE);
             }
         }
         countMineNeighbors();
@@ -63,6 +67,16 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    private void openTile(int x, int y) {
+        GameObject obj = gameField[y][x];
+        if (obj.isMine)
+            setCellValue(x, y, MINE);
+        else
+            setCellNumber(x, y, obj.countMineNeighbors);
+        setCellColor(x, y, Color.LIGHTBLUE);
+        obj.isOpen = true;
+    }
+
     private void countMines(GameObject cobj) {
         cobj.countMineNeighbors = 0;
         for (int y = cobj.y - 1; y <= cobj.y + 1; y++) {
@@ -70,5 +84,10 @@ public class MinesweeperGame extends Game {
                 if (gameField[y][x].isMine) cobj.countMineNeighbors++;
             }
         }
+    }
+
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        openTile(x, y);
     }
 }
