@@ -81,6 +81,7 @@ public class MinesweeperGame extends Game {
         if (isGameStopped) return;
         GameObject obj = gameField[y][x];
         if (obj.isOpen) return;
+        if (obj.isFlag) return;
         obj.isOpen = true;
 
         if (obj.isMine) {
