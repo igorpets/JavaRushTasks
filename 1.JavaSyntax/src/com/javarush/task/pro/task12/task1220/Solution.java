@@ -20,6 +20,12 @@ public class Solution {
 
     public static void checkElementsType(ArrayList<Object> elements) {
         //напишите тут ваш код
+        for (Object obj:elements) {
+            if (obj instanceof String) printString();
+            else if (obj instanceof Integer) printInteger();
+            else if (obj instanceof Integer[]) printIntegerArray();
+            else printUnknown();
+        }
     }
 
     public static void printString() {
