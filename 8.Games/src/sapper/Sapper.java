@@ -45,6 +45,10 @@ public class Sapper extends Game {
      */
     private final String MINE_TXT = "\uD83D\uDCA3";
     /**
+     * Текст "🚩" для отображения Флага на игровом поле.
+     */
+    private static final String FLAG = "\uD83D\uDEA9";
+    /**
      * Выбранный текущий размер игрового поля.
      */
     private int size;

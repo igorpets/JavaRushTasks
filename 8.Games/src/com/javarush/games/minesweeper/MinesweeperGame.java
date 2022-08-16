@@ -12,6 +12,7 @@ public class MinesweeperGame extends Game {
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
     private int countMinesOnField;
     private int countFlags;
+    private int countClosedTiles = SIDE * SIDE;
     /**
      * Текст "💣" для отображения Мины на игровом поле.
      */
@@ -40,6 +41,7 @@ public class MinesweeperGame extends Game {
         }
         countFlags = countMinesOnField;
         countMineNeighbors();
+        countClosedTiles = SIDE * SIDE;
         isGameStopped = false;
     }
 
@@ -89,6 +91,7 @@ public class MinesweeperGame extends Game {
             gameOver();
             return;
         }
+        countClosedTiles--;
         // Не мина, открываем рекурсивно все нулевые поля.
         if (obj.countMineNeighbors == 0) {
             List<GameObject> neighbors = getNeighbors(obj);
@@ -100,7 +103,8 @@ public class MinesweeperGame extends Game {
             setCellNumber(x, y, obj.countMineNeighbors);
         }
         setCellColor(x, y, Color.LIGHTBLUE);
-
+        // Проверяем условия Победы.
+        if (countClosedTiles == countMinesOnField) win();
     }
 
     /**
@@ -127,20 +131,31 @@ public class MinesweeperGame extends Game {
             obj.isFlag = false;
             countFlags++;
             setCellValue(x, y, "");
-            setCellColor(x,y, Color.ANTIQUEWHITE);
+            setCellColor(x, y, Color.ANTIQUEWHITE);
         } else {
             obj.isFlag = true;
             countFlags--;
             setCellValue(x, y, FLAG);
-            setCellColor(x,y, Color.YELLOW);
+            setCellColor(x, y, Color.YELLOW);
         }
     }
 
-    // Игра завершена.
-    private void gameOver(){
+    /**
+     * Игра завершена с Поражением.
+     */
+    private void gameOver() {
         isGameStopped = true;
-        showMessageDialog(Color.LIGHTPINK,"Вы проиграли!", Color.BROWN, 50);
+        showMessageDialog(Color.LIGHTPINK, "Вы проиграли!", Color.BROWN, 50);
     }
+
+    /**
+     * Игра завершена с Победой.
+     */
+    private void win() {
+        isGameStopped = true;
+        showMessageDialog(Color.LIGHTGREEN, "Вы победили!", Color.BROWN, 50);
+    }
+
     @Override
     public void onMouseLeftClick(int x, int y) {
         openTile(x, y);
