@@ -11,5 +11,7 @@ public class GameObject {
         x = _x;
         y = _y;
         isMine = _isMine;
+        isOpen = false;
+        isFlag = false;
     }
 }

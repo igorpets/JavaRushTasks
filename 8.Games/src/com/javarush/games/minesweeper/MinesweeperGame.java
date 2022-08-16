@@ -43,7 +43,6 @@ public class MinesweeperGame extends Game {
 
     private List<GameObject> getNeighbors(GameObject gameObject) {
         List<GameObject> result = new ArrayList<>();
-        gameObject.countMineNeighbors = 0;
         for (int y = gameObject.y - 1; y <= gameObject.y + 1; y++) {
             for (int x = gameObject.x - 1; x <= gameObject.x + 1; x++) {
                 if (y < 0 || y >= SIDE) {
@@ -55,9 +54,7 @@ public class MinesweeperGame extends Game {
                 if (gameField[y][x] == gameObject) {
                     continue;
                 }
-                GameObject res = gameField[y][x];
-                result.add(res);
-                if (res.isMine) gameObject.countMineNeighbors++;
+                result.add(gameField[y][x]);
             }
         }
         return result;
@@ -67,22 +64,44 @@ public class MinesweeperGame extends Game {
         for (int y = 0; y < SIDE; y++) {
             for (int x = 0; x < SIDE; x++) {
                 GameObject obj = gameField[y][x];
-                if (!obj.isMine)
-                    getNeighbors(obj);
+                if (!obj.isMine) {
+                    obj.countMineNeighbors = 0;
+                    List<GameObject> neighbors = getNeighbors(obj);
+                    for (GameObject neig : neighbors) {
+                        if (neig.isMine) obj.countMineNeighbors++;
+                    }
+                }
             }
         }
     }
 
     private void openTile(int x, int y) {
         GameObject obj = gameField[y][x];
-        if (obj.isMine)
-            setCellValue(x, y, MINE);
-        else
-            setCellNumber(x, y, obj.countMineNeighbors);
-        setCellColor(x, y, Color.LIGHTBLUE);
+        if (obj.isOpen) return;
         obj.isOpen = true;
+
+        if (obj.isMine) {
+            setCellValue(x, y, MINE);
+            setCellColor(x, y, Color.LIGHTPINK);
+            return;
+        }
+        // Не мина, открываем рекурсивно все нулевые поля.
+        if (obj.countMineNeighbors == 0) {
+            List<GameObject> neighbors = getNeighbors(obj);
+            for (GameObject neig : neighbors) {
+                openTile(neig.x, neig.y);
+            }
+            setCellValue(x, y, "");
+        } else {
+            setCellNumber(x, y, obj.countMineNeighbors);
+        }
+        setCellColor(x, y, Color.LIGHTBLUE);
+
     }
 
+    /**
+     * Считает количество мин в соседних ячейках
+     */
     private void countMines(GameObject cobj) {
         cobj.countMineNeighbors = 0;
         for (int y = cobj.y - 1; y <= cobj.y + 1; y++) {
