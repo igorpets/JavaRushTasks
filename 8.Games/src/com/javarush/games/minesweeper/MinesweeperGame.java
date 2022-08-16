@@ -8,6 +8,7 @@ import java.util.List;
 
 public class MinesweeperGame extends Game {
     private static final int SIDE = 9;
+    private boolean isGameStopped;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
     private int countMinesOnField;
     private int countFlags;
@@ -39,6 +40,7 @@ public class MinesweeperGame extends Game {
         }
         countFlags = countMinesOnField;
         countMineNeighbors();
+        isGameStopped = false;
     }
 
     private List<GameObject> getNeighbors(GameObject gameObject) {
@@ -76,13 +78,14 @@ public class MinesweeperGame extends Game {
     }
 
     private void openTile(int x, int y) {
+        if (isGameStopped) return;
         GameObject obj = gameField[y][x];
         if (obj.isOpen) return;
         obj.isOpen = true;
 
         if (obj.isMine) {
-            setCellValue(x, y, MINE);
-            setCellColor(x, y, Color.LIGHTPINK);
+            setCellValueEx(x, y, Color.RED, MINE);
+            gameOver();
             return;
         }
         // Не мина, открываем рекурсивно все нулевые поля.
@@ -115,6 +118,7 @@ public class MinesweeperGame extends Game {
      * Маркирует ячейки с миной знаком Флага
      */
     private void markTile(int x, int y) {
+        if (isGameStopped) return;
         GameObject obj = gameField[y][x];
         if (obj.isOpen) return;
         if (!obj.isFlag && countFlags <= 0) return;
@@ -131,6 +135,11 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    // Игра завершена.
+    private void gameOver(){
+        isGameStopped = true;
+        showMessageDialog(Color.LIGHTPINK,"Вы проиграли!", Color.BROWN, 50);
+    }
     @Override
     public void onMouseLeftClick(int x, int y) {
         openTile(x, y);
