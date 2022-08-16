@@ -111,8 +111,33 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    /**
+     * Маркирует ячейки с миной знаком Флага
+     */
+    private void markTile(int x, int y) {
+        GameObject obj = gameField[y][x];
+        if (obj.isOpen) return;
+        if (!obj.isFlag && countFlags <= 0) return;
+        if (obj.isFlag) {
+            obj.isFlag = false;
+            countFlags++;
+            setCellValue(x, y, "");
+            setCellColor(x,y, Color.ANTIQUEWHITE);
+        } else {
+            obj.isFlag = true;
+            countFlags--;
+            setCellValue(x, y, FLAG);
+            setCellColor(x,y, Color.YELLOW);
+        }
+    }
+
     @Override
     public void onMouseLeftClick(int x, int y) {
         openTile(x, y);
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        markTile(x, y);
     }
 }
