@@ -16,5 +16,10 @@ public class Solution {
 
     public static void addStudents() {
         //напишите тут ваш код
+        grades.put("Иван Иванов", 23.3d);
+        grades.put("Петр Кирилов", 12.3d);
+        grades.put("Константин Петров", 32.4d);
+        grades.put("Максим Ле", 10.6d);
+        grades.put("Мак Сим", 25.1d);
     }
 }
