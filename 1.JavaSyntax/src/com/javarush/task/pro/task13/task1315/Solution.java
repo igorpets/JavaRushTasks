@@ -8,5 +8,10 @@ public class Solution {
 
     public static void main(String[] args) {
         //напишите тут ваш код
+        System.out.println(Season.WINTER);
+        System.out.println(Season.SPRING);
+        System.out.println(Season.SUMMER);
+        System.out.println(Season.AUTUMN);
     }
 }
+//        for(Season num : Season.values()) System.out.println(num);
