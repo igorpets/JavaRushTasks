@@ -13,18 +13,17 @@ public class Solution {
         System.out.println(getProgrammingLanguages());
     }
 
-    public static ArrayList<String> getProgrammingLanguages() {
+    public static HashMap<Integer, String> getProgrammingLanguages() {
         //напишите тут ваш код
-        ArrayList<String> programmingLanguages = new ArrayList<>();
-        programmingLanguages.add("Java");
-        programmingLanguages.add("Kotlin");
-        programmingLanguages.add("Go");
-        programmingLanguages.add("Javascript");
-        programmingLanguages.add("Typescript");
-        programmingLanguages.add("Python");
-        programmingLanguages.add("PHP");
-        programmingLanguages.add("C++");
+        HashMap<Integer, String> programmingLanguages = new HashMap<>();
+        programmingLanguages.put(0, "Java");
+        programmingLanguages.put(1, "Kotlin");
+        programmingLanguages.put(2, "Go");
+        programmingLanguages.put(3, "Javascript");
+        programmingLanguages.put(4, "Typescript");
+        programmingLanguages.put(5, "Python");
+        programmingLanguages.put(6, "PHP");
+        programmingLanguages.put(7, "C++");
         return programmingLanguages;
     }
-
 }
