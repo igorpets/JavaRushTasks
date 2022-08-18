@@ -5,18 +5,13 @@ public class StringsLinkedList {
     private Node last = new Node();
 
     public void add(String value) {
-        if (first.next == null) {
-            Node node = new Node();
-            node.value = value;
-            first.next = node;
-        }
-        if (last.prev == null) {
-            last.prev = first.next;
-            return;
-        }
-
         Node node = new Node();
         node.value = value;
+        if (first.next == null) {
+            first.next = node;
+            last.prev = node;
+            return;
+        }
 
         Node lastNode = last.prev;
         lastNode.next = node;
@@ -25,7 +20,16 @@ public class StringsLinkedList {
     }
 
     public String get(int index) {
+        if (index < 0) return null;
         //напишите тут ваш код
+        Node nxt = first.next;
+        index--;
+        while (nxt != null && index >= 0) {
+            index--;
+            nxt = nxt.next;
+        }
+        if (nxt == null) return null;
+        return nxt.value;
     }
 
     public static class Node {

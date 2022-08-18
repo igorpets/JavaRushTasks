@@ -12,8 +12,27 @@ public class StringsLinkedList {
         }
     }
 
+    public void printAllPrev() {
+        Node currentElement = last.prev;
+        while ((currentElement) != null) {
+            System.out.println(currentElement.value);
+            currentElement = currentElement.prev;
+        }
+    }
+
     public void add(String value) {
-        //напишите тут ваш код
+        Node node = new StringsLinkedList.Node();
+        node.value = value;
+        if (first.next == null) {
+            first.next = node;
+            last.prev = first.next;
+            return;
+        }
+
+        Node lastNode = last.prev;
+        lastNode.next = node;
+        node.prev = lastNode;
+        last.prev = node;
     }
 
     public static class Node {
