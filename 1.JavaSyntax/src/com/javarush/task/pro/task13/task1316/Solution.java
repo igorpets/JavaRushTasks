@@ -4,5 +4,9 @@ public class Solution {
 
     public static void main(String[] args) {
         //напишите тут ваш код
+        JavarushQuest[] javarushQuests = JavarushQuest.values();
+        for (JavarushQuest jq: javarushQuests) {
+            System.out.println(jq.ordinal());
+        }
     }
 }
