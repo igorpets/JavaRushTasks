@@ -13,5 +13,9 @@ public class Solution {
 
     public static Month getNextMonth(Month month) {
         //напишите тут ваш код
+        if (month == null) return null;
+        int index = month.ordinal()+1;
+        if (index >= Month.values().length) index = 0;
+        return Month.values()[index];
     }
 }
