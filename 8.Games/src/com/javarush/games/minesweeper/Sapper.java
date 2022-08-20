@@ -3,41 +3,6 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 
 public class Sapper extends Game {
-    /**
-     * Режимы игры.
-     */
-    private enum Mode {
-        // Новая игра
-        GAME_NEW,
-        // Меню выбора размера поля.
-        GAME_MENU_SIZE,
-        // Меню выбора сложности.
-        GAME_MENU_COMPL,
-        // Основаная игра - поиск мин на игровом поле.
-        GAME_MAIN_FORM,
-        // Временная блокировка после взрыва.
-        GAME_BLOCKED
-    }
-
-    /**
-     * Результат игры.
-     */
-    private enum Result {
-        RESULT_IN_PROGRESS,
-        RESULT_VICTORY,
-        RESULT_DEFEAT
-    }
-
-    /**
-     * Типы ячеек на игровом поле с учетом их состояния.
-     */
-    private enum CellType {
-        EMPTY,
-        MINE,
-        OPEN_EMPTY,
-        CHECKED_EMPTY,
-        CHECKED_MINE
-    }
 
     /**
      * Текст "💣" для отображения Мины на игровом поле.
@@ -104,8 +69,11 @@ public class Sapper extends Game {
      * 600 - максимальное число пустых ячеек.
      */
     private double base_points = 16.5d;
-    /** Признак первого клика по игровому полю. */
+    /**
+     * Признак первого клика по игровому полю.
+     */
     private boolean is_first_open = true;
+
     /**
      * Входная точка в игру, вызывается из родительского класса Game.
      */
@@ -233,7 +201,9 @@ public class Sapper extends Game {
         mode = Mode.GAME_MAIN_FORM;
     }
 
-    /** Устанавливаем на игровое поле заданное количество мин. */
+    /**
+     * Устанавливаем на игровое поле заданное количество мин.
+     */
     private void install_mines(int mine_installed) {
         while (mine_installed > 0) {
             int mine_x = (int) Math.round(Math.random() * (size - 1));
@@ -388,9 +358,22 @@ public class Sapper extends Game {
      */
     @Override
     public void onTurn(int step) {
-        if (game_result == Result.RESULT_IN_PROGRESS) {
-            // каждые 5 секунд уменьшаем базовое число для выдачи новых очков.
-            base_points = base_points * 99.5d / 100.0d;
+        if (game_result == Result.RESULT_IN_PROGRESS && mode==Mode.GAME_MAIN_FORM && !is_first_open) {
+            // каждую секунду уменьшаем базовое число для выдачи новых очков.
+            switch (size) {
+                case 10:
+                    base_points = base_points * 96.5d / 100.0d;
+                    break;
+                case 15:
+                    base_points = base_points * 97.5d / 100.0d;
+                    break;
+                case 20:
+                    base_points = base_points * 98.5d / 100.0d;
+                    break;
+                case 25:
+                    base_points = base_points * 99.5d / 100.0d;
+                    break;
+            }
             System.out.println(base_points);
         } else {
             stopTurnTimer();
