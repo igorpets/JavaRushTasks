@@ -1,8 +1,6 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class Sapper extends Game {
     /**
@@ -102,9 +100,13 @@ public class Sapper extends Game {
      */
     @Override
     public void initialize() {
-        showGrid(true);
-        setScreenSize(MAX_SIZE + 1, MAX_SIZE + 2);
-        size = sizes[0];
+        try {
+            showGrid(true);
+            setScreenSize(MAX_SIZE + 2, MAX_SIZE + 2);
+            size = sizes[0];
+        } catch (Exception ex) {
+            show_error("initialize", ex);
+        }
         mode_switch();
     }
 
@@ -117,22 +119,25 @@ public class Sapper extends Game {
      * GAME_BLOCKED - временная блокировка игры после проигрыша или победы.
      */
     private void mode_switch() {
-        switch (mode) {
-            case GAME_NEW:
-            case GAME_TEST_COLOR:
-            case GAME_BLOCKED:
-                stopTurnTimer();
-                open_menu_size();
-                break;
-            case GAME_MENU_SIZE:
-                open_menu_difficulty();
-                break;
-            case GAME_MENU_COMPL:
-                minesweeper_init();
-                break;
-            case GAME_MAIN_FORM:
-                mode = Mode.GAME_BLOCKED;
-                break;
+        try {
+            switch (mode) {
+                case GAME_NEW:
+                case GAME_TEST_COLOR:
+                case GAME_BLOCKED:
+                    open_menu_size();
+                    break;
+                case GAME_MENU_SIZE:
+                    open_menu_difficulty();
+                    break;
+                case GAME_MENU_COMPL:
+                    minesweeper_init();
+                    break;
+                case GAME_MAIN_FORM:
+                    mode = Mode.GAME_BLOCKED;
+                    break;
+            }
+        } catch (Exception ex) {
+            show_error("mode_switch_" + mode.name(), ex);
         }
     }
 
@@ -140,18 +145,22 @@ public class Sapper extends Game {
      * Меню выбора размера поля.
      */
     private void open_menu_size() {
-        if (mode != Mode.GAME_MENU_SIZE) {
-            mode = Mode.GAME_MENU_SIZE;
-            clear_screen();
-            show_footer("Выберите размер игры", FOOTER_COLOR);
-        }
-        // Отображаем меню с фиксированными вариантами игры.
-        int menu_x = (getScreenWidth() - " 15x15 ".length()) / 2;
-        for (int i = 0; i < sizes.length; i++) {
-            int curr_size = sizes[i];
-            // Полное название меню из 10 символов.
-            String text_menu = " " + curr_size + "x" + curr_size + " ";
-            one_menu_to_screen(menu_x, MENU_Y_OFFSET + i, text_menu, size == curr_size);
+        try {
+            if (mode != Mode.GAME_MENU_SIZE) {
+                mode = Mode.GAME_MENU_SIZE;
+                clear_screen();
+                show_footer("Выберите размер игры", FOOTER_COLOR);
+            }
+            // Отображаем меню с фиксированными вариантами игры.
+            int menu_x = (getScreenWidth() - " 15x15 ".length()) / 2;
+            for (int i = 0; i < sizes.length; i++) {
+                int curr_size = sizes[i];
+                // Полное название меню из 10 символов.
+                String text_menu = " " + curr_size + "x" + curr_size + " ";
+                one_menu_to_screen(menu_x, MENU_Y_OFFSET + i, text_menu, size == curr_size);
+            }
+        } catch (Exception ex) {
+            show_error("open_menu_size", ex);
         }
     }
 
@@ -159,14 +168,18 @@ public class Sapper extends Game {
      * Отображение одной произвольной строки меню.
      */
     private void one_menu_to_screen(int menu_x, int menu_y, String text_menu, boolean selected) {
-        if (menu_y >= getScreenHeight()) return;
-        int screen_width = getScreenWidth();
-        Color menu_color;
-        if (selected) menu_color = Color.ANTIQUEWHITE;
-        else menu_color = Color.LIGHTBLUE;
-        for (int k = 0; k < text_menu.length(); k++) {
-            if (menu_x + k < screen_width)
-                setCellValueEx(menu_x + k, menu_y, menu_color, text_menu.substring(k, k + 1), Color.BROWN, 80);
+        try {
+            if (menu_y >= getScreenHeight()) return;
+            int screen_width = getScreenWidth();
+            Color menu_color;
+            if (selected) menu_color = Color.ANTIQUEWHITE;
+            else menu_color = Color.LIGHTBLUE;
+            for (int k = 0; k < text_menu.length(); k++) {
+                if (menu_x + k < screen_width)
+                    setCellValueEx(menu_x + k, menu_y, menu_color, text_menu.substring(k, k + 1), Color.BROWN, 80);
+            }
+        } catch (Exception ex) {
+            show_error("one_menu_to_screen", ex);
         }
     }
 
@@ -179,8 +192,9 @@ public class Sapper extends Game {
             clear_screen();
             show_footer("Выберите сложность игры", FOOTER_COLOR);
         }
+        int menu_x = (getScreenWidth() - complexity_levels[0].length()) / 2;
         for (int i = 0; i < complexity_levels.length; i++) {
-            one_menu_to_screen(10, MENU_Y_OFFSET + i, complexity_levels[i], complexity == i);
+            one_menu_to_screen(menu_x, MENU_Y_OFFSET + i, complexity_levels[i], complexity == i);
         }
     }
 
@@ -194,10 +208,16 @@ public class Sapper extends Game {
         area = new CellObject[size][size];
         // Отображаем адресные ячейки.
         for (int m = 0; m < size; m++) {
+            String num_txt = String.valueOf(m + 1);
             setCellValueEx(area_offset - 1, m + area_offset, Color.LIGHTCYAN,
-                    String.valueOf(m + 1), Color.BLACK, 60);
+                    num_txt, Color.BLACK, 40);
             setCellValueEx(m + area_offset, area_offset - 1, Color.LIGHTCYAN,
-                    String.valueOf(m + 1), Color.BLACK, 60);
+                    num_txt, Color.BLACK, 40);
+            setCellValueEx(area_offset + size, m + area_offset, Color.LIGHTCYAN,
+                    num_txt, Color.BLACK, 40);
+            if (size < MAX_SIZE)
+                setCellValueEx(m + area_offset, area_offset + size, Color.LIGHTCYAN,
+                        num_txt, Color.BLACK, 40);
         }
         // Инициализируем счетные параметры игры.
         CellObject.initFlagsCount();
@@ -281,7 +301,7 @@ public class Sapper extends Game {
      */
     private void show_count_need_to_open() {
         if (game_result == Result.RESULT_IN_PROGRESS)
-            show_footer("Осталось открыть: " + need_open_mines, FOOTER_COLOR);
+            show_footer("Осталось: " + need_open_mines + " Счет: " + get_int_points(), FOOTER_COLOR);
     }
 
     /**
@@ -354,42 +374,48 @@ public class Sapper extends Game {
      */
     @Override
     public void onMouseLeftClick(int x, int y) {
-        switch (mode) {
-            case GAME_NEW:
-                // Просто переходим к следующему режиму игры.
-                mode_switch();
-                break;
-            case GAME_MENU_SIZE:
-                if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
-                    // Варианты размеров игрового поля от 10(0) до 25(3).
-                    setMenuSize(SIZE_FIRST + SIZE_STEP * (y - MENU_Y_OFFSET));
-                }
-                break;
-            case GAME_MENU_COMPL:
-                if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
-                    // Определяем уровень сложности текущей игры от 0 до 3.
-                    setMenuComplexity(y - MENU_Y_OFFSET);
-                }
-                break;
-            case GAME_MAIN_FORM:
-                int cell_x = x - area_offset;
-                int cell_y = y - area_offset;
-                if (cell_x < 0 || cell_x >= size || cell_y < 0 || cell_y >= size) return;
-                setOpen(area[cell_x][cell_y]);
-                break;
-            case GAME_TEST_COLOR:
-                Color color = getCellColor(x, y);
-                String color_text = color.ordinal() + " " + color.toString();
-                System.out.println(color_text);
-                show_footer(color_text, FOOTER_COLOR);
-                break;
-            default:
-                mode_switch();
-                break;
+        try {
+            switch (mode) {
+                case GAME_NEW:
+                    // Просто переходим к следующему режиму игры.
+                    mode_switch();
+                    break;
+                case GAME_MENU_SIZE:
+                    if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
+                        // Варианты размеров игрового поля от 10(0) до 25(3).
+                        setMenuSize(SIZE_FIRST + SIZE_STEP * (y - MENU_Y_OFFSET));
+                    }
+                    break;
+                case GAME_MENU_COMPL:
+                    if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
+                        // Определяем уровень сложности текущей игры от 0 до 3.
+                        setMenuComplexity(y - MENU_Y_OFFSET);
+                    }
+                    break;
+                case GAME_MAIN_FORM:
+                    int cell_x = x - area_offset;
+                    int cell_y = y - area_offset;
+                    if (cell_x < 0 || cell_x >= size || cell_y < 0 || cell_y >= size) return;
+                    setOpen(area[cell_x][cell_y]);
+                    break;
+                case GAME_TEST_COLOR:
+                    Color color = getCellColor(x, y);
+                    String color_text = color.ordinal() + " " + color.toString();
+                    System.out.println(color_text);
+                    show_footer(color_text, FOOTER_COLOR);
+                    break;
+                default:
+                    mode_switch();
+                    break;
+            }
+        } catch (Exception ex) {
+            show_error("onMouseLeftClick", ex);
         }
     }
 
     private void setOpen(CellObject open_obj) {
+        if (open_obj.getIsFlag()) return;
+        if (open_obj.isOpen) return;
         if (is_first_open) {
             is_first_open = false;
             if (open_obj.isMine) {
@@ -402,36 +428,31 @@ public class Sapper extends Game {
             // Вычисляем число соседних мин для всех пустых полей.
             calc_mines();
         }
-        if (!open_obj.isOpen) {
-            if (open_obj.isMine) {
-                // Останавливаем игру.
-                mode = Mode.GAME_BLOCKED;
-                game_result = Result.RESULT_DEFEAT;
-                // Отображаем взорванную мину.
-                setCellValueEx(open_obj.x + area_offset, open_obj.y + area_offset,
+        if (open_obj.isMine) {
+            // Останавливаем игру.
+            mode = Mode.GAME_BLOCKED;
+            game_result = Result.RESULT_DEFEAT;
+            // Отображаем взорванную мину.
+            setCellValueEx(open_obj.x + area_offset, open_obj.y + area_offset,
                     Color.RED, MINE_TXT, Color.BLACK, 60);
-                for (int i = 0; i < size; i++) {
-                    for (int k = 0; k < size; k++) {
-                        CellObject test_obj = area[i][k];
-                        if (test_obj.getIsFlag() && !test_obj.isMine) {
-                            // Отображаем ошибки отмеченных мин, если есть.
-                            setCellValueEx(i + area_offset, k + area_offset,
-                                    Color.LIGHTBLUE, "X", Color.DARKRED, 60);
-                        } else if (test_obj.isMine && !test_obj.getIsFlag() && !test_obj.equals(open_obj)) {
-                            // Отображаем все ненайденные мины.
-                            setCellValueEx(i + area_offset, k + area_offset,
-                                    Color.LIGHTBLUE, MINE_TXT, Color.DARKRED, 60);
-                        }
+            for (int i = 0; i < size; i++) {
+                for (int k = 0; k < size; k++) {
+                    CellObject test_obj = area[i][k];
+                    if (test_obj.getIsFlag() && !test_obj.isMine) {
+                        // Отображаем ошибки отмеченных мин, если есть.
+                        setCellValueEx(i + area_offset, k + area_offset,
+                                Color.LIGHTBLUE, "X", Color.DARKRED, 60);
+                    } else if (test_obj.isMine && !test_obj.getIsFlag() && !test_obj.equals(open_obj)) {
+                        // Отображаем все ненайденные мины.
+                        setCellValueEx(i + area_offset, k + area_offset,
+                                Color.LIGHTBLUE, MINE_TXT, Color.DARKRED, 60);
                     }
                 }
-                show_footer("Вы проиграли!", Color.DARKRED);
-                // При поражении делим полученные очки на 2.
-                scorePoints = scorePoints / 2.0d;
-                setScore(get_int_points());
-            } else {
-                open_by_empty(open_obj);
-                show_count_need_to_open();
             }
+            show_footer("Вы проиграли! Счёт:" + get_int_points(), Color.DARKRED);
+        } else {
+            open_by_empty(open_obj);
+            show_count_need_to_open();
         }
     }
 
@@ -440,6 +461,9 @@ public class Sapper extends Game {
      */
     private void setMenuComplexity(int new_complexity) {
         complexity = new_complexity;
+        setCellValueEx(area_offset + size, area_offset - 1, Color.BLACK,
+                String.valueOf(complexity + 1), Color.WHITE, 60);
+
         // Вычисляем число мин на игровом поле, в зависимости от сложности игры.
         mine_count = size * size / (10 - complexity);
         mode_switch();
@@ -463,7 +487,10 @@ public class Sapper extends Game {
             // Победа! завершаем игру.
             mode = Mode.GAME_BLOCKED;
             game_result = Result.RESULT_VICTORY;
-            show_footer("Вы  победили!", Color.DARKGREEN);
+            // При победе умножаем полученные очки на 2.
+            scorePoints = scorePoints * 2.0d;
+            setScore(get_int_points());
+            show_footer("Вы  победили! Счёт: " + get_int_points(), Color.DARKGREEN);
         }
     }
 
@@ -472,17 +499,21 @@ public class Sapper extends Game {
      */
     @Override
     public void onTurn(int step) {
-        if (mode != Mode.GAME_MAIN_FORM) {
-            // Останавливаем игровой таймер.
-            stopTurnTimer();
-            return;
+        try {
+            if (mode != Mode.GAME_MAIN_FORM) {
+                // Останавливаем игровой таймер.
+                stopTurnTimer();
+                return;
+            }
+            if (game_result == Result.RESULT_IN_PROGRESS && mode == Mode.GAME_MAIN_FORM && !is_first_open) {
+                // каждую секунду уменьшаем базовое число для выдачи новых очков.
+                updateBaseIndex((size - 10) / SIZE_STEP);
+            }
+            setCellValueEx(area_offset - 1, area_offset - 1, Color.BLACK,
+                    String.valueOf(Math.round(base_points)), Color.WHITE, 60);
+        } catch (Exception ex) {
+            show_error("onTurn", ex);
         }
-        if (game_result == Result.RESULT_IN_PROGRESS && mode == Mode.GAME_MAIN_FORM && !is_first_open) {
-            // каждую секунду уменьшаем базовое число для выдачи новых очков.
-            updateBaseIndex((size - 10) / SIZE_STEP);
-        }
-        setCellValueEx(area_offset - 1, area_offset - 1, Color.BLACK,
-                String.valueOf(Math.round(base_points)), Color.WHITE, 60);
     }
 
     /**
@@ -531,7 +562,7 @@ public class Sapper extends Game {
      */
     private void add_points() {
         need_open_mines--;
-        scorePoints += base_points;
+        scorePoints += base_points / (complexity_levels.length + 1 - complexity);
         setScore(get_int_points());
         check_victory();
     }
@@ -551,16 +582,20 @@ public class Sapper extends Game {
     @Override
     public void onMouseRightClick(int x, int y) {
         if (mode != Mode.GAME_MAIN_FORM) return;
-        if (CellObject.getFlagsCount() >= mine_count) return;
+        try {
+            if (CellObject.getFlagsCount() >= mine_count) return;
 
-        // Приводим визуальные координаты к нумерации внутреннего массива ячеек area[][].
-        x -= area_offset;
-        y -= area_offset;
+            // Приводим визуальные координаты к нумерации внутреннего массива ячеек area[][].
+            x -= area_offset;
+            y -= area_offset;
 
-        // Если нажали за пределами игрового поля, то игнорируем.
-        if (x < 0 || y < 0 || x >= size || y >= size) return;
+            // Если нажали за пределами игрового поля, то игнорируем.
+            if (x < 0 || y < 0 || x >= size || y >= size) return;
 
-        setFlag(area[x][y]);
+            setFlag(area[x][y]);
+        } catch (Exception ex) {
+            show_error("onMouseRightClick", ex);
+        }
     }
 
     private void setFlag(CellObject obj) {
@@ -577,10 +612,14 @@ public class Sapper extends Game {
      * Закрашиваем все игровое поле черным цветом.
      */
     private void clear_screen() {
-        for (int i = 0; i < getScreenWidth(); i++) {
-            for (int k = 0; k < getScreenHeight() - 1; k++) {
-                setCellValueEx(i, k, Color.BLACK, "", Color.BLACK, 60);
+        try {
+            for (int i = 0; i < getScreenWidth(); i++) {
+                for (int k = 0; k < getScreenHeight() - 1; k++) {
+                    setCellValueEx(i, k, Color.BLACK, "", Color.BLACK, 60);
+                }
             }
+        } catch (Exception ex) {
+            show_error("clear_screen", ex);
         }
     }
 
@@ -677,16 +716,42 @@ public class Sapper extends Game {
     }
 
     private void show_footer(String footer, Color footer_color) {
-        int footer_length = footer.length();
-        int footer_y = getScreenHeight() - 1;
-        int footer_x = (getScreenWidth() - footer_length) / 2;
-        if (footer_x < 0)
-            footer_x = 0;
-        for (int x = 0; x < getScreenWidth(); x++) {
-            String symbol = "";
-            if (x >= footer_x && x < footer_x + footer_length)
-                symbol = String.valueOf(footer.charAt(x - footer_x));
-            setCellValueEx(x, footer_y, footer_color, symbol, Color.YELLOW, 80);
+        try {
+            int footer_length = footer.length();
+            int footer_y = getScreenHeight() - 1;
+            int footer_x = (getScreenWidth() - footer_length) / 2;
+            if (footer_x < 0)
+                footer_x = 0;
+            for (int x = 0; x < getScreenWidth(); x++) {
+                String symbol = "";
+                if (x >= footer_x && x < footer_x + footer_length)
+                    symbol = String.valueOf(footer.charAt(x - footer_x));
+                setCellValueEx(x, footer_y, footer_color, symbol, Color.YELLOW, 80);
+            }
+        } catch (Exception ex) {
+            show_error("show_footer", ex);
+        }
+    }
+
+    private void show_error(String func, Exception ex) {
+        try {
+            String error = func + " " + ex.getMessage() + " # " + ex.getStackTrace();
+            int footer_length = error.length();
+            int footer_x = 0;
+            int footer_y = 0;
+            for (int i = 0; i < footer_length; i++) {
+                String symbol = String.valueOf(error.charAt(i));
+                setCellValueEx(footer_x, footer_y, FOOTER_COLOR, symbol, Color.YELLOW, 80);
+                footer_x++;
+                if (footer_x > getScreenWidth() - 1) {
+                    footer_x = 0;
+                    footer_y++;
+                    if (footer_y > getScreenHeight() - 1) {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex2) {
         }
     }
 
