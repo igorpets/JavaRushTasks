@@ -1,9 +1,10 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class Sapper extends Game {
-
     /**
      * Текст "💣" для отображения Мины на игровом поле.
      */
@@ -13,17 +14,30 @@ public class Sapper extends Game {
      */
     private static final String FLAG_TXT = "\uD83D\uDEA9";
     /**
-     * Выбранный текущий размер игрового поля.
+     * Начальный (минимальный) размер игрового поля.
      */
-    private int size;
+    private final int SIZE_FIRST = 10;
     /**
-     * Максимальный размер игрового поля (видимое поле +1 на поля-зоголовки).
+     * Шаг увеличения размеров игрового поля.
      */
-    private final int MAX_SIZE = 25;
+    private final int SIZE_STEP = 5;
+    /**
+     * Максимальный размер игрового поля (видимое поле +1 на поля-заголовки).
+     */
+    private final int MAX_SIZE = 10 + SIZE_STEP * 3;
     /**
      * Смещение меню от верхнего края, для расположения "по центру".
      */
-    private int menu_y_offset = 11;
+    private final int MENU_Y_OFFSET = 11;
+    /**
+     * Цвет ао умолчанию для нижнего поля с сообщением.
+     */
+    private final Color FOOTER_COLOR = Color.BROWN;
+
+    /**
+     * Выбранный текущий размер игрового поля.
+     */
+    private int size;
     /**
      * Размер визуального отступа сверху и слева до игрового поля.
      */
@@ -33,13 +47,9 @@ public class Sapper extends Game {
      */
     private int mine_count;
     /**
-     * Число меток "Мина" на текущем игровом поле.
-     */
-    private int mine_checked_count;
-    /**
      * Число удачно открытых пустых ячеек, требуемое для Победы.
      */
-    private int need_open_empty;
+    private int need_open_mines;
     /**
      * Результат завершения текущей игры:
      * 0 - Идет игра,
@@ -48,9 +58,17 @@ public class Sapper extends Game {
      */
     private Result game_result = Result.RESULT_IN_PROGRESS;
     /**
-     * Массив для хранения содержимого всех ячеек игрового поля.
+     * Массив для хранения содержимого всех объектов (ячеек) игрового поля.
      */
-    private CellType[][] area;
+    private CellObject[][] area;
+    /**
+     * Все поддерживаемые размеры игрового поля.
+     */
+    private final int[] sizes = {10, 10 + SIZE_STEP, 10 + SIZE_STEP * 2, 10 + SIZE_STEP * 3};
+    /**
+     * Отображаем меню с фиксированными вариантами сложности игры.
+     */
+    private String[] complexity_levels = {"ЛЕГКО ", "СРЕДНЕ", "СЛОЖНО", "САПЕР!"};
     /**
      * Текущий режим игры (меню, игра, завершение игры).
      */
@@ -62,17 +80,22 @@ public class Sapper extends Game {
     /**
      * Текущие набранные очки, не более 9999.
      */
-    private double points = 0.0d;
+    private double scorePoints = 0.0d;
     /**
-     * Базовое число для расчета очков ~= 9999/600,
+     * Базовое число для расчета очков ~= 9999/600*2,
      * 9999 - максимальное число очков,
      * 600 - максимальное число пустых ячеек.
+     * 2 - средний коэффициент уменьшения базового числа за игру.
      */
-    private double base_points = 16.5d;
+    private double base_points = 33.0d;
     /**
      * Признак первого клика по игровому полю.
      */
     private boolean is_first_open = true;
+    /**
+     * Поле на котором стоит курсор при управлении с клавиатуры.
+     */
+    private CellObject cursor;
 
     /**
      * Входная точка в игру, вызывается из родительского класса Game.
@@ -80,7 +103,8 @@ public class Sapper extends Game {
     @Override
     public void initialize() {
         showGrid(true);
-        setScreenSize(MAX_SIZE + 1, MAX_SIZE + 1);
+        setScreenSize(MAX_SIZE + 1, MAX_SIZE + 2);
+        size = sizes[0];
         mode_switch();
     }
 
@@ -95,19 +119,19 @@ public class Sapper extends Game {
     private void mode_switch() {
         switch (mode) {
             case GAME_NEW:
+            case GAME_TEST_COLOR:
+            case GAME_BLOCKED:
+                stopTurnTimer();
                 open_menu_size();
                 break;
             case GAME_MENU_SIZE:
-                open_menu_difficalty();
+                open_menu_difficulty();
                 break;
             case GAME_MENU_COMPL:
                 minesweeper_init();
                 break;
             case GAME_MAIN_FORM:
                 mode = Mode.GAME_BLOCKED;
-                break;
-            case GAME_BLOCKED:
-                show_final_message();
                 break;
         }
     }
@@ -116,39 +140,47 @@ public class Sapper extends Game {
      * Меню выбора размера поля.
      */
     private void open_menu_size() {
-        mode = Mode.GAME_MENU_SIZE;
-        clear_screen();
+        if (mode != Mode.GAME_MENU_SIZE) {
+            mode = Mode.GAME_MENU_SIZE;
+            clear_screen();
+            show_footer("Выберите размер игры", FOOTER_COLOR);
+        }
         // Отображаем меню с фиксированными вариантами игры.
-        String[] sizes = {"10X10", "15X15", "20X20", "25X25"};
+        int menu_x = (getScreenWidth() - " 15x15 ".length()) / 2;
         for (int i = 0; i < sizes.length; i++) {
+            int curr_size = sizes[i];
             // Полное название меню из 10 символов.
-            String text_menu = "ИГРА " + sizes[i];
-            one_menu_to_screen(8, menu_y_offset + i, text_menu);
+            String text_menu = " " + curr_size + "x" + curr_size + " ";
+            one_menu_to_screen(menu_x, MENU_Y_OFFSET + i, text_menu, size == curr_size);
         }
     }
 
     /**
      * Отображение одной произвольной строки меню.
      */
-    private void one_menu_to_screen(int menu_x, int menu_y, String text_menu) {
+    private void one_menu_to_screen(int menu_x, int menu_y, String text_menu, boolean selected) {
+        if (menu_y >= getScreenHeight()) return;
+        int screen_width = getScreenWidth();
         Color menu_color;
-        if (menu_y % 2 == 0) menu_color = Color.ANTIQUEWHITE;
-        else menu_color = Color.LIGHTPINK;
+        if (selected) menu_color = Color.ANTIQUEWHITE;
+        else menu_color = Color.LIGHTBLUE;
         for (int k = 0; k < text_menu.length(); k++) {
-            setCellValueEx(menu_x + k, menu_y, menu_color, text_menu.substring(k, k + 1), Color.BROWN, 80);
+            if (menu_x + k < screen_width)
+                setCellValueEx(menu_x + k, menu_y, menu_color, text_menu.substring(k, k + 1), Color.BROWN, 80);
         }
     }
 
     /**
      * Отображение меню выбора сложности игры.
      */
-    private void open_menu_difficalty() {
-        mode = Mode.GAME_MENU_COMPL;
-        clear_screen();
-        // Отображаем меню с фиксированными вариантами сложности игры.
-        String[] compl = {"ЛЕГКО ", "СРЕДНЕ", "СЛОЖНО", "САПЕР!"};
-        for (int i = 0; i < compl.length; i++) {
-            one_menu_to_screen(10, menu_y_offset + i, compl[i]);
+    private void open_menu_difficulty() {
+        if (mode != Mode.GAME_MENU_COMPL) {
+            mode = Mode.GAME_MENU_COMPL;
+            clear_screen();
+            show_footer("Выберите сложность игры", FOOTER_COLOR);
+        }
+        for (int i = 0; i < complexity_levels.length; i++) {
+            one_menu_to_screen(10, MENU_Y_OFFSET + i, complexity_levels[i], complexity == i);
         }
     }
 
@@ -156,46 +188,47 @@ public class Sapper extends Game {
      * Выполняем все действия по инициализации игры и ее объектов.
      */
     private void minesweeper_init() {
-        System.out.println("Minesweeper_init() start...");
         mode = Mode.GAME_MAIN_FORM;
         is_first_open = true;
-        area = new CellType[size][size];
+        cursor = null;
+        area = new CellObject[size][size];
         // Отображаем адресные ячейки.
         for (int m = 0; m < size; m++) {
-            setCellValueEx(area_offset, 1 + m + area_offset, Color.LIGHTCYAN,
+            setCellValueEx(area_offset - 1, m + area_offset, Color.LIGHTCYAN,
                     String.valueOf(m + 1), Color.BLACK, 60);
-            setCellValueEx(1 + m + area_offset, area_offset, Color.LIGHTCYAN,
+            setCellValueEx(m + area_offset, area_offset - 1, Color.LIGHTCYAN,
                     String.valueOf(m + 1), Color.BLACK, 60);
         }
         // Инициализируем счетные параметры игры.
-        mine_checked_count = 0;
+        CellObject.initFlagsCount();
         // Определяем количество пустых ячеек, для Победы требуется открыть их все.
-        need_open_empty = size * size - mine_count;
+        need_open_mines = size * size - mine_count;
         game_result = Result.RESULT_IN_PROGRESS;
-        points = 0;
+        scorePoints = 0;
         // Базовое число очков, добавляется при каждом удачном открытии пустой ячейки, уменьшается со временем.
-        base_points = 16.5d;
+        base_points = 33.0d;
         setScore(get_int_points());
-        // Заполняем все игровое поле пустыми ячейками (без мин).
+        // Заполняем все игровое поле пустыми ячейками (без мин и флагов).
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
-                area[i][k] = CellType.EMPTY;
+                CellObject obj = new CellObject(i, k);
+                area[i][k] = obj;
             }
         }
 
         // Устанавливаем на игровое поле заданное количество мин.
-        install_mines(mine_count);
+        minesInstall(mine_count);
 
         // Отображаем все игровые ячейки size*size.
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
-                show_cell(i, k);
+                showCell(area[i][k]);
             }
         }
-        // Для легкого уровня отображаем число мин, иначе просто закрашиваем.
+        // Отображаем число мин.
         show_count_need_to_open();
 
-        // Запускаем таймера на снижение базовых очков (ScorePoints) каждую секунду.
+        // Запускаем таймер на снижение базовых очков (ScorePoints) каждую секунду.
         setTurnTimer(1000);
         // Начинаем игру! Теперь доступна работа мышью.
         mode = Mode.GAME_MAIN_FORM;
@@ -204,68 +237,115 @@ public class Sapper extends Game {
     /**
      * Устанавливаем на игровое поле заданное количество мин.
      */
-    private void install_mines(int mine_installed) {
-        while (mine_installed > 0) {
+    private void minesInstall(int mine_installed) {
+        // Ограничение для защиты от бесконечного цикла.
+        int limit = size * size * 5;
+        while (mine_installed > 0 && limit > 0) {
             int mine_x = (int) Math.round(Math.random() * (size - 1));
             int mine_y = (int) Math.round(Math.random() * (size - 1));
-            if (area[mine_x][mine_y] == CellType.EMPTY) {
-                area[mine_x][mine_y] = CellType.MINE;
+            CellObject obj = area[mine_x][mine_y];
+            if (!obj.isMine && !obj.isOpen) {
+                obj.isMine = true;
                 mine_installed--;
             }
+            limit--;
         }
     }
 
     // Отображение нового состояния ячейки на игровом поле.
-    private int show_cell(int x, int y) {
-        CellType cell_type = area[x][y];
+    private void showCell(CellObject obj) {
         Color show_color;
         String show_type = "";
-        // По умолчанию, количество соседних мин не известно.
-        int find_mines = -1;
-        if (cell_type == CellType.OPEN_EMPTY) {
+        if (obj.isOpen) {
             // Открытое поле.
-            show_color = Color.ANTIQUEWHITE;
-            find_mines = calc_mines(x, y);
-            if (find_mines > 0)
-                show_type = String.valueOf(find_mines);
+            if (obj.isCursor)
+                show_color = Color.TAN;
             else
-                show_type = "";
+                show_color = Color.ANTIQUEWHITE;
+            if (obj.countMineNeighbors > 0)
+                show_type = String.valueOf(obj.countMineNeighbors);
         } else {
             // Закрытое поле
-            show_color = Color.LIGHTBLUE;
+            if (obj.isCursor) show_color = Color.DEEPSKYBLUE;
+            else show_color = Color.LIGHTBLUE;
+            // Отображаем метки на Минах.
+            if (obj.getIsFlag())
+                show_type = FLAG_TXT;
         }
-        // Отображаем метки на Минах.
-        if (cell_type == CellType.CHECKED_MINE || cell_type == CellType.CHECKED_EMPTY)
-            show_type = FLAG_TXT;
-        int offset = 1 + area_offset;
         // Отображаем новое состояние ячейки.
-        setCellValueEx(x + offset, y + offset, show_color, show_type, Color.BROWN, 60);
-        return find_mines;
-    }
-
-    // Отображаем количество неоткрытых пустых ячеек.
-    private void show_count_need_to_open() {
-        setCellValueEx(area_offset, area_offset, Color.AQUAMARINE,
-                String.valueOf(need_open_empty), Color.RED, 50);
+        setCellValueEx(obj.x + area_offset, obj.y + area_offset, show_color, show_type, Color.BROWN, 60);
     }
 
     /**
-     * Вычисляет количество мин около выбранной ячейки.
+     * Отображаем количество неоткрытых пустых ячеек.
      */
-    private int calc_mines(int x, int y) {
-        int left_x = Math.max(0, x - 1);
-        int right_y = Math.min(size - 1, x + 1);
-        int top_y = Math.max(0, y - 1);
-        int bottom_y = Math.min(size - 1, y + 1);
-        int mines_lookup = 0;
-        for (int i = left_x; i <= right_y; i++) {
-            for (int k = top_y; k <= bottom_y; k++) {
-                CellType check_type = area[i][k];
-                if (check_type == CellType.MINE || check_type == CellType.CHECKED_MINE)
-                    mines_lookup++;
+    private void show_count_need_to_open() {
+        if (game_result == Result.RESULT_IN_PROGRESS)
+            show_footer("Осталось открыть: " + need_open_mines, FOOTER_COLOR);
+    }
+
+    /**
+     * Вычисляет количество мин около каждой ячейки для всего игрового поля.
+     */
+    private void calc_mines() {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                CellObject obj = area[x][y];
+
+                int left_x = Math.max(0, x - 1);
+                int right_y = Math.min(size - 1, x + 1);
+                int top_y = Math.max(0, y - 1);
+                int bottom_y = Math.min(size - 1, y + 1);
+                int mines_lookup = 0;
+                for (int i = left_x; i <= right_y; i++) {
+                    for (int k = top_y; k <= bottom_y; k++) {
+                        CellObject lookup_obj = area[i][k];
+                        if (lookup_obj.isMine)
+                            mines_lookup++;
+                    }
+                }
+                obj.countMineNeighbors = mines_lookup;
             }
         }
-        return mines_lookup;
+    }
+
+    /**
+     * Вычисляет количество правильно отмеченных мин для все ячеек около заданной.
+     * Используется при рекурсивном раскрытии пустых полей.
+     */
+    private void calc_flag_mines(CellObject mine_obj) {
+        int left_x = Math.max(0, mine_obj.x - 1);
+        int right_y = Math.min(size - 1, mine_obj.x + 1);
+        int top_y = Math.max(0, mine_obj.y - 1);
+        int bottom_y = Math.min(size - 1, mine_obj.y + 1);
+        for (int i = left_x; i <= right_y; i++) {
+            for (int k = top_y; k <= bottom_y; k++) {
+                CellObject lookup_obj = area[i][k];
+                if (lookup_obj != mine_obj)
+                    calc_flag_mines_by_one(lookup_obj);
+            }
+        }
+    }
+
+    /**
+     * Внутренняя функция для расчета правильно отмеченных мин для одной ячейки.
+     */
+    private void calc_flag_mines_by_one(CellObject obj) {
+        if (obj.isMine) return;
+
+        int left_x = Math.max(0, obj.x - 1);
+        int right_y = Math.min(size - 1, obj.x + 1);
+        int top_y = Math.max(0, obj.y - 1);
+        int bottom_y = Math.min(size - 1, obj.y + 1);
+        int flags_mine_count = 0;
+        for (int i = left_x; i <= right_y; i++) {
+            for (int k = top_y; k <= bottom_y; k++) {
+                CellObject lookup_obj = area[i][k];
+                if (lookup_obj.isMine && lookup_obj.getIsFlag())
+                    flags_mine_count++;
+            }
+        }
+        obj.countFlagsMine = flags_mine_count;
     }
 
     /**
@@ -280,76 +360,110 @@ public class Sapper extends Game {
                 mode_switch();
                 break;
             case GAME_MENU_SIZE:
-                if (y >= menu_y_offset && y <= menu_y_offset + 3) {
-                    // Варианты размеров игрового поля от 10 до 25.
-                    int size_menu_number = y - menu_y_offset;
-                    size = 10 + 5 * size_menu_number;
-                    // Вычисляем смещение от края
-                    area_offset = (MAX_SIZE - size) / 2;
-                    mode_switch();
+                if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
+                    // Варианты размеров игрового поля от 10(0) до 25(3).
+                    setMenuSize(SIZE_FIRST + SIZE_STEP * (y - MENU_Y_OFFSET));
                 }
                 break;
             case GAME_MENU_COMPL:
-                if (y >= menu_y_offset && y <= menu_y_offset + 3) {
+                if (y >= MENU_Y_OFFSET && y <= MENU_Y_OFFSET + 3) {
                     // Определяем уровень сложности текущей игры от 0 до 3.
-                    complexity = y - menu_y_offset;
-                    mine_count = size * size / (10 - complexity);
-                    mode_switch();
+                    setMenuComplexity(y - MENU_Y_OFFSET);
                 }
                 break;
             case GAME_MAIN_FORM:
-                int cell_x = x - 1 - area_offset;
-                int cell_y = y - 1 - area_offset;
+                int cell_x = x - area_offset;
+                int cell_y = y - area_offset;
                 if (cell_x < 0 || cell_x >= size || cell_y < 0 || cell_y >= size) return;
-                CellType cell_type = area[cell_x][cell_y];
-                if (is_first_open) {
-                    is_first_open = false;
-                    if (cell_type == CellType.MINE) {
-                        {
-                            // Если это первый клик и попали на мину, то убираем ее в новое место.
-                            cell_type = CellType.EMPTY;
-                            install_mines(1);
-                        }
-                    }
-                }
-                if (cell_type == CellType.EMPTY) {
-                    area[cell_x][cell_y] = CellType.OPEN_EMPTY;
-                    open_by_empty(cell_x, cell_y);
-                    // Открыли пустую ячейку, добавляем очки!
-                    add_points();
-                    show_count_need_to_open();
-                } else if (cell_type == CellType.MINE) {
-                    // Останавливаем игру.
-                    mode = Mode.GAME_BLOCKED;
-                    game_result = Result.RESULT_DEFEAT;
-                    // Отображаем взорванную мину.
-                    setCellValueEx(x, y, Color.RED, MINE_TXT, Color.BLACK, 60);
-                    // Отображаем ошибки отмеченных мин, если есть.
-                    for (int i = 0; i < size; i++) {
-                        for (int k = 0; k < size; k++) {
-                            if (area[i][k] == CellType.CHECKED_EMPTY) {
-                                setCellValueEx(i + 1 + area_offset, k + 1 + area_offset,
-                                        Color.RED, MINE_TXT, Color.BLUE, 60);
-                            }
-                        }
-                    }
-                    // Запускаем новый таймер на отображение окна "Вы проиграли!".
-                    setTurnTimer(3000);
-                }
+                setOpen(area[cell_x][cell_y]);
+                break;
+            case GAME_TEST_COLOR:
+                Color color = getCellColor(x, y);
+                String color_text = color.ordinal() + " " + color.toString();
+                System.out.println(color_text);
+                show_footer(color_text, FOOTER_COLOR);
+                break;
+            default:
+                mode_switch();
                 break;
         }
+    }
+
+    private void setOpen(CellObject open_obj) {
+        if (is_first_open) {
+            is_first_open = false;
+            if (open_obj.isMine) {
+                {
+                    // Если это первый клик и попали на мину, то убираем ее в новое место.
+                    minesInstall(1);
+                    open_obj.isMine = false;
+                }
+            }
+            // Вычисляем число соседних мин для всех пустых полей.
+            calc_mines();
+        }
+        if (!open_obj.isOpen) {
+            if (open_obj.isMine) {
+                // Останавливаем игру.
+                mode = Mode.GAME_BLOCKED;
+                game_result = Result.RESULT_DEFEAT;
+                // Отображаем взорванную мину.
+                setCellValueEx(open_obj.x + area_offset, open_obj.y + area_offset,
+                    Color.RED, MINE_TXT, Color.BLACK, 60);
+                for (int i = 0; i < size; i++) {
+                    for (int k = 0; k < size; k++) {
+                        CellObject test_obj = area[i][k];
+                        if (test_obj.getIsFlag() && !test_obj.isMine) {
+                            // Отображаем ошибки отмеченных мин, если есть.
+                            setCellValueEx(i + area_offset, k + area_offset,
+                                    Color.LIGHTBLUE, "X", Color.DARKRED, 60);
+                        } else if (test_obj.isMine && !test_obj.getIsFlag() && !test_obj.equals(open_obj)) {
+                            // Отображаем все ненайденные мины.
+                            setCellValueEx(i + area_offset, k + area_offset,
+                                    Color.LIGHTBLUE, MINE_TXT, Color.DARKRED, 60);
+                        }
+                    }
+                }
+                show_footer("Вы проиграли!", Color.DARKRED);
+                // При поражении делим полученные очки на 2.
+                scorePoints = scorePoints / 2.0d;
+                setScore(get_int_points());
+            } else {
+                open_by_empty(open_obj);
+                show_count_need_to_open();
+            }
+        }
+    }
+
+    /**
+     * Изменяем уровень сложности текущей игры от 0 до 3.
+     */
+    private void setMenuComplexity(int new_complexity) {
+        complexity = new_complexity;
+        // Вычисляем число мин на игровом поле, в зависимости от сложности игры.
+        mine_count = size * size / (10 - complexity);
+        mode_switch();
+    }
+
+    /**
+     * Устанавливаем новый размер игрового поля.
+     */
+    private void setMenuSize(int new_size) {
+        size = new_size;
+        // Вычисляем смещение от края сцены.
+        area_offset = (MAX_SIZE - size) / 2 + 1;
+        mode_switch();
     }
 
     /**
      * Функция проверки условий Победы, если выполнены, то игра завершается.
      */
     private void check_victory() {
-        if (need_open_empty <= 0) {
+        if (need_open_mines <= 0) {
             // Победа! завершаем игру.
             mode = Mode.GAME_BLOCKED;
             game_result = Result.RESULT_VICTORY;
-            // Запускаем новый таймер на отображение окна "Вы победили!".
-            setTurnTimer(2000);
+            show_footer("Вы  победили!", Color.DARKGREEN);
         }
     }
 
@@ -358,83 +472,57 @@ public class Sapper extends Game {
      */
     @Override
     public void onTurn(int step) {
-        if (game_result == Result.RESULT_IN_PROGRESS && mode==Mode.GAME_MAIN_FORM && !is_first_open) {
-            // каждую секунду уменьшаем базовое число для выдачи новых очков.
-            switch (size) {
-                case 10:
-                    base_points = base_points * 96.5d / 100.0d;
-                    break;
-                case 15:
-                    base_points = base_points * 97.5d / 100.0d;
-                    break;
-                case 20:
-                    base_points = base_points * 98.5d / 100.0d;
-                    break;
-                case 25:
-                    base_points = base_points * 99.5d / 100.0d;
-                    break;
-            }
-            System.out.println(base_points);
-        } else {
+        if (mode != Mode.GAME_MAIN_FORM) {
+            // Останавливаем игровой таймер.
             stopTurnTimer();
-            // Отображаем окно "Вы проиграли!" или "Вы победили!".
-            mode_switch();
+            return;
         }
+        if (game_result == Result.RESULT_IN_PROGRESS && mode == Mode.GAME_MAIN_FORM && !is_first_open) {
+            // каждую секунду уменьшаем базовое число для выдачи новых очков.
+            updateBaseIndex((size - 10) / SIZE_STEP);
+        }
+        setCellValueEx(area_offset - 1, area_offset - 1, Color.BLACK,
+                String.valueOf(Math.round(base_points)), Color.WHITE, 60);
     }
 
     /**
-     * Рекурсивная функция отображения соседних ячеек.
+     * Уменьшает базовое число для выдачи новых очков за открытие полей.
+     */
+    private void updateBaseIndex(int size_index) {
+        if (base_points > 3) base_points -= 0.2d * (4 - size_index);
+        else base_points *= (96.5d + 1.0d * size_index) / 100.0d;
+    }
+
+    /**
+     * Рекурсивная функция открытия соседних ячеек.
      * Если выбранная ячейка пустая и число соседних мин = 0,
      * то соседние пустые тоже открываются.
-     *
-     * @param x,y - координаты в массиве area (0, size-1)
      */
-    private void open_by_empty(int x, int y) {
-        if (show_cell(x, y) != 0) return;
-        int left_x = Math.max(0, x - 1);
-        int right_x = Math.min(size - 1, x + 1);
-        int top_y = Math.max(0, y - 1);
-        int bottom_y = Math.min(size - 1, y + 1);
+    private void open_by_empty(CellObject obj) {
+        obj.isOpen = true;
+        showCell(obj);
+        // Открыли пустую ячейку, добавляем очки!
+        add_points();
+        if (obj.countMineNeighbors - obj.countFlagsMine > 0) return;
+        // Если число рядом стоящих мин равно нулю, то открываем соседние пустые ячейки.
+        int left_x = Math.max(0, obj.x - 1);
+        int right_x = Math.min(size - 1, obj.x + 1);
+        int top_y = Math.max(0, obj.y - 1);
+        int bottom_y = Math.min(size - 1, obj.y + 1);
         for (int i = left_x; i <= right_x; i++) {
             for (int k = top_y; k <= bottom_y; k++) {
-                CellType check_type = area[i][k];
-                if (check_type == CellType.CHECKED_MINE) {
-                    // Логическая ошибка.
-                    System.out.println("Error: empty expected, mine detected X=" + i + " Y=" + k);
-                } else if (check_type == CellType.CHECKED_EMPTY) {
-                    // Корректно снимаем ошибочную метку Мины.
-                    add_points();
-                    mine_checked_count--;
-                    area[i][k] = CellType.OPEN_EMPTY;
-                    open_by_empty(i, k);
-                } else if (check_type == CellType.EMPTY) {
-                    area[i][k] = CellType.OPEN_EMPTY;
-                    add_points();
-                    open_by_empty(i, k);
+                CellObject neighbor_obj = area[i][k];
+                if (!neighbor_obj.isMine && !neighbor_obj.isOpen) {
+                    if (neighbor_obj.getIsFlag() && !neighbor_obj.isMine) {
+                        // Корректно снимаем ошибочную метку Мины.
+                        neighbor_obj.setIsFlag(false);
+                        calc_flag_mines(neighbor_obj);
+                    }
+                    // Входим в рекурсию.
+                    open_by_empty(neighbor_obj);
                 }
             }
         }
-    }
-
-    /**
-     * Отображаем финальное сообщение о Победе или проигрыше.
-     */
-    private void show_final_message() {
-        // Игра завершена, готовимся к рестарту.
-        mode = Mode.GAME_NEW;
-        clear_screen();
-        int message_y = (MAX_SIZE + 1) / 2 - 2;
-        if (game_result == Result.RESULT_VICTORY)
-            one_menu_to_screen(6, message_y, "Вы  победили!");
-        else {
-            one_menu_to_screen(6, message_y, "Вы проиграли!");
-            // При поражении делим полученные очки на 2.
-            points = points / 2.0d;
-            setScore(get_int_points());
-        }
-        String current_points = String.valueOf(get_int_points());
-        while (current_points.length() < 4) current_points = " " + current_points;
-        one_menu_to_screen(5, message_y + 2, "Ваши очки: " + current_points);
     }
 
     /**
@@ -442,8 +530,8 @@ public class Sapper extends Game {
      * Одновременно обновляет счетчики и проверяет условия победы.
      */
     private void add_points() {
-        need_open_empty--;
-        points += base_points;
+        need_open_mines--;
+        scorePoints += base_points;
         setScore(get_int_points());
         check_victory();
     }
@@ -452,60 +540,172 @@ public class Sapper extends Game {
      * Возвращает игровые очки в формате INT.
      */
     private int get_int_points() {
-        return (int) Math.round(points);
+        return (int) Math.round(scorePoints);
     }
 
     /**
      * Ставим или убираем метку Мины.
-     * Срабатывает только на закрытых полях, не помеченных меткой "Мина".
+     * Срабатывает только на закрытых полях.
      * Работает только в режиме GAME_MAIN_FORM.
      */
     @Override
     public void onMouseRightClick(int x, int y) {
         if (mode != Mode.GAME_MAIN_FORM) return;
-        // Если нажали за пределами игрового поля, то игнорируем.
-        if (x < 1 + area_offset) return;
-        if (y < 1 + area_offset) return;
+        if (CellObject.getFlagsCount() >= mine_count) return;
+
         // Приводим визуальные координаты к нумерации внутреннего массива ячеек area[][].
-        x -= 1 + area_offset;
-        y -= 1 + area_offset;
-        switch (area[x][y]) {
-            case EMPTY:
-                // Пустая ячейка, ставим "ошибочную" метку мины.
-                if (mine_count > mine_checked_count) {
-                    area[x][y] = CellType.CHECKED_EMPTY;
-                    mine_checked_count++;
-                }
-                break;
-            case MINE:
-                // Ячейка-мина, ставим "правильную" метку мины.
-                if (mine_count > mine_checked_count) {
-                    area[x][y] = CellType.CHECKED_MINE;
-                    mine_checked_count++;
-                }
-                break;
-            case CHECKED_EMPTY:
-                // Снимаем отметку мины.
-                area[x][y] = CellType.EMPTY;
-                mine_checked_count--;
-                break;
-            case CHECKED_MINE:
-                // Снимаем отметку мины.
-                area[x][y] = CellType.MINE;
-                mine_checked_count--;
-                break;
-        }
-        show_cell(x, y);
-        show_count_need_to_open();
+        x -= area_offset;
+        y -= area_offset;
+
+        // Если нажали за пределами игрового поля, то игнорируем.
+        if (x < 0 || y < 0 || x >= size || y >= size) return;
+
+        setFlag(area[x][y]);
+    }
+
+    private void setFlag(CellObject obj) {
+        // Если поле открыто, то игнорируем.
+        if (obj.isOpen) return;
+
+        // Меняем состояние метки с флагом и отображаем на игровом поле.
+        obj.setIsFlag(!obj.getIsFlag());
+        calc_flag_mines(obj);
+        showCell(obj);
     }
 
     /**
      * Закрашиваем все игровое поле черным цветом.
      */
     private void clear_screen() {
-        for (int i = 0; i < MAX_SIZE + 1; i++) {
-            for (int k = 0; k < MAX_SIZE + 1; k++) {
+        for (int i = 0; i < getScreenWidth(); i++) {
+            for (int k = 0; k < getScreenHeight() - 1; k++) {
                 setCellValueEx(i, k, Color.BLACK, "", Color.BLACK, 60);
+            }
+        }
+    }
+
+    /**
+     * Выполняем переход к следующему режиму по быстрым кнопкам.
+     */
+    @Override
+    public void onKeyPress(Key key) {
+        if (key == Key.ESCAPE) {
+            stopTurnTimer();
+            open_menu_size();
+            return;
+        }
+        if (key == Key.PAUSE) {
+            // Отображаем панно цветов JavaRush
+            mode = Mode.GAME_TEST_COLOR;
+            test_all_color();
+            return;
+        }
+        switch (mode) {
+            case GAME_BLOCKED:
+            case GAME_NEW:
+            case GAME_TEST_COLOR:
+                mode_switch();
+                break;
+            case GAME_MENU_SIZE:
+                if (key == Key.UP && size >= SIZE_FIRST + SIZE_STEP) {
+                    size -= SIZE_STEP;
+                    open_menu_size();
+                } else if (key == Key.DOWN && size <= SIZE_FIRST + SIZE_STEP * 2) {
+                    size += SIZE_STEP;
+                    open_menu_size();
+                } else if (key == Key.ENTER || key == Key.SPACE) {
+                    setMenuSize(size);
+                }
+                break;
+            case GAME_MENU_COMPL:
+                if (key == Key.UP && complexity >= 1) {
+                    complexity--;
+                    open_menu_difficulty();
+                } else if (key == Key.DOWN && complexity <= 2) {
+                    complexity++;
+                    open_menu_difficulty();
+                } else if (key == Key.ENTER || key == Key.SPACE) {
+                    setMenuComplexity(complexity);
+                }
+                break;
+            case GAME_MAIN_FORM:
+                if (game_result == Result.RESULT_IN_PROGRESS)
+                    game_keyboard_control(key);
+                break;
+        }
+    }
+
+    private void game_keyboard_control(Key key) {
+        if (cursor == null) {
+            // Выбираем центральное поле для курсора.
+            cursor = area[size / 2][size / 2];
+        }
+        CellObject old_cursor = cursor;
+        // Управление игрой с клавиатуры (курсор, установка флагов и открытие).
+        if (key == Key.ENTER) {
+            // Установка флага.
+            setFlag(cursor);
+        } else if (key == Key.SPACE) {
+            setOpen(cursor);
+        } else if (key == Key.RIGHT) {
+            if (cursor.x < size - 1) {
+                cursor.isCursor = false;
+                cursor = area[cursor.x + 1][cursor.y];
+                cursor.isCursor = true;
+            }
+        } else if (key == Key.LEFT) {
+            if (cursor.x > 0) {
+                cursor.isCursor = false;
+                cursor = area[cursor.x - 1][cursor.y];
+                cursor.isCursor = true;
+            }
+        } else if (key == Key.UP) {
+            if (cursor.y > 0) {
+                cursor.isCursor = false;
+                cursor = area[cursor.x][cursor.y - 1];
+                cursor.isCursor = true;
+            }
+        } else if (key == Key.DOWN) {
+            if (cursor.y < size - 1) {
+                cursor.isCursor = false;
+                cursor = area[cursor.x][cursor.y + 1];
+                cursor.isCursor = true;
+            }
+        }
+        showCell(old_cursor);
+        showCell(cursor);
+    }
+
+    private void show_footer(String footer, Color footer_color) {
+        int footer_length = footer.length();
+        int footer_y = getScreenHeight() - 1;
+        int footer_x = (getScreenWidth() - footer_length) / 2;
+        if (footer_x < 0)
+            footer_x = 0;
+        for (int x = 0; x < getScreenWidth(); x++) {
+            String symbol = "";
+            if (x >= footer_x && x < footer_x + footer_length)
+                symbol = String.valueOf(footer.charAt(x - footer_x));
+            setCellValueEx(x, footer_y, footer_color, symbol, Color.YELLOW, 80);
+        }
+    }
+
+    private void test_all_color() {
+        int x = 0;
+        int y = 0;
+        for (Color color : Color.values()) {
+            if (color.equals(Color.NONE)) continue;
+            setCellColor(x, y, color);
+            setCellColor(x + 1, y, color);
+            setCellColor(x + 2, y, color);
+            x += 3;
+            if (x > getScreenWidth() - 3) {
+                x = 0;
+                y++;
+                if (y > getScreenHeight() - 2) {
+                    System.out.println("Не влезли: " + color.ordinal());
+                    break;
+                }
             }
         }
     }

@@ -13,5 +13,6 @@ public enum Mode {
     // Основаная игра - поиск мин на игровом поле.
     GAME_MAIN_FORM,
     // Временная блокировка после взрыва.
-    GAME_BLOCKED
+    GAME_BLOCKED,
+    GAME_TEST_COLOR
 }
