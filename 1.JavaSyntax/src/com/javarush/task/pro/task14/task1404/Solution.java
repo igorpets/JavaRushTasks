@@ -1,11 +1,11 @@
-package com.javarush.task.pro.task14.task1403;
+package com.javarush.task.pro.task14.task1404;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 /* 
-Помощник преподавателя-2
+Помощник преподавателя-3
 */
 
 public class Solution {
@@ -38,18 +38,8 @@ public class Solution {
                 break;
             }
 
-            int studentId;
-            try {
-                studentId = Integer.parseInt(input);
-            } catch (NumberFormatException ex) {
-                System.out.println(INTEGER_REQUIRED);
-                continue;
-            }
-            try {
-                System.out.println(ANSWERING + studentsJournal.get(studentId));
-            } catch (Exception e) {
-                System.out.println(NOT_EXIST);
-            }
+            int studentId = Integer.parseInt(input);
+            System.out.println(ANSWERING + studentsJournal.get(studentId));
         }
     }
 }
