@@ -38,8 +38,14 @@ public class Solution {
                 break;
             }
 
-            int studentId = Integer.parseInt(input);
-            System.out.println(ANSWERING + studentsJournal.get(studentId));
+            try {
+                int studentId = Integer.parseInt(input);
+                System.out.println(ANSWERING + studentsJournal.get(studentId));
+            } catch (NumberFormatException ex) {
+                System.out.println(INTEGER_REQUIRED);
+            } catch (ArrayIndexOutOfBoundsException ex){
+                System.out.println(NOT_EXIST);
+            }
         }
     }
 }
