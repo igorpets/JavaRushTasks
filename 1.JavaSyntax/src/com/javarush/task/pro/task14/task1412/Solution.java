@@ -11,18 +11,15 @@ public class Solution {
             System.out.println("Программа работает от забора");
             Thread.sleep(1000);
             System.out.println("до обеда");
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             System.out.println("Произошло исключение на букву N");
-        } catch (NumberFormatException e) {
-            System.out.println("Произошло исключение на букву N");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Произошло исключение на букву I");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException | InterruptedException e) {
             System.out.println("Произошло исключение на букву I");
         } catch (ClassCastException e) {
             System.out.println("Произошло исключение на букву C");
-        } catch (InterruptedException e) {
-            System.out.println("Произошло исключение на букву I");
         }
+        /** int x = -1;
+         assert x >= 0:"x меньше нуля, ошибка!";
+         System.out.println("Программа завершила работу."); */
     }
 }

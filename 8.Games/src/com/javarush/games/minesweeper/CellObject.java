@@ -6,7 +6,7 @@ public class CellObject {
     public boolean isMine;
     public boolean isOpen;
     private boolean isFlag;
-    public boolean isCursor;
+    public transient boolean isCursor;
     /**
      * Число меток "Мина" на текущем игровом поле.
      */
@@ -14,11 +14,11 @@ public class CellObject {
     /**
      * Число соседей - мин.
      */
-    public int countMineNeighbors;
+    public transient int countMineNeighbors;
     /**
      * Число соседей - отмеченных мин
      */
-    public int countFlagsMine;
+    public transient int countFlagsMine;
 
     public CellObject(int _x, int _y) {
         x = _x;
