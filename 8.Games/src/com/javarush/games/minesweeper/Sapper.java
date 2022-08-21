@@ -704,8 +704,9 @@ public class Sapper extends Game {
         // отключаем курсор, если игра остановлена, для правильного отображения взорванной мины.
         if (game_result == Result.RESULT_IN_PROGRESS) {
             cursor.isCursor = true;
-            showCell(old_cursor);
             showCell(cursor);
+            if (!old_cursor.equals(cursor))
+                showCell(old_cursor);
         }
     }
 
