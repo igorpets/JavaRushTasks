@@ -680,6 +680,8 @@ public class Sapper extends Game {
             cursor = area[size / 2][size / 2];
         }
         CellObject old_cursor = cursor;
+        cursor.isCursor = false;
+
         // Управление игрой с клавиатуры (курсор, установка флагов и открытие).
         if (key == Key.ENTER) {
             // Установка флага.
@@ -687,32 +689,24 @@ public class Sapper extends Game {
         } else if (key == Key.SPACE) {
             setOpen(cursor);
         } else if (key == Key.RIGHT) {
-            if (cursor.x < size - 1) {
-                cursor.isCursor = false;
+            if (cursor.x < size - 1)
                 cursor = area[cursor.x + 1][cursor.y];
-                cursor.isCursor = true;
-            }
         } else if (key == Key.LEFT) {
-            if (cursor.x > 0) {
-                cursor.isCursor = false;
+            if (cursor.x > 0)
                 cursor = area[cursor.x - 1][cursor.y];
-                cursor.isCursor = true;
-            }
         } else if (key == Key.UP) {
-            if (cursor.y > 0) {
-                cursor.isCursor = false;
+            if (cursor.y > 0)
                 cursor = area[cursor.x][cursor.y - 1];
-                cursor.isCursor = true;
-            }
         } else if (key == Key.DOWN) {
-            if (cursor.y < size - 1) {
-                cursor.isCursor = false;
+            if (cursor.y < size - 1)
                 cursor = area[cursor.x][cursor.y + 1];
-                cursor.isCursor = true;
-            }
         }
-        showCell(old_cursor);
-        showCell(cursor);
+        // отключаем курсор, если игра остановлена, для правильного отображения взорванной мины.
+        if (game_result == Result.RESULT_IN_PROGRESS) {
+            cursor.isCursor = true;
+            showCell(old_cursor);
+            showCell(cursor);
+        }
     }
 
     private void show_footer(String footer, Color footer_color) {
