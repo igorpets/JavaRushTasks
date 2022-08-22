@@ -17,8 +17,8 @@ public class Solution {
             int size = 1024;
             byte[] buffer = new byte[size];
             while (inputStream.available() > 0) {
-                int read = inputStream.read();
-                outputStream.write(buffer, size, read);
+                int read = inputStream.read(buffer);
+                outputStream.write(buffer, 0, read);
             }
         } catch (Exception e) {
             System.out.println("Something went wrong : " + e);
