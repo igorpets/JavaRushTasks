@@ -1,0 +1,7 @@
+1,hj kl,m,no.p qrst 012.3,4,.56789.
+2a b.cd efg,hj,no.p qrst 012.3,4,.56789.
+3a b.cdkl,m,no.p qrst 012.3,4,.56789.
+4a b.cd efg,hj p qrst 012.3,4,.56789.
+5a b.cd efg,hj kl,m,no..3,4,.56789.
+6a b.cd efg,hj kl,m,no.p qrst 0172
+7----------------
