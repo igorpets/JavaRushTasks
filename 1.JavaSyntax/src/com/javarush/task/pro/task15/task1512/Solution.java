@@ -18,6 +18,14 @@ public class Solution {
         printSomething(scanner.nextLine());
         String result = outputStream.toString();
         //напишите тут ваш код
+        outputStream.reset();
+        char[] chars=result.toCharArray();
+        result="";
+        for(int i = chars.length-1;i>=0; i--){
+            result+=chars[i];
+        }
+        outputStream.write(result.getBytes());
+        System.out.println(outputStream.toString());
     }
 
     public static void printSomething(String str) {
