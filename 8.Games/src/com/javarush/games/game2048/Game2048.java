@@ -140,10 +140,42 @@ public class Game2048 extends Game {
 
     @Override
     public void onKeyPress(Key key) {
-        for (int i = 0; i < SIDE; i++) {
-            compressRow(gameField[i]);
-            mergeRow(gameField[i]);
+
+        if (key == Key.LEFT){
+            moveLeft();
+        } else if (key == Key.RIGHT) {
+            moveRight();
+        } else if (key == Key.UP) {
+            moveUp();
+        } else if (key == Key.DOWN) {
+            moveDown();
         }
-        drawScene();
+    }
+
+    private void moveLeft() {
+
+    }
+    private void moveRight() {
+
+    }
+    private void moveUp(){
+
+    }
+    private void moveDown() {
+
     }
 }
+/**
+ for (int i = 0; i < SIDE; i++) {
+ compressRow(gameField[i]);
+ mergeRow(gameField[i]);
+ }
+ drawScene();
+
+        switch (key) {
+            case LEFT: moveLeft(); break;
+            case RIGHT: moveRight(); break;
+            case UP: moveUp(); break;
+            case DOWN: moveDown(); break;
+        }
+  */
