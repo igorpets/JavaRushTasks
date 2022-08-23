@@ -43,9 +43,11 @@ public class Game2048 extends Game {
     }
 
     private void drawScene() {
+        // int test = 2;
         for (int x = 0; x < SIDE; x++)
             for (int y = 0; y < SIDE; y++) {
-                setCellColor(x, y, Color.LIGHTGRAY);
+                //gameField[y][x] = test; test *=2;
+                setCellColoredNumber(x, y, gameField[y][x]);
             }
     }
 
@@ -62,4 +64,86 @@ public class Game2048 extends Game {
         }
     }
 
+    private Color getColorByValue(int value) {
+        // LIGHTGRAY LIGHTYELLOW LIGHTBLUE;
+        switch (value) {
+            case 2:
+                return Color.LIGHTGREEN;
+            case 4:
+                return Color.LIGHTCYAN;
+            case 8:
+                return Color.TURQUOISE;
+            case 16:
+                return Color.TOMATO;
+            case 32:
+                return Color.VIOLET;
+            case 64:
+                return Color.LIGHTPINK;
+            case 128:
+                return Color.KHAKI;
+            case 256:
+                return Color.MEDIUMPURPLE;
+            case 512:
+                return Color.GREENYELLOW;
+            case 1024:
+                return Color.DEEPSKYBLUE;
+            case 2048:
+                return Color.GOLD;
+        }
+        // Серый цвет поля [0].
+        return Color.IVORY;
+    }
+
+    private void setCellColoredNumber(int x, int y, int value) {
+        String txt;
+        if (value == 0) txt = "";
+        else txt = String.valueOf(value);
+        int size_text;
+        if (value < 10) size_text = 65;
+        else if (value < 100) size_text = 55;
+        else if (value < 1000) size_text = 45;
+        else size_text = 35;
+        setCellValueEx(x, y, getColorByValue(value), txt, Color.BLACK, size_text);
+    }
+
+    private boolean compressRow(int[] row) {
+        boolean result = false;
+        int zero_index = -1;
+        for (int i = 0; i < row.length; i++)
+            if (row[i] == 0) {
+                zero_index = i;
+                break;
+            }
+        if (zero_index >= 0)
+            for (int k = zero_index + 1; k < row.length; k++)
+                if (row[k] > 0) {
+                    row[zero_index] = row[k];
+                    row[k] = 0;
+                    zero_index++;
+                    result = true;
+                }
+
+        return result;
+    }
+
+    private boolean mergeRow(int[] row) {
+        boolean result = false;
+        for (int m = 0; m < row.length - 1; m++)
+            if (row[m] > 0 && row[m] == row[m + 1]) {
+                row[m] *= 2;
+                row[m+1] = 0;
+                m++;
+                result = true;
+            }
+        return result;
+    }
+
+    @Override
+    public void onKeyPress(Key key) {
+        for (int i = 0; i < SIDE; i++) {
+            compressRow(gameField[i]);
+            mergeRow(gameField[i]);
+        }
+        drawScene();
+    }
 }
