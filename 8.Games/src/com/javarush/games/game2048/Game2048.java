@@ -28,7 +28,7 @@ import com.javarush.engine.cell.*;
  */
 public class Game2048 extends Game {
     private static final int SIDE = 4;
-    private int[][] gameField = new int[4][4];
+    private int[][] gameField = new int[SIDE][SIDE];
 
     @Override
     public void initialize() {
@@ -131,7 +131,7 @@ public class Game2048 extends Game {
         for (int m = 0; m < row.length - 1; m++)
             if (row[m] > 0 && row[m] == row[m + 1]) {
                 row[m] *= 2;
-                row[m+1] = 0;
+                row[m + 1] = 0;
                 m++;
                 result = true;
             }
@@ -140,42 +140,137 @@ public class Game2048 extends Game {
 
     @Override
     public void onKeyPress(Key key) {
-
-        if (key == Key.LEFT){
-            moveLeft();
-        } else if (key == Key.RIGHT) {
-            moveRight();
-        } else if (key == Key.UP) {
-            moveUp();
-        } else if (key == Key.DOWN) {
-            moveDown();
+        boolean is_move = false;
+        switch (key) {
+            case LEFT:
+                is_move = moveLeft();
+                drawScene();
+                break;
+            case RIGHT:
+                is_move = moveRight();
+                drawScene();
+                break;
+            case UP:
+                is_move = moveUp();
+                drawScene();
+                break;
+            case DOWN:
+                is_move = moveDown();
+                drawScene();
+                break;
         }
     }
 
-    private void moveLeft() {
-
+    private boolean moveLeft() {
+        boolean is_move4 = false;
+        for (int y = 0; y < SIDE; y++) {
+            is_move4 = compressRow(gameField[y]) || is_move4;
+            boolean is_move = mergeRow(gameField[y]);
+            if (is_move)
+                is_move4 = compressRow(gameField[y]) || is_move || is_move4;
+        }
+        if (is_move4)
+            createNewNumber();
+        return is_move4;
     }
-    private void moveRight() {
 
+    private boolean moveRight() {
+        rotateClockwise();
+        rotateClockwise();
+        boolean is_move = moveLeft();
+        rotateClockwise();
+        rotateClockwise();
+        return is_move;
     }
-    private void moveUp(){
 
+    private boolean moveUp() {
+        rotateClockwise();
+        rotateClockwise();
+        rotateClockwise();
+        boolean is_move = moveLeft();
+        rotateClockwise();
+        return is_move;
     }
-    private void moveDown() {
 
+    private boolean moveDown() {
+        rotateClockwise();
+        boolean is_move = moveLeft();
+        rotateClockwise();
+        rotateClockwise();
+        rotateClockwise();
+        return is_move;
+    }
+
+    /**
+     * Поворот матрицы на 90 градусов по часовой стрелке.
+     */
+    private void rotateClockwise() {
+        for (int i = 0; i < SIDE / 2; i++) {
+            for (int j = i; j < SIDE - i - 1; j++) {
+                // Меняем сразу 4 элемента местами на каждом цикле по часовой стрелке.
+                int temp = gameField[i][j];
+                gameField[i][j] = gameField[SIDE - 1 - j][i];
+                gameField[SIDE - 1 - j][i] = gameField[SIDE - 1 - i][SIDE - 1 - j];
+                gameField[SIDE - 1 - i][SIDE - 1 - j] = gameField[j][SIDE - 1 - i];
+                gameField[j][SIDE - 1 - i] = temp;
+            }
+        }
+    }
+
+    /**
+     * Поворот матрицы на 90 градусов по часовой стрелке.
+     */
+    private void rotate180Clockwise() {
+        for (int y = 0; y < (gameField.length + 1) / 2; y++) {
+            for (int x = 0; x < gameField[y].length; x++) {
+                // Определяем адрес парного элемента.
+                int pair_y = gameField.length - 1 - y;
+                int pair_x = gameField[y].length - 1 - x;
+                // При достижении середины, если размер нечетный, выходим из последнего внутреннего цикла.
+                if (pair_y == y && pair_x == x) break;
+                // Меняем 2 элемента местами на каждом цикле.
+                int temp = gameField[y][x];
+                gameField[y][x] = gameField[pair_y][pair_x];
+                gameField[pair_y][pair_x] = temp;
+            }
+        }
+    }
+
+    private void test() {
+        int[][] data = {
+                {1, 2, 3, 4, 5},
+                {6, 7, 8, 9, 10},
+                {11, 12, 13, 14, 15},
+                {16, 17, 18, 19, 20},
+                {21, 22, 23, 24, 25}
+        };
+        gameField = data;
+
+        //Rotate Matrix
+        rotateClockwise();
+
+        //Print Matrix
+        printMatrix();
+    }
+
+    private void printMatrix() {
+        for (int i = 0; i < gameField.length; i++) {
+            for (int j = 0; j < gameField[i].length; j++) {
+                System.out.print(gameField[i][j] + " ");
+            }
+            System.out.println("");
+        }
     }
 }
-/**
- for (int i = 0; i < SIDE; i++) {
- compressRow(gameField[i]);
- mergeRow(gameField[i]);
- }
- drawScene();
 
-        switch (key) {
-            case LEFT: moveLeft(); break;
-            case RIGHT: moveRight(); break;
-            case UP: moveUp(); break;
-            case DOWN: moveDown(); break;
-        }
-  */
+/**
+ * if (key == Key.LEFT){
+ * is_move = moveLeft();
+ * } else if (key == Key.RIGHT) {
+ * is_move = moveRight();
+ * } else if (key == Key.UP) {
+ * is_move = moveUp();
+ * } else if (key == Key.DOWN) {
+ * is_move = moveDown();
+ * }
+ */
