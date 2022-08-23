@@ -19,6 +19,15 @@ public class Solution {
         Scanner scanner = new Scanner(System.in);
         Path directory = Path.of(scanner.nextLine());
         //напишите тут ваш код
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
+            for(Path path: stream){
+                if (Files.isRegularFile(path)) {
+                    System.out.println(path + THIS_IS_FILE);
+                } else if (Files.isDirectory(path)){
+                    System.out.println(path + THIS_IS_DIR);
+                }
+            }
+        }
     }
 }
 
