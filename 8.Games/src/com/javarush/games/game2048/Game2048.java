@@ -28,6 +28,8 @@ import com.javarush.engine.cell.*;
  */
 public class Game2048 extends Game {
     private static final int SIDE = 4;
+    private boolean isGameStopped = false;
+    private int score = 0;
     private int[][] gameField = new int[SIDE][SIDE];
 
     @Override
@@ -38,6 +40,10 @@ public class Game2048 extends Game {
     }
 
     private void createGame() {
+        gameField = new int[SIDE][SIDE];
+        for (int x = 0; x < SIDE; x++)
+            for (int y = 0; y < SIDE; y++)
+                gameField[y][x] = 0;
         createNewNumber();
         createNewNumber();
     }
@@ -52,6 +58,10 @@ public class Game2048 extends Game {
     }
 
     private void createNewNumber() {
+        if (getMaxTileValue() >= 2048) {
+            win();
+            return;
+        }
         int x, y;
         do {
             x = getRandomNumber(SIDE);
@@ -131,6 +141,8 @@ public class Game2048 extends Game {
         for (int m = 0; m < row.length - 1; m++)
             if (row[m] > 0 && row[m] == row[m + 1]) {
                 row[m] *= 2;
+                score += row[m];
+                setScore(score);
                 row[m + 1] = 0;
                 m++;
                 result = true;
@@ -140,6 +152,20 @@ public class Game2048 extends Game {
 
     @Override
     public void onKeyPress(Key key) {
+        if (isGameStopped) {
+            if (key == Key.SPACE) {
+                isGameStopped = false;
+                createGame();
+                drawScene();
+                score = 0;
+                setScore(0);
+            }
+            return;
+        }
+        if (!canUserMove()) {
+            gameOver();
+            return;
+        }
         boolean is_move = false;
         switch (key) {
             case LEFT:
@@ -234,6 +260,51 @@ public class Game2048 extends Game {
                 gameField[pair_y][pair_x] = temp;
             }
         }
+    }
+
+    private int getMaxTileValue() {
+        int result = 0;
+        for (int y = 0; y < gameField.length; y++)
+            for (int x = 0; x < gameField[y].length; x++)
+                result = Math.max(result, gameField[y][x]);
+        return result;
+    }
+
+    private void win() {
+        isGameStopped = true;
+        showMessageDialog(Color.LIGHTGREEN, "Вы победили!", Color.DARKRED, 70);
+    }
+
+    /**
+     * Проверяет возможен ли очередной ход.
+     *
+     * @return = true, если ход возможен.
+     */
+    private boolean canUserMove() {
+        int x, y;
+        // Ход возможен, если количество нулевых элементов матрицы gameField больше нуля.
+        for (y = 0; y < gameField.length; y++)
+            for (x = 0; x < gameField[y].length; x++)
+                if (gameField[y][x] == 0) return true;
+        // Ход возможен, если в матрице gameField есть хотя бы две соседние клетки с одинаковым значением.
+        // Сначала проверяем клетки снизу от текущей.
+        for (y = 0; y < gameField.length - 1; y++)
+            for (x = 0; x < gameField[y].length; x++)
+                if (gameField[y][x] == gameField[y + 1][x])
+                    return true;
+        // Затем проверяем клетки справа от текущей.
+        for (y = 0; y < gameField.length; y++)
+            for (x = 0; x < gameField[y].length - 1; x++)
+                if (gameField[y][x] == gameField[y][x + 1])
+                    return true;
+
+        // Иначе нет возможности двигать плитки.
+        return false;
+    }
+
+    private void gameOver() {
+        isGameStopped = true;
+        showMessageDialog(Color.MEDIUMVIOLETRED, "Вы проиграли!", Color.BLACK, 70);
     }
 
     private void test() {

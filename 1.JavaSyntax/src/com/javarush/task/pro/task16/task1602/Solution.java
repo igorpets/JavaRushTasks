@@ -28,5 +28,17 @@ public class Solution {
 
     static void fixDate(List<Date> brokenDates) {
         //напишите тут ваш код
+        Date curr = new Date();
+        for (Date date : brokenDates) {
+            if (date.after(new Date())) {
+                if (date.getMonth() == 0) {
+                    date.setMonth(11);
+                    date.setYear(date.getYear() - 1901);
+                } else {
+                    date.setYear(date.getYear() - 1900);
+                    date.setMonth(date.getMonth() - 1);
+                }
+            }
+        }
     }
 }
