@@ -7,8 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
 
-/* 
+/**
 Временное сохранение файла
+https://javarush.ru
+ "javarush_task1521_", ".txt"
 */
 
 public class Solution {
@@ -16,5 +18,12 @@ public class Solution {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         //напишите тут ваш код
+        try (InputStream input = new URL(line).openStream()) {
+            byte[] buffer = input.readAllBytes();
+            Path path = Files.createTempFile(null, null);
+            Files.write(path, buffer);
+        } catch (Exception e) {
+
+        }
     }
 }
