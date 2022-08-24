@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 public class Solution {
 
-    static Calendar birthDate;
+    static Calendar birthDate = new GregorianCalendar(1999, Calendar.JANUARY, 23);
 
     public static void main(String[] args) {
         System.out.println(getDayOfWeek(birthDate));
@@ -18,6 +18,30 @@ public class Solution {
     static String getDayOfWeek(Calendar calendar) {
         //напишите тут ваш код
 
-        return null;
+        String result = "";
+        switch (calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+            case 0:
+                result = "воскресенье";
+                break;
+            case 1:
+                result = "понедельник";
+                break;
+            case 2:
+                result = "вторник";
+                break;
+            case 3:
+                result = "среда";
+                break;
+            case 4:
+                result = "четверг";
+                break;
+            case 5:
+                result = "пятница";
+                break;
+            case 6:
+                result = "суббота";
+                break;
+        }
+        return result;
     }
 }
