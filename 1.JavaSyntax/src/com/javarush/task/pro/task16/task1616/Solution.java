@@ -21,13 +21,15 @@ public class Solution {
 
     static TreeSet<String> getSortedZones() {
         //напишите тут ваш код
-
-        return null;
+        TreeSet<String> zones = new TreeSet<>();
+        for (String id: ZoneId.getAvailableZoneIds()) {
+            zones.add(id);
+        }
+        return zones;
     }
 
     static ZonedDateTime getBeijingDateTime() {
         //напишите тут ваш код
-
-        return null;
+        return ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
     }
 }
