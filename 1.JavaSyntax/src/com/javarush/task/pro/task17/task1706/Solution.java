@@ -17,5 +17,8 @@ public class Solution {
         String predator = "Любит мясо";
 
         //напишите тут ваш код
+        if (animal instanceof Herbivore) System.out.println(herbivore);
+        else if (animal instanceof Predator) System.out.println(predator);
+
     }
 }
