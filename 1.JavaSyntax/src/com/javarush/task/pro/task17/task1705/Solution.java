@@ -17,6 +17,15 @@ public class Solution {
 
     public static void runWorkingProcess() {
         //напишите тут ваш код
+        for (Astronaut astro : astronauts) {
+            if (astro instanceof Human) {
+                pilot((Human) astro);
+            } else if (astro instanceof Dog) {
+                createDirection((Dog) astro);
+            } else if (astro instanceof Cat) {
+                research((Cat) astro);
+            }
+        }
     }
 
     public static void pilot(Human human) {
