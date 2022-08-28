@@ -2,6 +2,7 @@ package com.javarush.task.pro.task18.task1812;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 /* 
@@ -30,6 +31,6 @@ public class Solution {
 
     public static Stream<Language> sortByRanking(ArrayList<Language> languages) {
         //напишите тут ваш код
-        return Stream.empty();
+        return languages.stream().sorted(Comparator.comparingDouble(Language::getRanking).reversed());
     }
 }
