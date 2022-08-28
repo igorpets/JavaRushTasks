@@ -16,4 +16,5 @@ public class Java1 {
         new Java1();
         System.out.println(5);
     }
+
 }
