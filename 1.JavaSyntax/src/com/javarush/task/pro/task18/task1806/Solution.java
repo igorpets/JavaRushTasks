@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /* 
-Знакомство с foreach
+    Знакомство с foreach
+        for (int i = 0; i < numbers.size(); i++) {
+            System.out.println(numbers.get(i));
+        }
 */
 
 public class Solution {
@@ -16,8 +19,6 @@ public class Solution {
     }
 
     public static void print(ArrayList<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            System.out.println(numbers.get(i));
-        }
+        numbers.forEach((n)-> System.out.println(n));
     }
 }
