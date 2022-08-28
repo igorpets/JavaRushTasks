@@ -7,7 +7,7 @@ import java.util.Collections;
 Прощание с лямбда-выражением
 */
 
-public class Solution {
+final class Solution implements TestInterface{
 
     public static void main(String[] args) {
         var strings = new ArrayList<String>();
@@ -19,6 +19,16 @@ public class Solution {
         for (String string : strings) {
             System.out.println(string);
         }
+        //short z=1.0;
+        char c='\u072f';
+        //String s = new String(75);
+        String _int,short7;
+        double z=0.5;
+        short x=4;
+        x= (short)(int)z;
+    }
+    public int test(){
+        return 0;
     }
 
     public static void sortStringsByLength(ArrayList<String> strings) {
