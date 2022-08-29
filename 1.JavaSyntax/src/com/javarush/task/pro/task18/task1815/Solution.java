@@ -23,6 +23,6 @@ public class Solution {
 
     public static Stream<String> getEmails(ArrayList<Account> accounts) {
         //напишите тут ваш код
-        return Stream.empty();
+        return accounts.stream().map(account -> account.getEmail());
     }
 }
