@@ -1,5 +1,6 @@
 package com.javarush.task.pro.task18.task1821;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -33,12 +34,12 @@ public class Solution {
 
     public static Optional<Car> getCheapestCar(Stream<Car> cars) {
         //напишите тут ваш код
-        return Optional.empty();
+        return cars.min(Comparator.comparingInt(Car::getPrice));
     }
 
     public static Optional<Car> getCheaperCar(Stream<Car> cars, Car cheapestCar) {
         //напишите тут ваш код
-        return Optional.empty();
+        return cars.filter(x->x.getPrice()<cheapestCar.getPrice()).findFirst();
     }
 }
 
