@@ -1,10 +1,10 @@
-package com.javarush.task.pro.task18.task1820;
+package com.javarush.task.pro.task18.task1821;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 /* 
-Самый дорогой автомобиль
+Самый дешевый автомобиль
 */
 
 public class Solution {
@@ -20,25 +20,25 @@ public class Solution {
         var bmw = Stream.of(
                 new Car("X5", 110_000),
                 new Car("X3", 54_000),
-                new Car("X7", 143_000),
+                new Car("X1", 40_000),
                 new Car("X6", 125_000)
         );
 
-        Optional<Car> mostExpensiveCar = getMostExpensiveCar(tesla);
-        mostExpensiveCar.ifPresent(System.out::println);
+        Optional<Car> cheapestCar = getCheapestCar(tesla);
+        cheapestCar.ifPresent(System.out::println);
 
-        Optional<Car> moreExpensiveCar = mostExpensiveCar.flatMap(car -> getMoreExpensiveCar(bmw, car));
-        moreExpensiveCar.ifPresent(System.out::println);
+        Optional<Car> cheaperCar = cheapestCar.flatMap(car -> getCheaperCar(bmw, car));
+        cheaperCar.ifPresent(System.out::println);
     }
 
-    public static Optional<Car> getMostExpensiveCar(Stream<Car> cars) {
+    public static Optional<Car> getCheapestCar(Stream<Car> cars) {
         //напишите тут ваш код
-        return cars.max((x1, x2)->x1.getPrice()-x2.getPrice());
+        return Optional.empty();
     }
 
-    public static Optional<Car> getMoreExpensiveCar(Stream<Car> cars, Car mostExpensiveCar) {
+    public static Optional<Car> getCheaperCar(Stream<Car> cars, Car cheapestCar) {
         //напишите тут ваш код
-        return cars.filter(x->x.getPrice()> mostExpensiveCar.getPrice()).findFirst();
+        return Optional.empty();
     }
 }
 
