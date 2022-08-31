@@ -2,6 +2,7 @@ package com.javarush.task.pro.task18.task1822;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -20,6 +21,6 @@ public class Solution {
 
     public static List<Integer> getPositiveNumbers(Stream<Integer> numbers) {
         //напишите тут ваш код
-        return new ArrayList<>();
+        return numbers.filter(x->x>0).collect(Collectors.toList());
     }
 }
