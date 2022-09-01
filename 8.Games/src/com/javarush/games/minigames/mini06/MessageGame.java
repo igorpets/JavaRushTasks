@@ -17,10 +17,12 @@ public class MessageGame extends Game {
     @Override
     public void onMouseLeftClick(int x, int y) {
         //напишите тут ваш код
+        showMessageDialog(Color.ANTIQUEWHITE, "Вы выиграли", Color.GREEN, 70);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
         //напишите тут ваш код
+        showMessageDialog(Color.ANTIQUEWHITE, "Вы проиграли", Color.RED, 70);
     }
 }
