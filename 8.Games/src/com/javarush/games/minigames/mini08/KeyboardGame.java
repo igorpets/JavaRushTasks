@@ -20,4 +20,50 @@ public class KeyboardGame extends Game {
     }
 
     //напишите тут ваш код
+    @Override
+    public void onKeyPress(Key key){
+        int i;
+        switch (key) {
+            case LEFT:
+                for (i = 0; i < 3; i++)
+                    setCellColor(0, i, Color.GREEN);
+                    break;
+            case RIGHT:
+                for (i = 0; i < 3; i++)
+                    setCellColor(2, i, Color.GREEN);
+                break;
+            case UP:
+                for (i = 0; i < 3; i++)
+                    setCellColor(i, 0, Color.GREEN);
+                break;
+            case DOWN:
+                for (i = 0; i < 3; i++)
+                    setCellColor(i, 2, Color.GREEN);
+                break;
+
+        }
+    }
+    @Override
+    public void onKeyReleased(Key key) {
+        int i;
+        switch (key) {
+            case LEFT:
+                for (i = 0; i < 3; i++)
+                    setCellColor(0, i, Color.WHITE);
+                break;
+            case RIGHT:
+                for (i = 0; i < 3; i++)
+                    setCellColor(2, i, Color.WHITE);
+                break;
+            case UP:
+                for (i = 0; i < 3; i++)
+                    setCellColor(i, 0, Color.WHITE);
+                break;
+            case DOWN:
+                for (i = 0; i < 3; i++)
+                    setCellColor(i, 2, Color.WHITE);
+                break;
+
+        }
+    }
 }
