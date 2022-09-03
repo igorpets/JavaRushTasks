@@ -7,7 +7,7 @@ import com.javarush.engine.cell.Game;
 Наследование
 */
 
-public class InheritanceGame {
+public class InheritanceGame extends Game{
 
     @Override
     public void initialize() {

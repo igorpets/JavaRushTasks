@@ -11,7 +11,7 @@ import java.util.List;
 */
 
 public class FillGame extends Game {
-    private final List<Cell> cells = new ArrayList<>();
+    private final ArrayList<Cell> cells = new ArrayList<>();
 
     @Override
     public void initialize() {
@@ -26,10 +26,19 @@ public class FillGame extends Game {
     @Override
     public void onMouseLeftClick(int x, int y) {
         //напишите тут ваш код
+        setCellColor(x, y, Color.ORANGE);
+        if (!cells.stream().anyMatch(c -> c.getX() == x && c.getY() == y)) {
+            cells.add(new Cell(x, y));
+        }
+        //System.out.println("ORANGE "+cells.size());
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
         //напишите тут ваш код
+        setCellColor(x, y, Color.WHITE);
+        cells.removeIf(c-> c.getX() == x && c.getY() == y);
+        //cells.trimToSize();
+        //System.out.println("WHITE "+cells.size());
     }
 }
