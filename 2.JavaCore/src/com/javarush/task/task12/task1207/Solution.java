@@ -1,12 +1,13 @@
-package com.javarush.task.task12.task1206;
+package com.javarush.task.task12.task1207;
 
 /* 
-Выполняем перегрузку!
+Int и Integer
 */
 
 public class Solution {
     public static void main(String[] args) {
-
+        print(12);
+        print(Integer.valueOf(25));
     }
 
     //Напишите тут ваши методы
@@ -14,7 +15,7 @@ public class Solution {
         System.out.println(a);
     }
 
-    public static void print(String a) {
+    public static void print(Integer a) {
         System.out.println(a);
     }
 }
