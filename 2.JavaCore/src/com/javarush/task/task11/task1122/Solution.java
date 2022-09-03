@@ -8,21 +8,25 @@ public class Solution {
     public static void main(String[] args) {
     }
 
-    public class King {
+    public class ChessPieces{
+
     }
 
-    public class Queen {
+    public class King extends ChessPieces {
     }
 
-    public class Rook {
+    public class Queen extends ChessPieces {
     }
 
-    public class Knight {
+    public class Rook extends ChessPieces {
     }
 
-    public class Bishop {
+    public class Knight extends ChessPieces {
     }
 
-    public class Pawn {
+    public class Bishop extends ChessPieces {
+    }
+
+    public class Pawn extends ChessPieces {
     }
 }
