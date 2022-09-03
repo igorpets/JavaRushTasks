@@ -10,5 +10,8 @@ public class Solution {
     }
 
     //add an interface here - добавь интерфейс тут
-
+    public interface CanFly {
+        public abstract void test1();
+        public abstract void test2();
+    }
 }
