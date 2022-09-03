@@ -8,7 +8,7 @@ import java.util.Date;
 */
 
 public class Solution {
-    static Date birthDate = new Date(1999-1900, 2, 12);
+    static Date birthDate = new Date(1983-1900, 4, 31);
 
     public static void main(String[] args) {
         System.out.println(getDayOfWeek(birthDate));
