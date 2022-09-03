@@ -1,7 +1,7 @@
-package com.javarush.task.task12.task1211;
+package com.javarush.task.task12.task1213;
 
 /* 
-Абстрактный класс Pet
+«Исправь код», часть 2
 */
 
 public class Solution {
@@ -9,10 +9,12 @@ public class Solution {
 
     }
 
-    public static abstract class Pet {
+    public static class Pet {
         public String getName() {
             return "Я - котенок";
         }
+
+        public Pet getChild();
     }
 
 }
