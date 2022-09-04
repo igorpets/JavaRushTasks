@@ -15,7 +15,6 @@ public class Solution {
 
     public static String getObjectType(Object o) {
         //напишите тут ваш код
-        String res;
         if (o instanceof Cat) return "Кот";
         if (o instanceof Tiger) return "Тигр";
         if (o instanceof Lion) return "Лев";

@@ -16,8 +16,13 @@ public class Solution {
 
     public static String getObjectType(Object o) {
         //напишите тут ваш код
-
-        return "Животное";
+        if (o instanceof Tiger) return "Тигр";
+        if (o instanceof Lion) return "Лев";
+        if (o instanceof Cat) return "Кот";
+        if (o instanceof Bull) return "Бык";
+        if (o instanceof Cow) return "Корова";
+        if (o instanceof Animal) return "Животное";
+        return "";
     }
 
     public static class Cat extends Animal   //<--Классы наследуются!!
