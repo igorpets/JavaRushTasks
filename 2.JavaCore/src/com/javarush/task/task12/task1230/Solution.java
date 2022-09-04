@@ -2,6 +2,13 @@ package com.javarush.task.task12.task1230;
 
 /* 
 Попадание в десятку
+1. Класс Solution должен содержать три метода.
+2. Перегруженный метод transformValue должен удваивать переданное в него число.
+3. Тип и значение переменной i менять нельзя.
+4. Тип и значение переменной x менять нельзя.
+5. Команду вывода на экран менять нельзя.
+6. Метод main должен вызывать метод transformValue только один раз.
+7. Программа должна вывести на экран число 10.
 */
 
 public class Solution {
@@ -14,5 +21,8 @@ public class Solution {
 
     public static int transformValue(int i) {
         return i * i;
+    }
+    public static int transformValue(Integer i) {
+        return i + i;
     }
 }
