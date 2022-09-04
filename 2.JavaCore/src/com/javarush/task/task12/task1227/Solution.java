@@ -2,6 +2,13 @@ package com.javarush.task.task12.task1227;
 
 /* 
 CanFly, CanRun, CanSwim для классов Duck, Penguin, Toad
+1. Класс Solution должен содержать интерфейс CanFly с методом void fly().
+2. Класс Solution должен содержать интерфейс CanSwim с методом void swim().
+3. Класс Solution должен содержать интерфейс CanRun с методом void run().
+4. Класс Solution должен содержать классы Duck, Penguin, Toad.
+5. Объект класса Duck должен уметь летать (поддерживать интерфейс Fly), бегать (поддерживать интерфейс Run) и плавать (поддерживать интерфейс Swim).
+6. Объект класса Penguin должен уметь бегать (поддерживать интерфейс Run) и плавать (поддерживать интерфейс Swim).
+7. Объект класса Toad должен уметь только плавать (поддерживать интерфейс Swim).
 */
 
 public class Solution {
@@ -21,15 +28,18 @@ public class Solution {
         public void swim();
     }
 
-    public class Duck {
-
+    public class Duck implements CanRun, CanFly, CanSwim {
+        public void swim() {}
+        public void run() {};
+        public void fly() {};
     }
 
-    public class Penguin {
-
+    public class Penguin implements CanRun, CanSwim {
+        public void swim() {}
+        public void run() {};
     }
 
-    public class Toad {
-
+    public class Toad implements CanSwim {
+        public void swim() {}
     }
 }
