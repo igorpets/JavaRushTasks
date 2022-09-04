@@ -69,16 +69,4 @@ public class TwoDigits {
 
         return res;
     }
-
-    public static long cube(long a){
-        cube= a*a*a;
-        return cube;
-    }
-
-    public static long ninthDegree(long x) {
-        ninthDegree = cube() * cube() * cube();
-        return ninthDegree;
-
-
-    }
 }
