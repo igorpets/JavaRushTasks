@@ -19,6 +19,10 @@ public class SpaceInvadersGame extends Game {
         drawField();
     }
     private void drawField(){
-
+        for (int y = 0; y < WIDTH; y++) {
+            for (int x = 0; x < HEIGHT; x++) {
+                setCellValueEx(x, y, Color.MIDNIGHTBLUE, "");
+            }
+        }
     }
 }

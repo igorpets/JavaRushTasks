@@ -15,6 +15,7 @@ import com.javarush.engine.cell.*;
  *
  * Для сборки необходимо установить VM options:
  * --module-path "C:\Projects\java\JavaRushTasks\lib\javafx-sdk-18.0.1\lib" --add-modules javafx.controls,javafx.fxml
+ *
  */
 public class MoonLanderGame extends Game {
     public static final int WIDTH = 64;

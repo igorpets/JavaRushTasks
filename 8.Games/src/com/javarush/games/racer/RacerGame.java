@@ -11,6 +11,7 @@ import com.javarush.engine.cell.*;
  * <p>
  * Для сборки необходимо установить VM options:
  * --module-path "C:\Projects\java\JavaRushTasks\lib\javafx-sdk-18.0.1\lib" --add-modules javafx.controls,javafx.fxml
+ *
  */
 
 public class RacerGame extends Game {
@@ -35,6 +36,15 @@ public class RacerGame extends Game {
     }
 
     private void drawField() {
-
+        for (int x = 0; x < WIDTH; x++)
+            for (int y = 0; y < HEIGHT; y++) {
+                if (x == CENTER_X) {
+                    setCellColor(x, y, Color.WHITE);
+                } else if (x >= ROADSIDE_WIDTH && x < WIDTH - ROADSIDE_WIDTH) {
+                    setCellColor(x, y, Color.DIMGREY);
+                } else {
+                    setCellColor(x, y, Color.GREEN);
+                }
+            }
     }
 }
