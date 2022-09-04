@@ -2,6 +2,11 @@ package com.javarush.task.task12.task1232;
 
 /* 
 Нужно добавить в программу новую функциональность
+1. Класс Solution должен содержать интерфейс CanFly с методом fly().
+2. Класс Solution должен содержать класс Horse с методом run().
+3. Класс Solution должен содержать класс Pegasus.
+4. Класс Pegasus должен наследоваться от класса Horse.
+5. Класс Pegasus должен реализовывать интерфейс CanFly.
 */
 
 public class Solution {
@@ -19,6 +24,7 @@ public class Solution {
         }
     }
 
-    public static class Pegasus {
+    public static class Pegasus extends Horse implements CanFly {
+        public void fly(){}
     }
 }
