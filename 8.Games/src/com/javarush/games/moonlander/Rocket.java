@@ -8,7 +8,7 @@ package com.javarush.games.moonlander;
  *      используя ключевое слово "super".
  */
 public class Rocket extends GameObject{
-    public Rocket(int x, int y) {
+    public Rocket(double x, double y) {
         super(x, y, ShapeMatrix.ROCKET);
     }
 }
