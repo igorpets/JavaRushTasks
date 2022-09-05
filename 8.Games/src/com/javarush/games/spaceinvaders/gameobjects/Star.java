@@ -1,13 +1,16 @@
 package com.javarush.games.spaceinvaders.gameobjects;
 
+import com.javarush.engine.cell.*;
+
 /**
- * 3.6. В пакете gameobjects в отдельном файле должен существовать публичный класс Star.
- * 3.7. Класс Star должен быть наследником класса GameObject.
- * 3.8. В классе Star должен существовать публичный конструктор с двумя параметрами типа double,
- *      который вызывает конструктор базового класса с этими же параметрами.
+ * Звезда.
  */
 public class Star extends GameObject {
+    private static final String STAR_SIGN = "\u2605";
     public Star(double _x, double _y){
         super(_x, _y);
+    }
+    public void draw(Game game){
+        game.setCellValueEx((int) x, (int)y, Color.NONE, STAR_SIGN, Color.WHITE, 100);
     }
 }
