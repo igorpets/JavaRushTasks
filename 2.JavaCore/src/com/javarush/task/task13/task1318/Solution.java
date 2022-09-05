@@ -10,19 +10,19 @@ import java.util.Scanner;
 
 /* 
 Чтение файла
-1. Программа должна считывать c консоли путь к файлу.
-2. Программа должна выводить на экран содержимое файла.
-3. Поток чтения из файла (FileInputStream) должен быть закрыт.
-4. BufferedReader также должен быть закрыт.
 */
 
 public class Solution {
     public static void main(String[] args) {
         // напишите тут ваш код
         try (Scanner scanner = new Scanner(System.in);
-             FileInputStream input = new FileInputStream(scanner.nextLine());) {
-            while (input.available()>0) {
+             FileInputStream input = new FileInputStream(scanner.nextLine());
+             BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
+            String line;
 
+            while ((line = br.readLine()) != null) {
+
+                System.out.println(line);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
