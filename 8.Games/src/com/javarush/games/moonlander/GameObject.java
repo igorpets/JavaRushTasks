@@ -1,20 +1,30 @@
 package com.javarush.games.moonlander;
 
-/**
- * 4.1. В классе GameObject должно существовать публичное поле matrix типа int[][].
- * 4.2. В классе GameObject конструктор, который принимает 2 параметра типа double, должен быть удален.
- * 4.3. В классе GameObject должен появиться публичный конструктор с тремя параметрами: double, double, int[][],
- *      который устанавливает соответствующие значения полям x, y и полю matrix.
- * 4.4. В классе GameObject должен существовать только один конструктор.
- * */
 public class GameObject {
-    public int[][] matrix;
-
     public double x;
     public double y;
-    public GameObject(double _x, double _y, int[][] _matrix) {
-        x = _x;
-        y = _y;
-        matrix = _matrix;
+    public int[][] matrix;
+    public int width;
+    public int height;
+
+    public GameObject(double x, double y, int[][] matrix) {
+        this.x = x;
+        this.y = y;
+        this.matrix = matrix;
+        this.width = matrix[0].length;
+        this.height = matrix.length;
+    }
+
+    public void draw(Game game) {
+        if (matrix == null) {
+            return;
+        }
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int colorIndex = matrix[j][i];
+                game.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
+            }
+        }
     }
 }

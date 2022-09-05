@@ -11,7 +11,11 @@ import com.javarush.engine.cell.*;
  * <p>
  * Для сборки необходимо установить VM options:
  * --module-path "C:\Projects\java\JavaRushTasks\lib\javafx-sdk-18.0.1\lib" --add-modules javafx.controls,javafx.fxml
- *
+ * <p>
+ * 1. В классе RacerGame должен быть переопределен метод setCellColor(int, int, Color) родительского класса Game.
+ * 2. В методе setCellColor(int, int, Color), если параметр метода x находится за пределами поля, метод не должен ничего делать.
+ * 3. В методе setCellColor(int, int, Color), если параметр метода y находится за пределами поля, метод не должен ничего делать.
+ * 4. В методе setCellColor(int, int, Color) должен вызываться метод базового класса, используя ключевое слово super.
  */
 
 public class RacerGame extends Game {
