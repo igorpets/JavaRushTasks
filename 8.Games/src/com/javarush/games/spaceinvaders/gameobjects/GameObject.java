@@ -7,10 +7,10 @@ package com.javarush.games.spaceinvaders.gameobjects;
  *    который устанавливает соответствующие значения полям x и y.
  * */
 public class GameObject {
-    double x;
-    double y;
+    public double x;
+    public double y;
 
-    public GameObject(int _x, int _y){
+    public GameObject(double _x, double _y){
         x = _x;
         y = _y;
     }

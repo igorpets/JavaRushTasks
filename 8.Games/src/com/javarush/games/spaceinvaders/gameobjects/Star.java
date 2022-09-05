@@ -7,7 +7,7 @@ package com.javarush.games.spaceinvaders.gameobjects;
  *      который вызывает конструктор базового класса с этими же параметрами.
  */
 public class Star extends GameObject {
-    public Star(int _x, int _y){
+    public Star(double _x, double _y){
         super(_x, _y);
     }
 }
