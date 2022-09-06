@@ -4,6 +4,11 @@ import java.awt.*;
 
 /* 
 Компиляция программы
+1. Интерфейс Animal должен быть реализован в классе Fox.
+2. В классе Fox должен быть реализован только один метод — getName().
+3. В интерфейсе Animal должен быть объявлен метод getColor().
+4. Класс BigFox должен быть потомком класса Fox.
+5. Класс Fox должен быть абстрактным.
 */
 
 public class Solution {
@@ -18,14 +23,14 @@ public class Solution {
         Color getColor();
     }
 
-    public static class Fox implements Animal {
+    public abstract static class Fox implements Animal {
         public String getName() {
             return "Fox";
         }
     }
 
-    public abstract static class BigFox {
-
+    public static class BigFox extends Fox {
+        public Color getColor(){return Color.WHITE;}
     }
 
 }
