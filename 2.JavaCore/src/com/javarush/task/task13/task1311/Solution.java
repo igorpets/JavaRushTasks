@@ -12,8 +12,11 @@ package com.javarush.task.task13.task1311;
 
 public class Solution {
     public static void main(String[] args) throws Exception {
+    }
+    public void test(){
         EnglishTranslator englishTranslator = new EnglishTranslator();
         System.out.println(englishTranslator.translate());
+
     }
 
     public static abstract class Translator {
@@ -24,7 +27,7 @@ public class Solution {
         }
     }
 
-    public static class EnglishTranslator extends Translator {
+    public  class EnglishTranslator extends Translator {
         public String getLanguage() {
             return "английского";
         }
