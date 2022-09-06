@@ -1,4 +1,4 @@
-package sapper;
+package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
