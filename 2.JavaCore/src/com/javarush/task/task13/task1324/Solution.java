@@ -4,6 +4,10 @@ import java.awt.*;
 
 /* 
 Один метод в классе
+1. Интерфейс Animal должен быть реализован в классе Fox.
+2. В классе Fox должен быть реализован только один метод — getName.
+3. Интерфейс Animal изменять нельзя.
+4. Дополнительные классы или интерфейсы создавать нельзя.
 */
 
 public class Solution {
@@ -16,7 +20,7 @@ public class Solution {
         Integer getAge();
     }
 
-    public static class Fox {
+    public abstract static class Fox implements Animal {
         public String getName() {
             return "Fox";
         }
