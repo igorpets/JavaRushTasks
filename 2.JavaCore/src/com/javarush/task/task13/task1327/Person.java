@@ -25,6 +25,6 @@ public class Person implements RepkaItem{
         this.namePadezh = namePadezh;
     }
     public void pull (Person person) {
-        System.out.println(person.getName() + " за " + getNamePadezh());
+        System.out.println(getName() + " за " + person.getNamePadezh());
     }
 }
