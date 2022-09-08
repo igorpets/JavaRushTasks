@@ -2,6 +2,7 @@ package com.javarush.task.task14.task1404;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /* 
@@ -15,16 +16,21 @@ import java.util.Scanner;
 public class Solution {
     public static void main(String[] args) throws Exception {
         //напишите тут ваш код
+        ArrayList<Cat> cats = new ArrayList<>();
         try (Scanner scan = new Scanner(System.in);){
             String line;
-            while((line = scan.nextLine()) !="") {
+            while(!(line = scan.nextLine()).equals("")) {
+                if (line.equals("")) break;
                 Cat cat = CatFactory.getCatByKey(line);
                 if (cat != null) {
-                    System.out.println(cat.toString());
+                    cats.add(cat);
                 }
             }
         }catch (Exception e) {
 
+        }
+        for(Cat cat:cats) {
+            System.out.println(cat.toString());
         }
     }
 
