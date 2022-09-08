@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 
 /* 
 Player and Dancer
+•	Метод main() должен считывать данные с клавиатуры.
+•	Метод main() должен прекращать считывать данные с клавиатуры, если введенная строка равна "exit".
 */
 
 public class Solution {
@@ -25,6 +27,10 @@ public class Solution {
 
     public static void haveFun(Person person) {
         //напишите тут ваш код
+        if (person instanceof Player)
+            ((Player)person).play();
+        else if (person instanceof Dancer)
+            ((Dancer)person).dance();
     }
 
     interface Person {
