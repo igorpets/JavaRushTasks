@@ -2,14 +2,30 @@ package com.javarush.task.task14.task1404;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 /* 
 Коты
+1. Программа должна считывать данные с клавиатуры.
+2. Программа должна прекращать считывать данные после ввода пустой строки.
+3. Программа должна выводить на экран описание каждого кота (cat.toString).
+4. Программа должна создавать объект класса Cat для каждого введенного имени кота (строки, считанной с клавиатуры) c помощью метода getCatByKey.
 */
 
 public class Solution {
     public static void main(String[] args) throws Exception {
         //напишите тут ваш код
+        try (Scanner scan = new Scanner(System.in);){
+            String line;
+            while((line = scan.nextLine()) !="") {
+                Cat cat = CatFactory.getCatByKey(line);
+                if (cat != null) {
+                    System.out.println(cat.toString());
+                }
+            }
+        }catch (Exception e) {
+
+        }
     }
 
     static class CatFactory {

@@ -11,5 +11,15 @@ public class Solution {
     }
 
     //add println method here
+    public static void println(SuspensionBridge bridge) {
+        System.out.println();
+    }
+
+    public static class WaterBridge extends SuspensionBridge {
+
+    }
+    public static class SuspensionBridge {
+
+    }
 }
 
