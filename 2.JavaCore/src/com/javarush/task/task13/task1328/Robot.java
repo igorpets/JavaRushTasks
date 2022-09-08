@@ -1,6 +1,10 @@
 package com.javarush.task.task13.task1328;
 
-public class Robot implements Attackable, Defensable {
+/**
+ * 3. Класс Robot должен наследоваться от класса AbstractRobot.
+ */
+
+public class Robot extends AbstractRobot {
     private static int hitCount;
     private String name;
 

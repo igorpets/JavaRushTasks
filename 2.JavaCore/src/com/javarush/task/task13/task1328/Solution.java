@@ -2,7 +2,6 @@ package com.javarush.task.task13.task1328;
 
 /* 
 Битва роботов
-3. Класс Robot должен наследоваться от класса AbstractRobot.
 4. Логика поведения роботов должна быть вынесена в класс AbstractRobot.
 5. В классе BodyPart должна содержаться и быть инициализирована final static переменная CHEST типа BodyPart.
 6. Новую часть тела (BodyPart) нужно добавить в логику методов attack и defense в классе AbstractRobot.
