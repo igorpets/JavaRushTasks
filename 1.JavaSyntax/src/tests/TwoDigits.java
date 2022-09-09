@@ -1,4 +1,4 @@
-package com.internal.tests;
+package tests;
 
 public class TwoDigits {
     public static void main(String[] args) {
