@@ -21,6 +21,15 @@ public class Solution {
         Object getAllowedAction();
     }
 
-    public static class Clothes {
+    public static class Clothes implements Discountable, Sellable, Movable {
+        public Object getAllowedAction() {
+            return new Object();
+        }
+        public Object getAllowedAction(String name) {
+            return new Object();
+        }
+        public boolean isMovable(){
+            return true;
+        }
     }
 }
