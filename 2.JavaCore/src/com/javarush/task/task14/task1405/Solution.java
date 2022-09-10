@@ -29,8 +29,6 @@ public class Solution {
     public static void callSelectableMethods(Selectable selectable) {
         //тут добавьте вызов методов для переменной selectable
         selectable.onSelect();
-        if (selectable instanceof Food)
-            ((Food) selectable).onEat();
     }
 
     interface Selectable {
