@@ -32,12 +32,39 @@ public class Solution {
 
             String output = "output";
             //Add your code here
-
+            if (this instanceof MarkTwainBook) output = markTwainOutput;
+            else if (this instanceof AgathaChristieBook) output = agathaChristieOutput;
             return output;
         }
 
         public String toString() {
             return getOutputByBookType();
+        }
+    }
+    public static class MarkTwainBook extends Book{
+        private String title;
+        public MarkTwainBook(String book_name) {
+            super("Mark Twain");
+            title = book_name;
+        }
+        public MarkTwainBook getBook(){
+            return this;
+        }
+        public String getTitle() {
+            return title;
+        }
+    }
+    public static class AgathaChristieBook extends Book{
+        private String title;
+        public AgathaChristieBook (String book_name) {
+            super("Agatha Christie");
+            title = book_name;
+        }
+        public AgathaChristieBook getBook(){
+            return this;
+        }
+        public String getTitle() {
+            return title;
         }
     }
 }
