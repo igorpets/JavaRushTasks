@@ -11,15 +11,10 @@ public class Solution {
     }
 
     public static class NakedCat {
-        public NakedCat() {
-            super();
-        }
     }
 
     public static class NormalCat extends NakedCat {
-        public NormalCat() {
-            super();
-        }
+        public NormalCat() {}
 
         public NormalCat(String name) {
             System.out.println("My name is " + name);
