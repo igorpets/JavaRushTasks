@@ -22,4 +22,36 @@ public class Solution {
             System.out.println();
         }
     }
+    public static void printMatrix(int m, int n, Integer value) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) value);
+    }
+    public static void printMatrix(int m, int n, Short value) {
+        System.out.println("Заполняем объектами Short");
+        printMatrix(m, n, (Object) value);
+    }
+    public static void printMatrix(int m, int n, Character value) {
+        System.out.println("Заполняем объектами Character");
+        printMatrix(m, n, (Object) value);
+    }
+    public static void printMatrix(int m, int n, Byte value) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) value);
+    }
+    public static void printMatrix(int m, int n, int value) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) Integer.valueOf(value));
+    }
+    public static void printMatrix(int m, int n, short value) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) Integer.valueOf(value));
+    }
+    public static void printMatrix(int m, int n, short value, boolean test) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) Integer.valueOf(value));
+    }
+    public static void printMatrix(int m, int n, short value, int test) {
+        System.out.println("Заполняем объектами Integer");
+        printMatrix(m, n, (Object) Integer.valueOf(value));
+    }
 }
