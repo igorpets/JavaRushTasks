@@ -13,7 +13,7 @@ public class Solution {
         printName(woman);
     }
 
-    public static void printName(Man man) {
+    public static void printName(Human man) {
 
     }
 
@@ -21,11 +21,11 @@ public class Solution {
 
     }
 
-    public static class Man {
+    public static class Man extends Human{
 
     }
 
-    public static class Woman {
+    public static class Woman extends Human{
 
     }
 }
