@@ -18,9 +18,6 @@ import com.javarush.engine.cell.*;
  * <p>
  * Для сборки необходимо установить VM options:
  * --module-path "C:\Projects\java\JavaRushTasks\lib\javafx-sdk-18.0.1\lib" --add-modules javafx.controls,javafx.fxml
- * <p>
- * 4.7. В методе createGame() класса SnakeGame должно быть создано новое яблоко (экземпляр класса Apple) с координатами: 7, 7.
- * 4.8. У созданного яблока должен быть вызван метод draw(Game). В качестве параметра метода передай this.
  */
 public class SnakeGame extends Game {
     public static final int WIDTH = 15;
@@ -34,8 +31,8 @@ public class SnakeGame extends Game {
 
     private void createGame() {
         drawScene();
-        Apple apple = new Apple(7, 7);
-        apple.draw(this);
+        //Apple apple = new Apple(7, 7);
+        //apple.draw(this);
     }
 
     private void drawScene() {
