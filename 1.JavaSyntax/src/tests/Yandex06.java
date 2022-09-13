@@ -46,8 +46,6 @@ public class Yandex06 {
             }
         }
 
-        int A = 0;
-        int B = 0;
         String line;
         int i;
         ArrayList<TypeOne> types = new ArrayList<>();
@@ -63,7 +61,6 @@ public class Yandex06 {
                 String[] one_rec = line.split(",");
                 TypeOne obj1 = new TypeOne(one_rec[0], Integer.parseInt(one_rec[1]));
                 types.add(obj1);
-                //obj1.print();
             }
             int line_count = Integer.parseInt(r.readLine());
             for (i = 0; i < line_count; i++) {
@@ -71,7 +68,6 @@ public class Yandex06 {
                 String[] one_rec = line.split(",");
                 Line obj2 = new Line(one_rec[0], one_rec[1], Integer.parseInt(one_rec[2]), Integer.parseInt(one_rec[3]));
                 lines.add(obj2);
-                //obj2.print();
             }
             lines.sort(new Comparator<Line>() {
                 @Override
