@@ -1,6 +1,6 @@
 package com.javarush.task.task15.task1523;
 
-public class SubSolution extends Solution {
+/*public class SubSolution extends Solution {
     public SubSolution(){
 
     }
@@ -11,3 +11,4 @@ public class SubSolution extends Solution {
         super(s);
     }
 }
+*/
