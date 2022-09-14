@@ -51,10 +51,8 @@ public class Yandex06 {
         ArrayList<TypeOne> types = new ArrayList<>();
         ArrayList<Line> lines = new ArrayList<>();
 
-        try (FileReader reader = new FileReader("input.txt");
-             BufferedReader r = new BufferedReader(reader);
-             FileWriter writer = new FileWriter("output.txt");
-             BufferedWriter w = new BufferedWriter(writer)) {
+        try (BufferedReader r = new BufferedReader(new FileReader("input.txt"));
+             BufferedWriter w = new BufferedWriter(new FileWriter("output.txt"))) {
             int type_count = Integer.parseInt(r.readLine());
             for (i = 0; i < type_count; i++) {
                 line = r.readLine();

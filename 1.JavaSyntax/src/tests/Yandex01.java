@@ -1,20 +1,18 @@
 package tests;
 
-import java.io.*;
+import java.util.Scanner;
 
 public class Yandex01 {
-    public static void main(String[] args) throws Exception {
-        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
-
-        String J = r.readLine();
-        String S = r.readLine();
-
-        int result = 0;
-        for (int i = 0; i < S.length(); ++i) {
-            if (J.indexOf(S.charAt(i)) >= 0) {
-                result++;
-            }
+    public static void main(String[] args) {
+        int A = 0;
+        int B = 0;
+        String line;
+        try (Scanner scan = new Scanner(System.in)) {
+            A = scan.nextInt();
+            B = scan.nextInt();
+        } catch (Exception e) {
         }
-        System.out.println(result);
+        int res = A + B;
+        System.out.println(String.valueOf(res));
     }
 }

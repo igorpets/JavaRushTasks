@@ -10,14 +10,13 @@
 package tests;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 
 public class Yandex04 {
     private static char NOTE = '*';
 
     public static void main(String[] args) {
-        try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+        try (BufferedReader r = new BufferedReader(new FileReader("input.txt"))) {
 
             StringBuilder J = new StringBuilder(r.readLine());
             String S = r.readLine();
@@ -31,7 +30,7 @@ public class Yandex04 {
                     R[i] = NOTE;
 
                 for (i = 0; i < count; ++i) {
-                    int index = J.indexOf(String.valueOf(S.charAt(i)), i);
+                    int index = J.indexOf(String.valueOf(S.charAt(i)));
                     if (index == i) {
                         R[i] = 'P';
                         J.setCharAt(index, NOTE);
@@ -45,7 +44,9 @@ public class Yandex04 {
                         if (index >= 0) {
                             R[i] = 'S';
                             J.setCharAt(index, NOTE);
-                        } else R[i] = 'I';
+                        } else {
+                            R[i] = 'I';
+                        }
                     }
                 }
                 System.out.println(new String(R));
