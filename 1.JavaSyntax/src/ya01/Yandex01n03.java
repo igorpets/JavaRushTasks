@@ -43,22 +43,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
 
-public class Yandex01n02 {
+public class Yandex01n03 {
     public static void main(String[] args) {
-        class Timer {
-            int number; // Порядковый номер будильника при первом запуске.
-            long startTime; // Время старта будильника.
-            long nextTime; // Точное время следующего звонка.
-
-            public Timer(int number, long startTime) {
-                this.number = number;
-                this.startTime = startTime;
-                this.nextTime = startTime;
-            }
-        }
-        String line;
         try (BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
-            LinkedList<Timer> timers = new LinkedList<>();
+            TreeSet<Long> timers = new TreeSet<>();
             String[] param = reader.readLine().split(" ");
             String[] times = reader.readLine().split(" ");
 
@@ -71,51 +59,37 @@ public class Yandex01n02 {
                 int awake_count = Integer.parseInt(param[2]);
 
                 if (times.length == timer_count) {
-                    TreeSet<Long> set_of_times = new TreeSet<>();
                     int num = 1;
-                    // Определим только уникальные таймеры.
+                    // Сохраняем только уникальные таймеры.
                     for (String time : times) {
-                        set_of_times.add(Long.parseLong(time));
+                        timers.add(Long.parseLong(time));
                     }
-                    // Создадим объекты-будильники.
-                    for(Long time: set_of_times) {
-                        timers.add(new Timer(num++, time));
-                    }
-                    timers.sort(new Comparator<Timer>() {
-                        @Override
-                        public int compare(Timer o1, Timer o2) {
-                            long res = o1.nextTime - o2.nextTime;
-                            if (res>0) return 1;
-                            else if (res<0) return -1;
-                            return 0;
-                        }
-                    });
-                    //for(Timer tm:timers) System.out.println(tm.nextTime);
+                    //for(Long tm:timers) System.out.println(tm);
                     //System.out.println();
 
                     // Обрабатываем звонки будильников.
-                    Timer current;
+                    Long current;
                     while (awake_count-- > 1) {
-                        current = timers.removeFirst();
-                        current.nextTime += timerDuration;
+                        current = timers.pollFirst();
+                        current += timerDuration;
                         int new_index = 0;
-                        for (Timer timer : timers) {
-                            if (timer.nextTime == current.nextTime) {
+                        for (Long timer : timers) {
+                            if (timer == current) {
                                 // Время совпало с существующим будильником, удаляем его навсегда.
                                 current = null;
                                 break;
-                            } else if (current.nextTime < timer.nextTime) {
+                            } else if (current < timer) {
                                 // Нашли место для вставки.
                                 break;
                             }
                             new_index++;
                         }
                         if (current != null)
-                            timers.add(new_index, current);
+                            timers.add(current);
                         //for(Timer tm:timers) System.out.println(tm.nextTime);
                         //System.out.println();
                     }
-                    long res = timers.getFirst().nextTime;
+                    long res = timers.first();
                     System.out.println(res);
                 }
             }
