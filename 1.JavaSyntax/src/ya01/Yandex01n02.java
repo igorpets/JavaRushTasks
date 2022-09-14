@@ -9,16 +9,16 @@ package ya01;
  * Программист Алексей любит работать по ночам и не любит приходить на работу поздно. Чтобы точно проснуться с утра,
  * Алексей каждый вечер заводит N будильников на своём телефоне. Каждый будильник устроен таким образом, что он
  * звонит каждые X минут с того момента времени, на который его завели. Например, если будильник был заведён
- * на момент времени ti, то он будет звонить в моменты времени ti, ti+X, ti+2⋅X и так далее. При этом если какие-то
+ * на момент времени ti, то он будет звонить в моменты времени ti, ti+X, ti+2X и так далее. При этом если какие-то
  * два будильника начинают звонить в один момент времени, то отображается только один из них.
  * <p>
  * Известно, что прежде чем проснуться, Алексей каждое утро слушает ровно K будильников, после чего просыпается.
  * Определите момент времени, когда Алексей проснётся.
  * <p>
  * Формат ввода
- * Первая строка содержит три целых числа N, X и K (1≤N≤105, 1≤X,K≤109) — количество будильников, периодичность
+ * Первая строка содержит три целых числа N, X и K (1≤N≤10^5, 1≤X,K≤10^9) — количество будильников, периодичность
  * звонков и количество будильников, которое нужно отключить, чтобы Алексей проснулся.
- * Вторая строка содержит N целых чисел t1, t2, …, tN (1≤ti≤109) — моменты времени на которые были заведены будильники.
+ * Вторая строка содержит N целых чисел t1, t2, …, tN (1≤ti≤10^9) — моменты времени на которые были заведены будильники.
  * <p>
  * Формат вывода
  * Выведите одно число — момент времени, когда Алексей проснётся.
@@ -49,10 +49,10 @@ public class Yandex01n02 {
     public static void main(String[] args) {
         class Timer {
             int number; // Порядковый номер будильника при первом запуске.
-            int startTime; // Время старта будильника.
-            int nextTime; // Точное время следующего звонка.
+            long startTime; // Время старта будильника.
+            long nextTime; // Точное время следующего звонка.
 
-            public Timer(int number, int startTime) {
+            public Timer(int number, long startTime) {
                 this.number = number;
                 this.startTime = startTime;
                 this.nextTime = startTime;
@@ -73,22 +73,28 @@ public class Yandex01n02 {
                 int awake_count = Integer.parseInt(param[2]);
 
                 if (times.length == timer_count) {
-                    HashSet<String> set_of_times = new HashSet();
+                    HashSet<Long> set_of_times = new HashSet();
                     int num = 1;
                     // Определим только уникальные таймеры.
                     for (String time : times) {
-                        set_of_times.add(time);
+                        set_of_times.add(Long.parseLong(time));
                     }
                     // Создадим объекты-будильники.
-                    for(String time: set_of_times) {
-                        timers.add(new Timer(num++, Integer.parseInt(time)));
+                    for(Long time: set_of_times) {
+                        timers.add(new Timer(num++, time));
                     }
                     timers.sort(new Comparator<Timer>() {
                         @Override
                         public int compare(Timer o1, Timer o2) {
-                            return o1.nextTime - o2.nextTime;
+                            long res = o1.nextTime - o2.nextTime;
+                            if (res>0) return 1;
+                            else if (res<0) return -1;
+                            return 0;
                         }
                     });
+                    //for(Timer tm:timers) System.out.println(tm.nextTime);
+                    //System.out.println();
+
                     // Обрабатываем звонки будильников.
                     Timer current;
                     while (awake_count-- > 1) {
@@ -100,7 +106,7 @@ public class Yandex01n02 {
                                 // Время совпало с существующим будильником, удаляем его навсегда.
                                 current = null;
                                 break;
-                            } else if (timer.nextTime > current.nextTime) {
+                            } else if (current.nextTime < timer.nextTime) {
                                 // Нашли место для вставки.
                                 break;
                             }
@@ -108,8 +114,10 @@ public class Yandex01n02 {
                         }
                         if (current != null)
                             timers.add(new_index, current);
+                        //for(Timer tm:timers) System.out.println(tm.nextTime);
+                        //System.out.println();
                     }
-                    int res = timers.getFirst().nextTime;
+                    long res = timers.getFirst().nextTime;
                     System.out.println(res);
                 }
             }
