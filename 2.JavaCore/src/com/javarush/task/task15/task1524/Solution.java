@@ -2,9 +2,23 @@ package com.javarush.task.task15.task1524;
 
 /* 
 Порядок загрузки переменных
+static void init()
+Static block
+public static void main
+Non-static block
+static void printAllFields
+0
+null
+Solution constructor
+static void printAllFields
+6
+First name
 */
 
 public class Solution {
+    static {
+        init();
+    }
     static {
         System.out.println("Static block");
     }
@@ -18,9 +32,6 @@ public class Solution {
 
     public String name = "First name";
 
-    static {
-        init();
-    }
 
     public Solution() {
         System.out.println("Solution constructor");
