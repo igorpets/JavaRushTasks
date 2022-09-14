@@ -21,7 +21,7 @@ public class Solution {
             initialize();
         }
 
-        protected void initialize() {
+        private void initialize() {
             System.out.println(f1);
         }
     }
