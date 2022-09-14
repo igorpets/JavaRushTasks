@@ -1,4 +1,4 @@
-package tests;
+package ya01;
 /**
  * A. Камни и украшения
  * Даны две строки строчных латинских символов: строка J и строка S. Символы, входящие в строку
@@ -30,7 +30,7 @@ package tests;
 import java.io.*;
 import java.util.HashSet;
 
-public class Yandex10 {
+public class Yandex01n01 {
     public static void main(String[] args) {
         int A = 0;
         int B = 0;
