@@ -37,53 +37,52 @@ package ya01;
  * <p>
  * Вывод
  * 27
- *
- * ASQWRETYUIOPKMGDHSNCVXNMLLLLLDJDKSLSLSLSJDHSHGAHDHSABXHDUUUUUUSDSDSOPQAWASAUYERDSBDMKNGGGDFSSSTRETVSVXFSHS
- * ZTQYRYTYUUOPUMIDHSOOOONURLLUIYBGKSIUTYBHJJUHGJAHIMHAMNBJHJUUZZSZSZSOPQAZAZAUYZRDZBZMZNZGGPOSSSREEMNSVNMSHZ
- *
- * ISPIPIPPPSPPSPSPPPIIIIPSSPPSIISSPPIISIISPSISSIPPISSPISIISIPPIIPIPIPPPPPIPIPPPIPPIPIPIPIPPIIPPPISPIIPPIIPPI
  **/
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Yandex01n05 {
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
             HashSet<Long> timers = new HashSet<>();
             String[] param = reader.readLine().split(" ");
-            String[] times = reader.readLine().split(" ");
 
             if (param.length == 3) {
                 // Количество будильников.
-                int timer_count = Integer.parseInt(param[0]);
+                //int timer_count = Integer.parseInt(param[0]);
                 // Время срабатывания будильников.
                 int timerDuration = Integer.parseInt(param[1]);
                 // Количество звонков до пробуждения
                 int awake_count = Integer.parseInt(param[2]);
-
-                if (times.length == timer_count) {
-                    int num = 1;
-                    // Сохраняем только уникальные таймеры.
-                    for (String time : times) {
-                        timers.add(Long.parseLong(time));
+                long curr = 0;
+                for (char ch : reader.readLine().toCharArray()) {
+                    if (ch == ' ') {
+                        // Сохраняем только уникальные таймеры/
+                        timers.add(curr);
+                        curr = 0;
+                    } else {
+                        // Формируем время следующего будильника по цифрам.
+                        curr = curr * 10 + Character.digit(ch, 10);
                     }
-                    Collections.sort(timers);
-                    //for(Long tm:timers) System.out.println(tm);
-                    //System.out.println();
-
-                    // Обрабатываем звонки будильников.
-                    while (awake_count-- > 1) {
-                        timers.add(timers.pollFirst() + timerDuration);
-                        //for(Long tm:timers) System.out.println(tm);
-                        //System.out.println();
-                    }
-                    long res = timers.first();
-                    System.out.println(res);
                 }
+                if (curr > 0) timers.add(curr);
+
+                //for (Long tm : timers) System.out.println(tm);
+                //System.out.println();
+
+                // Обрабатываем звонки будильников.
+                while (awake_count-- > 1) {
+                    Long tm = Collections.min(timers);
+                    timers.remove(tm);
+                    tm = tm + timerDuration;
+                    timers.add(tm);
+                    //for (Long tm : timers) System.out.println(tm);
+                    //System.out.println();
+                }
+                long res = Collections.min(timers);
+                System.out.println(res);
             }
         } catch (Exception e) {
         }
