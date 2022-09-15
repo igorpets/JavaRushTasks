@@ -50,6 +50,15 @@ public class Yandex04 {
                     }
                 }
                 System.out.println(new String(R));
+                String orig_result = r.readLine();
+                if (orig_result != null) {
+                    int num = 0;
+                    for (char ch : orig_result.toCharArray()) {
+                        if (ch == R[num++]) System.out.print(".");
+                        else System.out.print("I");
+                    }
+                    System.out.println();
+                }
             }
         } catch (Exception e) {
 
