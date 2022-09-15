@@ -52,7 +52,7 @@ public class Yandex01n04 {
 
             if (param.length == 3) {
                 // Количество будильников.
-                int timer_count = Integer.parseInt(param[0]);
+                //int timer_count = Integer.parseInt(param[0]);
                 // Время срабатывания будильников.
                 int timerDuration = Integer.parseInt(param[1]);
                 // Количество звонков до пробуждения
