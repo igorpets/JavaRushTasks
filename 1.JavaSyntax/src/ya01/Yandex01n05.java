@@ -41,12 +41,14 @@ package ya01;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.TreeSet;
 
-public class Yandex01n04 {
+public class Yandex01n05 {
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
-            TreeSet<Long> timers = new TreeSet<>();
+            HashSet<Long> timers = new HashSet<>();
             String[] param = reader.readLine().split(" ");
             String[] times = reader.readLine().split(" ");
 
@@ -64,6 +66,7 @@ public class Yandex01n04 {
                     for (String time : times) {
                         timers.add(Long.parseLong(time));
                     }
+                    Collections.sort(timers);
                     //for(Long tm:timers) System.out.println(tm);
                     //System.out.println();
 
