@@ -37,7 +37,7 @@ package ya01;
  * <p>
  * Вывод
  * 27
- *
+ * <p>
  * ML
  * 1.815s
  * 263.85Mb
@@ -58,18 +58,23 @@ public class Yandex01n07 {
                 // Количество будильников.
                 int timer_count = Integer.parseInt(param[0]);
                 // Время срабатывания будильников.
-                int timerDuration = Integer.parseInt(param[1]);
+                final int timerDuration = Integer.parseInt(param[1]);
                 // Количество звонков до пробуждения
                 int awake_count = Integer.parseInt(param[2]);
                 long curr = 0;
-                for (char ch : reader.readLine().toCharArray()) {
-                    if (ch == ' ') {
+                char ch = ' ';
+                while (timer_count>0) {
+                    ch = (char) reader.read();
+
+                    if (Character.isDigit(ch)) {
+                        // Формируем время следующего будильника по цифрам.
+                        if (curr == 0) curr = Character.digit(ch, 10);
+                        else curr = curr * 10 + Character.digit(ch, 10);
+                    } else {
                         // Сохраняем только уникальные таймеры.
                         timers.add(curr);
                         curr = 0;
-                    } else {
-                        // Формируем время следующего будильника по цифрам.
-                        curr = curr * 10 + Character.digit(ch, 10);
+                        timer_count--;
                     }
                 }
                 if (curr > 0) timers.add(curr);
