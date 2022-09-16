@@ -56,8 +56,6 @@ public class Yandex01n09 {
             if (!timers.contains(value))
                 timers.add(value);
         }
-        //for (Long tm : timers) System.out.println(tm);
-        //System.out.println();
         // Время срабатывания будильников.
         final int timerDuration = Integer.parseInt(param[1]);
         // Количество звонков до пробуждения
@@ -65,15 +63,18 @@ public class Yandex01n09 {
 
         // Обрабатываем звонки будильников.
         long value = 0;
-        while (awake_count-- >= 0) {
+        long value2;
+        while (awake_count-- > 0) {
             value = Long.MAX_VALUE;
             Iterator<Long> iterator = timers.iterator();
             while (iterator.hasNext()) {
-                long value2 = iterator.next();
+                value2 = iterator.next();
                 if (value2 < value) value = value2;
             }
             timers.remove(Long.valueOf(value));
-            timers.add(value + timerDuration);
+            value2 = value + timerDuration;
+            if (!timers.contains(value2))
+                timers.add(value2);
         }
 
         System.out.println(value);
