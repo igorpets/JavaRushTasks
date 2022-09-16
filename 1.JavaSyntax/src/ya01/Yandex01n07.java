@@ -55,12 +55,13 @@ public class Yandex01n07 {
             String[] param = reader.readLine().split(" ");
 
             if (param.length == 3) {
-                // Количество будильников.
-                int timer_count = Integer.parseInt(param[0]);
                 // Время срабатывания будильников.
                 final int timerDuration = Integer.parseInt(param[1]);
                 // Количество звонков до пробуждения
                 int awake_count = Integer.parseInt(param[2]);
+
+                // Количество будильников.
+                int timer_count = Integer.parseInt(param[0]);
                 long curr = 0;
                 char ch = ' ';
                 while (timer_count>0) {
