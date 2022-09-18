@@ -5,6 +5,10 @@ import java.util.List;
 
 /* 
 join: в нужное время в нужном месте
+1. Метод main должен вызывать метод join для объекта firstThread.
+2. Метод main не должен вызывать метод join для объекта secondThread.
+3. Метод main не должен вызывать System.out.println() или System.out.print().
+4. Вывод программы должен соответствовать примеру из задания.
 */
 
 public class Solution {
@@ -12,6 +16,7 @@ public class Solution {
         PrintListThread firstThread = new PrintListThread("firstThread");
         PrintListThread secondThread = new PrintListThread("secondThread");
         firstThread.start();
+        firstThread.join();
         secondThread.start();
     }
 
