@@ -5,6 +5,11 @@ import java.util.List;
 
 /* 
 Horse Racing
+1. Метод calculateHorsesFinished должен вернуть количество финишировавших лошадей.
+2. Метод calculateHorsesFinished должен вызывать метод isFinished у каждой лошади из переданного списка.
+3. Если какая-либо из переданных в списке лошадей еще не финишировала, метод calculateHorsesFinished должен вывести в консоль "Waiting for " + horse.getName(). Пример сообщения для первой лошади: "Waiting for Horse_01".
+4. Если какая-либо из переданных в списке лошадей еще не финишировала, метод calculateHorsesFinished должен подождать пока она финиширует. Используй правильный метод для ожидания.
+5. После завершения работы программы, консоль должна содержать информацию о том, что все лошади финишировали. Пример сообщения для первой лошади: "Horse_01 has finished the race!".
 */
 
 public class Solution {
@@ -18,6 +23,12 @@ public class Solution {
     public static int calculateHorsesFinished(List<Horse> horses) throws InterruptedException {
         int finishedCount = 0;
         //напишите тут ваш код
+        for (Horse h : horses)
+            if (h.isFinished()) finishedCount++;
+            else {
+                System.out.println("Waiting for " + h.getName());
+                h.join();
+            }
         return finishedCount;
     }
 
