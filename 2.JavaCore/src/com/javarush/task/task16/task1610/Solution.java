@@ -2,6 +2,21 @@ package com.javarush.task.task16.task1610;
 
 /* 
 Расставь вызовы методов join()
+1. Разберись, что делает программа.
+2. Расставь вызовы методов join() так, чтобы для каждой кошки выполнялось следующее:
+2.1. Сначала кошка рожает котят.
+2.2. Потом все котята вылезают из корзинки в произвольном порядке.
+2.3. В конце кошка собирает их назад в корзинку.
+2.4. Все события для одной кошки могут быть перемешаны с событиями для другой кошки.
+2.5. Добавить сон котят (200 мс) в investigateWorld.
+
+
+Requirements:
+1. У каждого котенка (объекта типа Kitten) должен быть вызван метод join.
+2. Метод investigateWorld должен обеспечивать сон котенка на 200 мс. Используй метод Thread.sleep(200).
+3. Программа должна создавать две кошки и четырех котят.
+4. Методы, которые отвечают за вывод в консоль, не изменять.
+5. Вывод программы должен отображать выполнение требований условия.
 */
 
 public class Solution {
@@ -10,8 +25,8 @@ public class Solution {
         Cat cat2 = new Cat("Пушинка");
     }
 
-    private static void investigateWorld() {
-
+    private static void investigateWorld() throws InterruptedException {
+        Thread.sleep(200);
     }
 
     public static class Cat extends Thread {
@@ -36,7 +51,9 @@ public class Solution {
 
         private void initAllKittens() throws InterruptedException {
             kitten1.start();
+            kitten1.join();
             kitten2.start();
+            kitten2.join();
         }
     }
 
@@ -47,7 +64,11 @@ public class Solution {
 
         public void run() {
             System.out.println(getName() + ", вылез из корзинки");
-            investigateWorld();
+            try {
+                investigateWorld();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
