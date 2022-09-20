@@ -33,6 +33,10 @@ public class Solution {
 
         private void printTikTak() throws InterruptedException {
             //add your code here - добавь код тут
+            Thread.sleep(500);
+            System.out.println("Tik");
+            Thread.sleep(500);
+            System.out.println("Tak");
         }
     }
 }
