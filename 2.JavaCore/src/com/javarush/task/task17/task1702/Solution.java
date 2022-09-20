@@ -5,6 +5,14 @@ import java.util.List;
 
 /* 
 Вместе быстрее? Ща проверим :)
+2. Создай public static нить SortThread, которая в методе run отсортирует статический массив testArray используя метод sort.
+
+
+Requirements:
+1. Класс Solution должен содержать public static класс SortThread.
+2. Класс SortThread должен быть нитью.
+3. В методе run класса SortThread должен вызывать метод sort() с параметром testArray.
+4. Программа должна выводить текст на экран.
 */
 
 public class Solution {
@@ -14,6 +22,11 @@ public class Solution {
     static {
         for (int i = 0; i < Solution.testArray.length; i++) {
             testArray[i] = i;
+        }
+    }
+    public static class SortThread extends Thread {
+        public void run(){
+            sort(testArray);
         }
     }
 
