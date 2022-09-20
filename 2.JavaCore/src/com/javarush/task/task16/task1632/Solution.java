@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /* 
 Клубок
@@ -32,6 +33,85 @@ import java.util.List;
 public class Solution {
     public static List<Thread> threads = new ArrayList<>(5);
 
+    static {
+        Thread t1 = new Thread1();
+        Thread t2 = new Thread2();
+        Thread t3 = new Thread3();
+        Thread t4 = new Thread4();
+        Thread t5 = new Thread5();
+        threads.add(t1);
+        threads.add(t2);
+        threads.add(t3);
+        threads.add(t4);
+        threads.add(t5);
+        //t1.start();
+        //t2.start();
+        //t3.start();
+        //t4.start();
+        //t5.start();
+    }
+
     public static void main(String[] args) {
+    }
+
+    public static class Thread1 extends Thread {
+        public void run() {
+            while (true) try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public static class Thread2 extends Thread {
+        public void run() {
+            try {
+                while (!Thread.currentThread().isInterrupted())
+                    Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+            System.out.println("InterruptedException");
+        }
+    }
+
+    public static class Thread3 extends Thread {
+        public void run() {
+            while (true) try {
+                System.out.println("Ура");
+                Thread.sleep(500);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public static class Thread4 extends Thread implements Message {
+        public void run() {
+            try {
+                while (!this.isInterrupted())
+                    Thread.sleep(100);
+            } catch (Exception e) {
+            }
+        }
+
+        public void showWarning() {
+            this.interrupt();
+        }
+    }
+
+    public static class Thread5 extends Thread {
+        public void run() {
+            try (Scanner scan = new Scanner(System.in)) {
+                String str = "0";
+                long summ = 0;
+                while (!str.equals("N")) {
+                    str = scan.nextLine();
+                    try {
+                        summ += Long.parseLong(str);
+                    } catch (Exception e) {
+                    }
+                }
+                System.out.println(summ);
+            }
+        }
     }
 }
