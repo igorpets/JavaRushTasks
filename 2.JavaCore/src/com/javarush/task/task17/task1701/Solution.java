@@ -27,6 +27,19 @@ public class Solution {
         new NoteThread().start();
     }
 
+    public static class NoteThread extends Thread {
+        public void run(){
+            try {
+                for (int i = 0; i < 1000; i++) {
+                    Note.addNote(getName() + "-Note" + i);
+                    Thread.sleep(1);
+                    Note.removeNote(getName());
+                }
+            } catch(InterruptedException e) {
+
+            }
+        }
+    }
     public static class Note {
 
         public static final List<String> notes = new ArrayList<>();
