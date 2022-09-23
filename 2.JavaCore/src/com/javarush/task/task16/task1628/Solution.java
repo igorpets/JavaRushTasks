@@ -44,7 +44,7 @@ public class Solution {
 
         while (count > readStringCount.get()) {
         }
-
+        //System.out.println("INTERRUPT");
         consoleReader1.interrupt();
         consoleReader2.interrupt();
         consoleReader3.interrupt();
@@ -60,6 +60,18 @@ public class Solution {
 
         public void run() {
             //напишите тут ваш код
+            while (!isInterrupted()) {
+                try {
+                    String line = reader.readLine();
+                    result.add(reader.readLine());
+                    if (line != null && !line.equals("")) {
+                        result.add(line);
+                        //System.out.println(readStringCount);
+                        readStringCount.addAndGet(1);
+                    }
+                } catch (Exception e) {
+                }
+            }
         }
 
         @Override
