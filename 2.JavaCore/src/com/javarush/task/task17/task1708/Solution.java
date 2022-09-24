@@ -5,6 +5,10 @@ import java.util.List;
 
 /* 
 Заметки для всех
+1. Класс Note должен содержать метод addNote(int index, String note).
+2. Класс Note должен содержать метод removeNote(int index).
+3. Класс Note должен содержать публичное поле List<String> notes.
+4. Поле List<String> notes не должно находится в локальном кэше.
 */
 
 public class Solution {
@@ -15,7 +19,7 @@ public class Solution {
 
     public static class Note {
 
-        public List<String> notes = new ArrayList<String>();
+        volatile public List<String> notes = new ArrayList<String>();
 
         public void addNote(int index, String note) {
             System.out.println("Сейчас будет добавлена заметка [" + note + "] На позицию " + index);
