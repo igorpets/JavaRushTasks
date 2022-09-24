@@ -10,7 +10,7 @@ package com.javarush.task.task17.task1709;
 */
 
 public class Solution {
-    public static int proposal = 0;
+    volatile public static int proposal = 0;
 
     public static void main(String[] args) {
         new AcceptProposal().start();
@@ -30,8 +30,6 @@ public class Solution {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }
     }
