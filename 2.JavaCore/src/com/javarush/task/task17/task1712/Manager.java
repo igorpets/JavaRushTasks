@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/*
+2. +Класс Manager должен содержать очередь с заказами (private final поле orderQueue типа Queue<Order>).
+3. +Класс Manager должен содержать очередь с готовыми блюдами (private final поле dishesQueue типа Queue<Dishes>).
+4. +Класс Manager должен реализовывать паттерн Singleton.
+ */
 public class Manager {      //singleton
     private static Manager ourInstance = new Manager();
 

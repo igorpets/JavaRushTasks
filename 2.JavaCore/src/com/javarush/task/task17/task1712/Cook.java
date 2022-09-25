@@ -1,5 +1,9 @@
 package com.javarush.task.task17.task1712;
 
+/*
+6. +Класс Cook должен реализовывать интерфейс Runnable.
+ */
+
 public class Cook implements Runnable {
     public boolean continueWorking = true;
 
@@ -33,6 +37,7 @@ public class Cook implements Runnable {
         System.out.println(String.format("Заказ будет готовиться %d мс для стола №%d", order.getTime(), order.getTableNumber()));
         Thread.sleep(order.getTime());     // готовим блюдо
         Dishes dishes = new Dishes(order.getTableNumber());       //  это готовое блюдо
+        manager.getDishesQueue().add(dishes);
         System.out.println(String.format("Заказ для стола №%d готов", dishes.getTableNumber()));
     }
 }

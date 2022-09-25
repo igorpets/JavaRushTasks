@@ -1,5 +1,9 @@
 package com.javarush.task.task17.task1712;
 
+/*
+5. +Класс Waiter должен реализовывать интерфейс Runnable.
+ */
+
 public class Waiter implements Runnable {
     public boolean continueWorking = true;
 
