@@ -2,9 +2,13 @@ package com.javarush.task.task17.task1714;
 
 /* 
 Comparable
+1. Класс Beach должен содержать три поля: String name, float distance, int quality.
+2. Класс Beach должен реализовывать интерфейс Comparable<Beach>.
+3. Метод compareTo класса Beach должен учитывать качество пляжа (quality) и дистанцию (distance).
+4. Все методы класса Beach, кроме метода main, должны быть синхронизированы.
 */
 
-public class Beach {
+public class Beach  implements Comparable{
     private String name;      //название
     private float distance;   //расстояние
     private int quality;    //качество
@@ -41,5 +45,8 @@ public class Beach {
 
     public static void main(String[] args) {
 
+    }
+    public int compareTo(Object obj){
+        return 0;
     }
 }
