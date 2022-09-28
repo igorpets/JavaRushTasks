@@ -35,6 +35,7 @@ public class Solution {
         boolean result;
         int index;
         int new_count = 0;
+
         switch (args[0]) {
             case "-c":
                 result = false;
