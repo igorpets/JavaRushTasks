@@ -16,6 +16,7 @@ CRUD 2
 6. При параметре -i программа должна выводить на экран данные о всех людях с заданными id по формату указанному в задании.
 7. Метод main класса Solution должен содержать оператор switch по значению args[0].
 8. Каждый case оператора switch должен иметь блок синхронизации по allPeople.
+-d 0 -r 1 -d 0 -u 0 Алексеев м 23/11/1977 -c Миронов м 15/04/1990
 */
 
 public class Solution {
@@ -37,20 +38,27 @@ public class Solution {
         switch (args[0]) {
             case "-c":
                 result = false;
-                while (new_count * 3 + 1 < args.length - 3) {
+                while (new_count * 3 + 1 <= args.length - 3) {
+                    index = new_count * 3 + 1;
+                    //System.out.println(index + " " + (args.length - 3));
                     try {
-                        sex = args[new_count * 3 + 2];
+                        sex = args[index + 1];
                         if (sex.equals("м"))
-                            result = allPeople.add(Person.createMale(args[1], sf_in.parse(args[3])));
+                            result = allPeople.add(Person.createMale(args[index], sf_in.parse(args[index + 2])));
                         else
-                            result = allPeople.add(Person.createFemale(args[1], sf_in.parse(args[3])));
+                            result = allPeople.add(Person.createFemale(args[index], sf_in.parse(args[index + 2])));
                     } catch (Exception e) {
                     }
+                    if (result) {
+                        if (new_count == 0)
+                            System.out.print(allPeople.size() - 1);
+                        else
+                            System.out.print(" " + (allPeople.size() - 1));
+                    }
+                    new_count++;
                 }
                 if (result)
-                    System.out.println(allPeople.size() - 1);
-                else
-                    System.out.println(-1);
+                    System.out.println();
                 break;
             case "-r":
                 // Миронов м 15-Apr-1990
@@ -100,10 +108,10 @@ public class Solution {
                 }
                 break;
         }
-        /* for (Person p : allPeople) {
+         for (Person p : allPeople) {
             if (p.getName() != null)
                 System.out.println(p.getName() + " " + (p.getSex() == Sex.MALE ? "м" : "ж") +
                         " " + sf_out.format(p.getBirthDate()));
-        }*/
+        }
     }
 }
