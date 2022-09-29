@@ -4,8 +4,8 @@ import java.util.*;
 
 /* 
 Общий список
-1. Класс Solution должен реализовывать интерфейс List<Long>.
-2. Класс Solution должен содержать private поле original типа ArrayList<Long>.
+1. +Класс Solution должен реализовывать интерфейс List<Long>.
+2. +Класс Solution должен содержать private поле original типа ArrayList<Long>.
 3. Все переопределенные в классе Solution методы интерфейса List должны вызывать соответствующие методы объекта original.
 4. Все методы класса Solution, кроме метода main, должны быть синхронизированы.
 */
@@ -25,7 +25,7 @@ public class Solution implements List<Long>{
      * @return the number of elements in this list
      */
     @Override
-    public int size() {
+    public synchronized int size() {
         return original.size();
     }
 
@@ -35,8 +35,8 @@ public class Solution implements List<Long>{
      * @return {@code true} if this list contains no elements
      */
     @Override
-    public boolean isEmpty() {
-        return false;
+    public synchronized boolean isEmpty() {
+        return original.isEmpty();
     }
 
     /**
@@ -55,8 +55,8 @@ public class Solution implements List<Long>{
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public boolean contains(Object o) {
-        return false;
+    public synchronized boolean contains(Object o) {
+        return original.contains(o);
     }
 
     /**
@@ -65,8 +65,8 @@ public class Solution implements List<Long>{
      * @return an iterator over the elements in this list in proper sequence
      */
     @Override
-    public Iterator<Long> iterator() {
-        return null;
+    public synchronized Iterator<Long> iterator() {
+        return original.iterator();
     }
 
     /**
@@ -86,8 +86,8 @@ public class Solution implements List<Long>{
      * @see Arrays#asList(Object[])
      */
     @Override
-    public Object[] toArray() {
-        return new Object[0];
+    public synchronized Object[] toArray() {
+        return original.toArray();
     }
 
     /**
@@ -130,8 +130,8 @@ public class Solution implements List<Long>{
      * @throws NullPointerException if the specified array is null
      */
     @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
+    public synchronized <T> T[] toArray(T[] a) {
+        return original.toArray(a);
     }
 
     /**
@@ -157,8 +157,8 @@ public class Solution implements List<Long>{
      *                                       prevents it from being added to this list
      */
     @Override
-    public boolean add(Long aLong) {
-        return false;
+    public synchronized boolean add(Long aLong) {
+        return original.add(aLong);
     }
 
     /**
@@ -183,8 +183,8 @@ public class Solution implements List<Long>{
      *                                       is not supported by this list
      */
     @Override
-    public boolean remove(Object o) {
-        return false;
+    public synchronized boolean remove(Object o) {
+        return original.remove(o);
     }
 
     /**
@@ -206,8 +206,8 @@ public class Solution implements List<Long>{
      * @see #contains(Object)
      */
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
+    public synchronized boolean containsAll(Collection<?> c) {
+        return original.containsAll(c);
     }
 
     /**
@@ -232,8 +232,8 @@ public class Solution implements List<Long>{
      * @see #add(Object)
      */
     @Override
-    public boolean addAll(Collection<? extends Long> c) {
-        return false;
+    public synchronized boolean addAll(Collection<? extends Long> c) {
+        return original.addAll(c);
     }
 
     /**
@@ -264,8 +264,8 @@ public class Solution implements List<Long>{
      *                                       ({@code index < 0 || index > size()})
      */
     @Override
-    public boolean addAll(int index, Collection<? extends Long> c) {
-        return false;
+    public synchronized boolean addAll(int index, Collection<? extends Long> c) {
+        return original.addAll(index, c);
     }
 
     /**
@@ -287,8 +287,8 @@ public class Solution implements List<Long>{
      * @see #contains(Object)
      */
     @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
+    public synchronized boolean removeAll(Collection<?> c) {
+        return original.removeAll(c);
     }
 
     /**
@@ -312,8 +312,8 @@ public class Solution implements List<Long>{
      * @see #contains(Object)
      */
     @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
+    public synchronized boolean retainAll(Collection<?> c) {
+        return original.retainAll(c);
     }
 
     /**
@@ -324,8 +324,8 @@ public class Solution implements List<Long>{
      *                                       is not supported by this list
      */
     @Override
-    public void clear() {
-
+    public synchronized void clear() {
+        original.clear();
     }
 
     /**
@@ -337,8 +337,8 @@ public class Solution implements List<Long>{
      *                                   ({@code index < 0 || index >= size()})
      */
     @Override
-    public Long get(int index) {
-        return null;
+    public synchronized Long get(int index) {
+        return original.get(index);
     }
 
     /**
@@ -360,8 +360,8 @@ public class Solution implements List<Long>{
      *                                       ({@code index < 0 || index >= size()})
      */
     @Override
-    public Long set(int index, Long element) {
-        return null;
+    public synchronized Long set(int index, Long element) {
+        return original.set(index, element);
     }
 
     /**
@@ -384,8 +384,8 @@ public class Solution implements List<Long>{
      *                                       ({@code index < 0 || index > size()})
      */
     @Override
-    public void add(int index, Long element) {
-
+    public synchronized void add(int index, Long element) {
+        original.add(index, element);
     }
 
     /**
@@ -402,8 +402,8 @@ public class Solution implements List<Long>{
      *                                       ({@code index < 0 || index >= size()})
      */
     @Override
-    public Long remove(int index) {
-        return null;
+    public synchronized Long remove(int index) {
+        return original.remove(index);
     }
 
     /**
@@ -424,8 +424,8 @@ public class Solution implements List<Long>{
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public int indexOf(Object o) {
-        return 0;
+    public synchronized int indexOf(Object o) {
+        return original.indexOf(o);
     }
 
     /**
@@ -446,8 +446,8 @@ public class Solution implements List<Long>{
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public int lastIndexOf(Object o) {
-        return 0;
+    public synchronized int lastIndexOf(Object o) {
+        return original.lastIndexOf(o);
     }
 
     /**
@@ -458,8 +458,8 @@ public class Solution implements List<Long>{
      * sequence)
      */
     @Override
-    public ListIterator<Long> listIterator() {
-        return null;
+    public synchronized ListIterator<Long> listIterator() {
+        return original.listIterator();
     }
 
     /**
@@ -478,8 +478,8 @@ public class Solution implements List<Long>{
      *                                   ({@code index < 0 || index > size()})
      */
     @Override
-    public ListIterator<Long> listIterator(int index) {
-        return null;
+    public synchronized ListIterator<Long> listIterator(int index) {
+        return original.listIterator(index);
     }
 
     /**
@@ -517,7 +517,7 @@ public class Solution implements List<Long>{
      *                                   fromIndex > toIndex})
      */
     @Override
-    public List<Long> subList(int fromIndex, int toIndex) {
-        return null;
+    public synchronized List<Long> subList(int fromIndex, int toIndex) {
+        return original.subList(fromIndex, toIndex);
     }
 }
