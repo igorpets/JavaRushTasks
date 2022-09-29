@@ -5,18 +5,18 @@ import java.util.List;
 
 /* 
 Аптека
-1. Класс Solution должен содержать public static поле drugsController типа DrugsController.
-2. Класс Solution должен содержать public static поле isStopped типа boolean.
-3. Класс Solution должен содержать private static void метод waitAMoment(), который должен ждать 100 мс.
-4. Класс Apteka должен реализовывать интерфейс Runnable.
-5. Нить Apteka должна работать пока isStopped = false.
-6. Нить Apteka должна использовать drugsController для продажи случайного лекарства (getRandomDrug) в количестве (getRandomCount).
-7. Нить Apteka должна ждать 300мс между продажами, используя метод waitAMoment().
-8. Класс Person должен реализовывать интерфейс Runnable.
-9. Нить Person должна работать пока isStopped = false.
-10. Нить Person должна использовать drugsController для покупки случайного лекарства (getRandomDrug) в количестве (getRandomCount).
-11. Нить Person должна ждать 100мс между покупками, используя метод waitAMoment().
-12. Методы класса DrugsController должны быть synchronized.
+1. +Класс Solution должен содержать public static поле drugsController типа DrugsController.
+2. +Класс Solution должен содержать public static поле isStopped типа boolean.
+3. +Класс Solution должен содержать private static void метод waitAMoment(), который должен ждать 100 мс.
+4. +Класс Apteka должен реализовывать интерфейс Runnable.
+5. +Нить Apteka должна работать пока isStopped = false.
+6. +Нить Apteka должна использовать drugsController для продажи случайного лекарства (getRandomDrug) в количестве (getRandomCount).
+7. +Нить Apteka должна ждать 300мс между продажами, используя метод waitAMoment().
+8. +Класс Person должен реализовывать интерфейс Runnable.
+9. +Нить Person должна работать пока isStopped = false.
+10. +Нить Person должна использовать drugsController для покупки случайного лекарства (getRandomDrug) в количестве (getRandomCount).
+11. +Нить Person должна ждать 100мс между покупками, используя метод waitAMoment().
+12. +Методы класса DrugsController должны быть synchronized.
 */
 
 public class Solution {
@@ -36,15 +36,23 @@ public class Solution {
         isStopped = true;
     }
 
-    public static class Apteka implements Runnable{
+    public static class Apteka implements Runnable {
         public void run() {
-
+            while (!isStopped) {
+                drugsController.sell(getRandomDrug(),getRandomCount());
+                waitAMoment();
+                waitAMoment();
+                waitAMoment();
+            }
         }
     }
 
-    public static class Person {
+    public static class Person implements Runnable {
         public void run() {
-
+            while (!isStopped) {
+                drugsController.buy(getRandomDrug(),getRandomCount());
+                waitAMoment();
+            }
         }
     }
 
