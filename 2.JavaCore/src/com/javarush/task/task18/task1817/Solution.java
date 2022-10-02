@@ -1,5 +1,6 @@
 package com.javarush.task.task18.task1817;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -23,6 +24,19 @@ Requirements:
 
 public class Solution {
     public static void main(String[] args) {
-
+        String file_name = args[0];
+        try (FileInputStream file = new FileInputStream(file_name)) {
+            int count = file.available();
+            byte[] buff = new byte[count];
+            file.read(buff);
+            int count_space = 0;
+            for (int i = 0; i < count; i++)
+                if (buff[i] == ' ') count_space++;
+            float res = (count_space * 10000.0f / count);
+            //System.out.println(res);
+            res = Math.round(res)/100.0f;
+            System.out.println(res);
+        } catch (Exception e) {
+        }
     }
 }
