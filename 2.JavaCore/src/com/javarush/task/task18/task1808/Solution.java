@@ -1,6 +1,7 @@
 package com.javarush.task.task18.task1808;
 
 import java.io.*;
+import java.util.Scanner;
 
 /* 
 Разделение файла
@@ -13,6 +14,24 @@ import java.io.*;
 
 public class Solution {
     public static void main(String[] args) {
+        try (Scanner scan = new Scanner(System.in);
+             FileInputStream input = new FileInputStream(scan.nextLine());
+             FileOutputStream out1 = new FileOutputStream(scan.nextLine());
+             FileOutputStream out2 = new FileOutputStream(scan.nextLine())) {
+            int count = input.available();
+            int count1 = (count + 1) / 2;
+            int count2 = count - count1;
+            byte[] buffer = new byte[Math.max(count1, count2)];
+            int read = input.read(buffer, 0, count1);
+            if (read > 0) {
+                out1.write(buffer, 0, read);
+            }
+            read = input.read(buffer, 0, count2);
+            if (read > 0) {
+                out2.write(buffer, 0, read);
+            }
+        } catch (Exception e) {
 
+        }
     }
 }
