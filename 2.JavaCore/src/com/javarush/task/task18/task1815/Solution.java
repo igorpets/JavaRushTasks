@@ -4,20 +4,35 @@ import java.util.List;
 
 /* 
 Таблица
-Измени класс TableInterfaceWrapper так, чтобы он стал Wrapper-ом для TableInterface.
-Метод setModel должен вывести в консоль количество элементов в списке перед обновлением модели (вызовом метода setModel у объекта типа TableInterface).
-Метод getHeaderText должен возвращать текст в верхнем регистре - используй метод toUpperCase().
++Измени класс TableInterfaceWrapper так, чтобы он стал Wrapper-ом для TableInterface.
++Метод setModel должен вывести в консоль количество элементов в списке перед обновлением модели
+ (вызовом метода setModel у объекта типа TableInterface).
++Метод getHeaderText должен возвращать текст в верхнем регистре - используй метод toUpperCase().
 
-1. Класс TableInterfaceWrapper должен реализовывать интерфейс TableInterface.
-2. Класс TableInterfaceWrapper должен инициализировать в конструкторе поле типа TableInterface.
-3. Метод setModel() должен вывести в консоль количество элементов в новом листе перед обновлением модели.
-4. Метод getHeaderText() должен возвращать текст в верхнем регистре.
-5. Метод setHeaderText() должен устанавливать текст для заголовка без изменений.
+1. +Класс TableInterfaceWrapper должен реализовывать интерфейс TableInterface.
+2. +Класс TableInterfaceWrapper должен инициализировать в конструкторе поле типа TableInterface.
+3. +Метод setModel() должен вывести в консоль количество элементов в новом листе перед обновлением модели.
+4. +Метод getHeaderText() должен возвращать текст в верхнем регистре.
+5. +Метод setHeaderText() должен устанавливать текст для заголовка без изменений.
 */
 
 public class Solution {
-    public class TableInterfaceWrapper {
+    public class TableInterfaceWrapper implements TableInterface {
+        TableInterface base;
+        public TableInterfaceWrapper(TableInterface table) {
+            base = table;
+        }
+        public void setModel(List rows) {
+            System.out.println(rows.size());
+            base.setModel(rows);
+        }
+        public String getHeaderText() {
+            return base.getHeaderText().toUpperCase();
+        }
 
+        public void setHeaderText(String newHeaderText){
+            base.setHeaderText(newHeaderText);
+        }
     }
 
     public interface TableInterface {
