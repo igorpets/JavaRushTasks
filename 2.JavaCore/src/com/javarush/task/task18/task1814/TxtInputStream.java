@@ -11,7 +11,7 @@ UnsupportedFileName
 Если передан не txt-файл, например, file.txt.exe, то конструктор должен выбрасывать исключение UnsupportedFileNameException.
 Подумай, что еще нужно сделать, в случае выброшенного исключения.
 
-1. Класс TxtInputStream должен наследоваться от класса FileInputStream.
+1. +Класс TxtInputStream должен наследоваться от класса FileInputStream.
 2. Если в конструктор передан txt-файл, TxtInputStream должен вести себя, как обычный FileInputStream.
 3. Если в конструктор передан не txt-файл, должно быть выброшено исключение UnsupportedFileNameException.
 4. В случае выброшенного исключения, так же должен быть вызван super.close().
@@ -19,8 +19,12 @@ UnsupportedFileName
 
 public class TxtInputStream extends FileInputStream {
 
-    public TxtInputStream(String fileName) throws FileNotFoundException {
+    public TxtInputStream(String fileName) throws IOException, UnsupportedFileNameException {
         super(fileName);
+        if (!fileName.endsWith(".txt")) {
+            super.close();
+            throw new UnsupportedFileNameException();
+        }
     }
 
     public static void main(String[] args) {
