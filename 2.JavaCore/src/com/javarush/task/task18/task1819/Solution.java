@@ -1,6 +1,7 @@
 package com.javarush.task.task18.task1819;
 
 import java.io.*;
+import java.util.Scanner;
 
 /* 
 Объединение файлов
@@ -15,6 +16,27 @@ import java.io.*;
 
 public class Solution {
     public static void main(String[] args) {
+        String name1;
+        String name2;
+        try (Scanner scan = new Scanner(System.in)) {
+            name1 = scan.nextLine();
+            name2 = scan.nextLine();
+        }
+        if (name1 != null && name2 != null) {
+            byte[] buff = null;
 
+            try (FileInputStream file1 = new FileInputStream(name1);
+                 FileInputStream file2 = new FileInputStream(name2)) {
+                buff = new byte[file1.available() + file2.available()];
+                int count = file2.read(buff);
+                file1.read(buff, count, file1.available());
+            } catch (Exception e) {
+            }
+            if (buff != null && buff.length > 0)
+                try (FileOutputStream file3 = new FileOutputStream(name1)) {
+                    file3.write(buff);
+                } catch (Exception e) {
+                }
+        }
     }
 }
