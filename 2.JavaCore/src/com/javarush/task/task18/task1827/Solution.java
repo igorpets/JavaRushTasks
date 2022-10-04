@@ -40,9 +40,8 @@ public class Solution {
             }
             max++;
             if (max > 99999999) max = 99999999;
-            System.out.println(max);
             try (BufferedWriter output = new BufferedWriter(new FileWriter(filename, true))) {
-                if (args.length > 0 && args[0].equals("-c")) {
+                if (args.length >=4 && args[0].equals("-c")) {
                     String name = args[1];
                     if (name.length() > 30) name = name.substring(0, 30);
                     String price = args[2];
