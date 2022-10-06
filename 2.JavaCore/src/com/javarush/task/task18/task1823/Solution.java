@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /* 
 Нити и байты
@@ -20,13 +21,50 @@ public class Solution {
     public static Map<String, Integer> resultMap = new HashMap<String, Integer>();
 
     public static void main(String[] args) {
-
+        try (Scanner scan = new Scanner(System.in)) {
+            String line;
+            while (!(line = scan.nextLine()).equals("exit")) {
+                if (!line.equals(""))
+                    new ReadThread(line).run();
+            }
+        }
     }
 
     public static class ReadThread extends Thread {
+        String fileName;
+
         public ReadThread(String fileName) {
             //implement constructor body
+            this.fileName = fileName;
         }
+
         // implement file reading here - реализуйте чтение из файла тут
+        public void run() {
+            try (FileInputStream input = new FileInputStream(fileName)) {
+                int avail = input.available();
+                if (avail > 0) {
+                    int[] counts = new int[256];
+                    byte[] buffer = new byte[avail];
+                    int max = -1;
+                    int max_byte = -1;
+                    if (input.read(buffer) == avail) {
+                        for (byte sym : buffer)
+                            counts[sym + 128]++;
+                        System.out.println();
+                        for (int i = 0; i < counts.length; i++)
+                            if (max < counts[i]) {
+                                max = counts[i];
+                                max_byte = i;
+                            }
+                        synchronized (ReadThread.class) {
+                            resultMap.put(fileName, max_byte - 128);
+                            //resultMap.forEach((key, value) -> System.out.println(key + " " + value + String.valueOf((char) value.byteValue())));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
+        }
     }
 }
