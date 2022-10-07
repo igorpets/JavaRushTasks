@@ -25,8 +25,8 @@ CA Canada
 комментарии к соответствующему методу). Обрати внимание на формат вывода телефона, фамилии и имени человека
 (смотри примеры в комментарии к соответствующему методу).
 
-1. Класс Solution должен содержать public static поле countries типа Map<String, String>.
-2. В статическом блоке класса Solution инициализируй поле countries тестовыми данными согласно заданию.
+1. +Класс Solution должен содержать public static поле countries типа Map<String, String>.
+2. +В статическом блоке класса Solution инициализируй поле countries тестовыми данными согласно заданию.
 3. Класс IncomeDataAdapter должен реализовывать интерфейсы Customer и Contact.
 4. Класс IncomeDataAdapter должен содержать приватное поле data типа IncomeData.
 5. Класс IncomeDataAdapter должен содержать конструктор с параметром IncomeData.
@@ -36,12 +36,37 @@ CA Canada
 
 public class Solution {
     public static Map<String, String> countries = new HashMap<String, String>();
+    static {
+        countries.put("UA", "Ukraine");
+        countries.put("RU", "Russia");
+        countries.put("CA", "Canada");
+    }
 
     public static void main(String[] args) {
 
     }
 
-    public static class IncomeDataAdapter {
+    public static class IncomeDataAdapter implements  Customer, Contact {
+
+        @Override
+        public String getCompanyName() {
+            return null;
+        }
+
+        @Override
+        public String getCountryName() {
+            return null;
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public String getPhoneNumber() {
+            return null;
+        }
     }
 
 
