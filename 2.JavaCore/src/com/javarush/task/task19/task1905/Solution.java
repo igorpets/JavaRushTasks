@@ -55,7 +55,7 @@ public class Solution {
 
             @Override
             public String getPhoneNumber() {
-                return "+380(50)123-4567";
+                return "+38(050)123-4567";
             }
         };
 
@@ -67,9 +67,10 @@ public class Solution {
         System.out.println(dataAdapter.getDialString());
     }
 
-    public static class DataAdapter implements  RowItem{
+    public static class DataAdapter implements RowItem {
         private Customer customer;
         private Contact contact;
+
         public DataAdapter(Customer customer, Contact contact) {
             this.customer = customer;
             this.contact = contact;
@@ -77,27 +78,45 @@ public class Solution {
 
         @Override
         public String getCountryCode() {
-            return null;
+            //For example: UA
+            String code = "RU";
+            String name = customer.getCountryName();
+            for(Map.Entry<String, String> country: countries.entrySet())
+                if (country.getValue().equals(name)) {
+                    code = country.getKey();
+                    break;
+                }
+            return code;
         }
 
         @Override
         public String getCompany() {
-            return null;
+            //For example: JavaRush Ltd.
+            return customer.getCompanyName();
         }
 
         @Override
         public String getContactFirstName() {
-            return null;
+            String[] params = contact.getName().split(", ");
+            if (params != null && params.length >= 2)
+                return params[1];
+            else
+                return "Unknown";
         }
 
         @Override
         public String getContactLastName() {
-            return null;
+            String[] params = contact.getName().split(", ");
+            if (params != null && params.length >= 1)
+                return params[0];
+            else
+                return "Unknown";
         }
 
         @Override
         public String getDialString() {
-            return null;
+            String phone = contact.getPhoneNumber().replaceAll("[^0-9]", "");
+            return "callto://+" + phone;
         }
     }
 
