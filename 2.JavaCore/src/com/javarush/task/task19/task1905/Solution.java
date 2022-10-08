@@ -115,8 +115,7 @@ public class Solution {
 
         @Override
         public String getDialString() {
-            String phone = contact.getPhoneNumber().replaceAll("\\D", "");
-            return "callto://+" + phone;
+            return "callto://+" + contact.getPhoneNumber().replaceAll("\\D", "");
         }
     }
 

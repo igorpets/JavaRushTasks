@@ -21,5 +21,25 @@ import java.io.InputStreamReader;
 
 public class Solution {
     public static void main(String[] args) {
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+             BufferedReader reader = new BufferedReader(new FileReader(console.readLine()))) {
+            String line;
+            int count = 0;
+            if (true) {
+                while ((line = reader.readLine()) != null) {
+                    String[] words = line.split("\\W");
+                    for (String word : words)
+                        if (word.trim().equals("world")) count++;
+                }
+            } else {
+                count = reader.lines()
+                        .map(s -> s.split("world"))
+                        .mapToInt(x -> x.length)
+                        .sum() - 1;
+            }
+            System.out.println(count);
+        } catch (IOException e) {
+
+        }
     }
 }
