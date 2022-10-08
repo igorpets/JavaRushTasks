@@ -20,6 +20,7 @@ import java.util.Scanner;
 Данные в файле хранятся в следующем виде:
 Иванов Иван Иванович 31 12 1950
 Петров Петр Петрович 31 12 1957
+Алексеев Дмитрий Семенович 24 08 1978
 
 В файле хранится большое количество людей, данные одного человека находятся в одной строке. Метод read() должен
 читать данные только одного человека.
@@ -35,30 +36,42 @@ import java.util.Scanner;
 
 public class Solution {
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("input.txt");
-        Scanner scanner = new Scanner(path);
-        PersonScanner personScannerAdapter = new PersonScannerAdapter(scanner);
-        System.out.println(personScannerAdapter.read());
-        System.out.println(personScannerAdapter.read());
-        personScannerAdapter.close();
+        try (Scanner scanner = new Scanner(Paths.get("input.txt"))) {
+            PersonScanner personScannerAdapter = new PersonScannerAdapter(scanner);
+            System.out.println(personScannerAdapter.read());
+            System.out.println(personScannerAdapter.read());
+            System.out.println(personScannerAdapter.read());
+            System.out.println(personScannerAdapter.read());
+            personScannerAdapter.close();
+        } catch (Exception e) {
+        }
+        // Date birthDate = new Date(year - 1900, month - 1, date);
     }
 
     public static class PersonScannerAdapter implements PersonScanner {
         private Scanner fileScanner;
+
         public PersonScannerAdapter(Scanner scan) {
             fileScanner = scan;
         }
+
         @Override
         public Person read() throws IOException {
-            try (BufferedReader reader = new BufferedReader(new FileReader(fileScanner.nextLine()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
+            Person result = null;
+            if (fileScanner != null)
+                try {
+                    String line = fileScanner.nextLine();
+                    if (line != null && !line.equals("")){
+                        String[] params = line.split(" ");
+                        if (params != null && params.length>=6)
+                            result = new Person(params[1], params[2], params[0],
+                                    new Date(Integer.parseInt(params[5]) - 1900,
+                                            Integer.parseInt(params[4]) - 1,
+                                            Integer.parseInt(params[3])));
+                    }
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-
-            }
-            return null;
+            return result;
         }
 
         @Override
