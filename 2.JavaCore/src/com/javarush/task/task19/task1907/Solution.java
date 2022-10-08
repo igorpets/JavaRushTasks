@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 3. Программа должна считывать содержимое файла (используй FileReader c конструктором принимающим String).
 4. Поток чтения из файла (FileReader) должен быть закрыт.
 5. Программа должна выводить в консоль количество слов "world", которые встречаются в файле.
+
+Ex: world/.we,world,!retr,;eerrrr,world,&deervf,!world1,
 */
 
 public class Solution {
