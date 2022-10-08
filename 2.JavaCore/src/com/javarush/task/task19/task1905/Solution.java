@@ -13,14 +13,14 @@ UA Ukraine
 RU Russia
 CA Canada
 
-1. Класс Solution должен содержать public static поле countries типа Map<String, String>.
-2. В статическом блоке класса Solution инициализируй поле countries тестовыми данными согласно заданию.
-3. Класс Solution должен содержать интерфейс RowItem.
-4. Класс Solution должен содержать интерфейс Contact.
-5. Класс Solution должен содержать интерфейс Customer.
-6. Класс DataAdapter должен реализовывать интерфейс RowItem.
-7. Класс DataAdapter должен содержать два приватных поля: customer типа Customer и contact Contact.
-8. Класс DataAdapter должен содержать конструктор с параметрами (Customer customer, Contact contact), который
+1. +Класс Solution должен содержать public static поле countries типа Map<String, String>.
+2. +В статическом блоке класса Solution инициализируй поле countries тестовыми данными согласно заданию.
+3. +Класс Solution должен содержать интерфейс RowItem.
+4. +Класс Solution должен содержать интерфейс Contact.
+5. +Класс Solution должен содержать интерфейс Customer.
+6. +Класс DataAdapter должен реализовывать интерфейс RowItem.
+7. +Класс DataAdapter должен содержать два приватных поля: customer типа Customer и contact Contact.
+8. +Класс DataAdapter должен содержать конструктор с параметрами (Customer customer, Contact contact), который
    инициализирует поля contact и customer.
 9. В классе DataAdapter реализуй методы интерфейса RowItem используя подсказки в виде комментариев в интерфейсах.
 */
@@ -28,12 +28,76 @@ CA Canada
 public class Solution {
     public static Map<String, String> countries = new HashMap<String, String>();
 
-    public static void main(String[] args) {
-
+    static {
+        countries.put("UA", "Ukraine");
+        countries.put("RU", "Russia");
+        countries.put("CA", "Canada");
     }
 
-    public static class DataAdapter {
+    public static void main(String[] args) {
+        Customer customer = new Customer() {
+            @Override
+            public String getCompanyName() {
+                return "JavaRush Ltd.";
+            }
+
+            @Override
+            public String getCountryName() {
+                return "Ukraine";
+            }
+        };
+
+        Contact contact = new Contact() {
+            @Override
+            public String getName() {
+                return "Ivanov, Ivan";
+            }
+
+            @Override
+            public String getPhoneNumber() {
+                return "+380(50)123-4567";
+            }
+        };
+
+        DataAdapter dataAdapter = new DataAdapter(customer, contact);
+        System.out.println(dataAdapter.getCountryCode());
+        System.out.println(dataAdapter.getCompany());
+        System.out.println(dataAdapter.getContactFirstName());
+        System.out.println(dataAdapter.getContactLastName());
+        System.out.println(dataAdapter.getDialString());
+    }
+
+    public static class DataAdapter implements  RowItem{
+        private Customer customer;
+        private Contact contact;
         public DataAdapter(Customer customer, Contact contact) {
+            this.customer = customer;
+            this.contact = contact;
+        }
+
+        @Override
+        public String getCountryCode() {
+            return null;
+        }
+
+        @Override
+        public String getCompany() {
+            return null;
+        }
+
+        @Override
+        public String getContactFirstName() {
+            return null;
+        }
+
+        @Override
+        public String getContactLastName() {
+            return null;
+        }
+
+        @Override
+        public String getDialString() {
+            return null;
         }
     }
 
