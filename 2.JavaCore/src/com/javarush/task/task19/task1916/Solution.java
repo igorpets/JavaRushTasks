@@ -37,6 +37,7 @@ public class Solution {
                 if (!line.equals(""))
                     list2.add(line);
             int index1, index2;
+
             //while (index)
         } catch (IOException e) {
         }
