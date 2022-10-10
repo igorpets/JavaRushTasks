@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 Пример:
 Info about Leela <span xml:lang="en" lang="en"><b><span>Turanga Leela
-</span></b></span><span>Super</span><span>girl</span>
+</span></b></span><span>Super</span><span>girl</span>ewe ere
 
 Первым параметром в метод main приходит тег. Например, "span".
 Вывести на консоль все теги, которые соответствуют заданному тегу.
@@ -47,25 +47,50 @@ public class Solution {
     public static void main(String[] args) {
         if (args.length < 1) return;
         String tag = args[0];
+        int tag_len = tag.length() + 2;
         try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
              BufferedReader reader = new BufferedReader(new FileReader(console.readLine()))) {
             String line;
             String str = "";
-            String result = "";
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                str += line.trim()+" ";
+                str += line.trim() + " ";
             }
             int index1;
             int index2;
-            index1 = str.indexOf("<"+tag+">");
-            index2 = str.indexOf("</"+tag+">");
-            if (index1>=0 && index2>0) {
+            index1 = str.indexOf("<" + tag);
+            index2 = str.indexOf("</" + tag + ">");
+            if (index1 >= 0 && index2 > 0) {
                 str = str.substring(index1);
-                int count = 0;
-                int curr = 0;
-                while (count>0 || index2>=0){
-
+                int count = 1;
+                int curr = tag_len;
+                while (count > 0 || index2 >= 0) {
+                    index1 = str.indexOf("<" + tag, curr);
+                    index2 = str.indexOf("</" + tag + ">", curr);
+                    if (index1 < 0 && index2 > 0 && count == 1) {
+                        // Последний закрывающий тег.
+                        System.out.println(str.substring(0, index2 + tag_len + 1));
+                        break;
+                    } else if (index1 > 0 && index2 > 0 && index1 > index2 && count > 1) {
+                        // Закрывающий тег.
+                        System.out.println(str.substring(0, index2 + tag_len + 1));
+                        str = str.substring(index1);
+                        count--;
+                    } else if (count > 0 && index1 > 0 && index2 > 0 && index1 < index2) {
+                        // Вложенный тег.
+                        curr = index1 + tag_len;
+                        count++;
+                    } else if (count > 1 && index1 > 0 && index2 > 0 && index1 > index2) {
+                        // Закрываем вложенный тег.
+                        curr = index1 + tag_len;
+                        count++;
+                    } else if (count == 0 && index1 > 0 && index2 > 0 && index1 < index2) {
+                        // новый тег.
+                        str = str.substring(index1);
+                        count = 1;
+                    } else {
+                        break;
+                    }
                 }
             }
         } catch (IOException e) {
