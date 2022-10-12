@@ -56,6 +56,7 @@ public class Solution {
                 line = line.trim();
                 str += line.trim() + " ";
             }
+            ArrayList<Integer> first = new ArrayList<>();
             int index1;
             int index2;
             index1 = str.indexOf("<" + tag);
@@ -64,29 +65,43 @@ public class Solution {
                 str = str.substring(index1);
                 int count = 1;
                 int curr = tag_len;
+                String curr_lines = null;
                 while (count > 0 || index2 >= 0) {
                     index1 = str.indexOf("<" + tag, curr);
                     index2 = str.indexOf("</" + tag + ">", curr);
-                    if (index1 < 0 && index2 > 0 && count == 1) {
-                        // Последний закрывающий тег.
+                    if (index1 < 0 && index2 >= 0 && count == 1) {
+                        // Последний закрывающий тег в файле.
                         System.out.println(str.substring(0, index2 + tag_len + 1));
+                        if (curr_lines != null)
+                            System.out.println(curr_lines);
                         break;
-                    } else if (index1 > 0 && index2 > 0 && index1 > index2 && count > 1) {
-                        // Закрывающий тег.
-                        System.out.println(str.substring(0, index2 + tag_len + 1));
-                        str = str.substring(index1);
+                    } else if (index2 >= 0 && count > 1 && ((index1 < 0) || (index1 >= 0 && index1 > index2))) {
+                        // Очередной закрывающий тег.
+                        curr = index2 + tag_len + 1;
+                        line = str.substring(first.remove(first.size() - 1), index2 + tag_len + 1);
+                        if (curr_lines != null) curr_lines = line + "\n" + curr_lines;
+                        else curr_lines = line;
                         count--;
-                    } else if (count > 0 && index1 > 0 && index2 > 0 && index1 < index2) {
+                    } else if (index1 >= 0 && count == 1 && ((index1 < 0) || (index2 >= 0 && index1 > index2))) {
+                        // Последний закрывающий тег в строке.
+                        curr = index2 + tag_len + 1;
+                        System.out.println(str.substring(0, curr));
+                        if (curr_lines != null) {
+                            System.out.println(curr_lines);
+                            curr_lines = null;
+                        }
+                        str = str.substring(curr);
+                        curr = 0;
+                        count = 0;
+                    } else if (count > 0 && index1 >= 0 && index2 >= 0 && index1 < index2) {
                         // Вложенный тег.
                         curr = index1 + tag_len;
+                        first.add(index1);
                         count++;
-                    } else if (count > 1 && index1 > 0 && index2 > 0 && index1 > index2) {
-                        // Закрываем вложенный тег.
-                        curr = index1 + tag_len;
-                        count++;
-                    } else if (count == 0 && index1 > 0 && index2 > 0 && index1 < index2) {
-                        // новый тег.
+                    } else if (count == 0 && index1 >= 0 && index2 >= 0 && index1 < index2) {
+                        // Первый тег в строке.
                         str = str.substring(index1);
+                        curr = tag_len;
                         count = 1;
                     } else {
                         break;
