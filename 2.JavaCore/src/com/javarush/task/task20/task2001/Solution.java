@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /* 
 Читаем и пишем в файл: Human
@@ -30,6 +31,8 @@ public class Solution {
             somePerson.load(inputStream);
             inputStream.close();
             //check here that ivanov equals to somePerson - проверьте тут, что ivanov и somePerson равны
+            if (ivanov.equals(somePerson)) System.out.println("OK");
+            else System.out.println("ERROR");
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -74,10 +77,40 @@ public class Solution {
 
         public void save(OutputStream outputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            PrintWriter writer = new PrintWriter(outputStream);
+            writer.println(name);
+            if (assets.size()>0) {
+                for (Asset asset:assets){
+                    if (asset != null){
+                        writer.println(asset.getName());
+                        writer.println(asset.getPrice());
+                    }
+                }
+            }
+            writer.println("EndOfHumanFile_ABCD");
+            writer.flush();
+            writer.close();
         }
 
         public void load(InputStream inputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            Scanner reader = new Scanner(inputStream);
+            if (reader.hasNextLine()) {
+                this.name = reader.nextLine();
+                if (this.name.equals("null")) this.name = null;
+            }
+
+            while(reader.hasNextLine()) {
+                String line1 = reader.nextLine();
+                if (!line1.equals("EndOfHumanFile_ABCD")) {
+                    if (reader.hasNextLine()){
+                        if (line1.equals("null"))
+                            line1 = null;
+                        assets.add(new Asset(line1, Double.parseDouble(reader.nextLine())));
+                    }
+                }
+            }
+            reader.close();
         }
     }
 }
