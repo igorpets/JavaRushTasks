@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 /* 
 Читаем и пишем в файл: JavaRush
@@ -29,21 +30,30 @@ public class Solution {
 
             JavaRush javaRush = new JavaRush();
             //initialize users field for the javaRush object here - инициализируйте поле users для объекта javaRush тут
+            User user = new User();
+            user.setFirstName("Ivan");
+            user.setLastName("Петров");
+            user.setBirthDate(new Date("10/10/2000"));
+            user.setMale(Boolean.parseBoolean("true"));
+            user.setCountry(User.Country.RUSSIA);
+            javaRush.users.add(user);
             javaRush.save(outputStream);
             outputStream.flush();
 
             JavaRush loadedObject = new JavaRush();
             loadedObject.load(inputStream);
             //here check that the javaRush object is equal to the loadedObject object - проверьте тут, что javaRush и loadedObject равны
+            if (javaRush.equals(loadedObject)) System.out.println("OK");
+            else System.out.println("ERROR");
 
             outputStream.close();
             inputStream.close();
 
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Oops, something is wrong with my file");
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Oops, something is wrong with the save/load method");
         }
     }
@@ -53,10 +63,45 @@ public class Solution {
 
         public void save(OutputStream outputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            PrintWriter writer = new PrintWriter(outputStream);
+            if (users.size() > 0) {
+                for (User user : users) {
+                    if (user != null) {
+                        writer.println(user.getFirstName());
+                        writer.println(user.getLastName());
+                        writer.println(user.getBirthDate().getTime());
+                        writer.println(user.isMale());
+                        writer.println(user.getCountry().toString());
+                    }
+                }
+            }
+            writer.flush();
+            writer.close();
         }
 
         public void load(InputStream inputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            Scanner reader = new Scanner(inputStream);
+            String fname;
+            String lname;
+            String bdate;
+            String is_male;
+            String country;
+            while (reader.hasNextLine()) {
+                fname = reader.nextLine();
+                lname = reader.nextLine();
+                bdate = reader.nextLine();
+                is_male = reader.nextLine();
+                country = reader.nextLine();
+                User user = new User();
+                user.setFirstName(fname);
+                user.setLastName(lname);
+                user.setBirthDate(new Date(Long.parseLong(bdate)));
+                user.setMale(Boolean.parseBoolean(is_male));
+                user.setCountry(User.Country.valueOf(country));
+                users.add(user);
+            }
+            reader.close();
         }
 
         @Override
@@ -76,3 +121,5 @@ public class Solution {
         }
     }
 }
+/*
+ */
