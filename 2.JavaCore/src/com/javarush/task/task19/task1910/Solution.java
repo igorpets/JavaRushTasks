@@ -2,6 +2,7 @@ package com.javarush.task.task19.task1910;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /* 
 Пунктуация
@@ -16,5 +17,25 @@ import java.util.ArrayList;
 
 public class Solution {
     public static void main(String[] args) {
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+             BufferedReader reader = new BufferedReader(new FileReader(console.readLine()));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(console.readLine()))) {
+            String line;
+            /*
+            while ((line = reader.readLine()) != null) {
+                writer.write(line.chars()
+                        .filter(Character::isLetterOrDigit)
+                        .mapToObj(i -> String.valueOf((char) i))
+                        .collect(Collectors.joining()));
+            }
+            */
+            while (reader.ready()) {
+                int c = reader.read();
+                if (c >= 48 && c <= 57 || c >= 65 && c <= 90 || c >= 97 && c <= 122 || c == 32) {
+                    writer.write(c);
+                }
+            }
+        } catch (IOException e) {
+        }
     }
 }
