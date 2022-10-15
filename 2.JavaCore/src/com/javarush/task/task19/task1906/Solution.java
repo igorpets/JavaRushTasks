@@ -24,5 +24,17 @@ eti ie
 
 public class Solution {
     public static void main(String[] args) {
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+             FileReader reader = new FileReader(console.readLine());
+             FileWriter writer = new FileWriter(console.readLine())) {
+            int number = 1;
+            while (reader.ready()) {
+                int data = reader.read();
+                if (number % 2 == 0)
+                    writer.write(data);
+                number++;
+            }
+        } catch (Exception e) {
+        }
     }
 }
