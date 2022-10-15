@@ -21,6 +21,9 @@ public class Solution {
             byte[] buff = new byte[reader1.available()];
             int count = reader1.read(buff);
             writer1.write(buff, 0, count);
+            buff = new byte[reader2.available()];
+            count = reader2.read(buff);
+            writer1.write(buff, 0, count);
         } catch (Exception e) {
         }
     }
