@@ -12,8 +12,8 @@ TableAdapter
 +3. Класс Solution должен содержать public static класс TableAdapter.
 +4. Класс TableAdapter должен реализовывать интерфейс BTable.
 +5. Класс TableAdapter должен содержать приватное поле aTable типа ATable.
-6. Класс TableAdapter должен содержать конструктор с параметром ATable.
-7. Класс TableAdapter должен переопределять метод getHeaderText согласно заданию.
++6. Класс TableAdapter должен содержать конструктор с параметром ATable.
++7. Класс TableAdapter должен переопределять метод getHeaderText согласно заданию.
 */
 
 public class Solution {
@@ -37,11 +37,13 @@ public class Solution {
 
     public static class TableAdapter implements BTable {
         private ATable aTable;
-        public TableAdapter(ATable aTable){
 
+        public TableAdapter(ATable aTable) {
+            this.aTable = aTable;
         }
+
         public String getHeaderText() {
-            return "";
+            return "[" + aTable.getCurrentUserName() + "] : " + aTable.getTableName();
         }
     }
 
