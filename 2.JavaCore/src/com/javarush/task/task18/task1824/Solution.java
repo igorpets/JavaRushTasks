@@ -1,6 +1,7 @@
 package com.javarush.task.task18.task1824;
 
 import java.io.*;
+import java.util.Scanner;
 
 /* 
 Файлы и исключения
@@ -14,5 +15,23 @@ import java.io.*;
 
 public class Solution {
     public static void main(String[] args) {
+        String fname="";
+        FileReader reader = null;
+        try (Scanner scan = new Scanner(System.in)){
+            while(true) {
+                fname = scan.nextLine();
+                reader = new FileReader(fname);
+                reader.close();
+            }
+        } catch (FileNotFoundException e1){
+            System.out.println(fname);
+            if (reader != null)
+                try {
+                    reader.close();
+                } catch (Exception e) {}
+            return;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
