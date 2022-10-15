@@ -1,6 +1,7 @@
 package com.javarush.task.task20.task2003;
 
 import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,13 +24,29 @@ public class Solution {
 
     public static void save(OutputStream outputStream) throws Exception {
         //напишите тут ваш код
+        Properties prop = new Properties();
+        prop.putAll(runtimeStorage);
+        prop.store(outputStream, new Date().toString());
     }
 
     public static void load(InputStream inputStream) throws IOException {
         //напишите тут ваш код
+        Properties prop = new Properties();
+        prop.load(inputStream);
+        runtimeStorage = new HashMap(prop);
     }
 
     public static void main(String[] args) {
+        if (true) {
+            runtimeStorage.put("A100", "Петр Иванов");
+            runtimeStorage.put("A120", "Максим Шабанов");
+            runtimeStorage.put("A140", "Алексей Маликов");
+            try (FileOutputStream fos = new FileOutputStream("prop.txt")) {
+                save(fos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
              FileInputStream fos = new FileInputStream(reader.readLine())) {
             load(fos);
