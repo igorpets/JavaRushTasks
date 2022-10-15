@@ -21,5 +21,14 @@ import java.util.ArrayList;
 
 public class Solution {
     public static void main(String[] args) {
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+             BufferedReader reader = new BufferedReader(new FileReader(console.readLine()));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(console.readLine()))){
+            while (reader.ready()){
+                char chr = (char)reader.read();
+                if (chr == '.') chr = '!';
+                writer.write(chr);
+            }
+        }catch (IOException e){}
     }
 }
