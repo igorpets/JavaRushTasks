@@ -13,10 +13,10 @@ import java.io.*;
 
 
 Requirements:
-1. Класс Solution.Singleton должен поддерживать интерфейс Serializable.
-2. В классе Solution.Singleton должен быть реализован метод readResolve без параметров.
-3. Метод readResolve должен возвращать синглтон (ourInstance).
-4. Метод readResolve должен быть приватным.
++1. Класс Solution.Singleton должен поддерживать интерфейс Serializable.
++2. В классе Solution.Singleton должен быть реализован метод readResolve без параметров.
++3. Метод readResolve должен возвращать синглтон (ourInstance).
++4. Метод readResolve должен быть приватным.
 5. В классе Solution должен быть публичный статический метод serializeSingletonInstance.
 6. После десериализации ссылки на объекты должны быть равны.
 */
@@ -33,7 +33,7 @@ public class Solution implements Serializable {
         System.out.println("Проверка ourInstance : " + singleton.getInstance());
         System.out.println("Проверка ourInstance : " + singleton1.getInstance());
         System.out.println("=========================================================");
-        System.out.println("Проверка singleton : " + singleton);
+        System.out.println("Проверка singleton  : " + singleton);
         System.out.println("Проверка singleton1 : " + singleton1);
     }
 
@@ -68,6 +68,9 @@ public class Solution implements Serializable {
         }
 
         private Singleton() {
+        }
+        private Object readResolve(){
+            return ourInstance;
         }
     }
 }
