@@ -7,10 +7,15 @@ import java.io.Serializable;
 
 /* 
 Переопределение сериализации
+1. Класс Solution должен поддерживать интерфейс Serializable.
+2. Класс Solution должен поддерживать интерфейс Runnable.
+3. Поле runner в классе Solution должно быть объявлено с модификатором transient.
+4. В методе readObject должен быть создан новый объект типа Thread с текущим объектом в качестве параметра.
+5. В методе readObject должен быть вызван метод start у нового объекта типа Thread.
 */
 
-public class Solution implements {
-    private Thread runner;
+public class Solution implements Serializable,Runnable{
+    transient private Thread runner;
     private int speed;
 
     public Solution(int speed) {
@@ -36,6 +41,8 @@ public class Solution implements {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        runner = new Thread(this);
+        runner.start();
     }
 
     public static void main(String[] args) {
