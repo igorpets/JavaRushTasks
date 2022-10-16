@@ -5,6 +5,18 @@ import java.io.PrintStream;
 
 /* 
 Контекстная реклама
+1. Класс Solution должен содержать класс TestString.
+2. Класс Solution должен содержать публичное статическое поле testString типа TestString, которое сразу
+   проинициализировано.
+3. Класс TestString должен содержать публичный void метод printSomething().
+4. Метод printSomething() класса TestString должен выводить на экран строки: "first","second","third","fourth","fifth".
+5. Метод main(String[] args) класса Solution должен создавать поток PrintStream (используй PrintStream
+   c конструктором принимающим ByteArrayOutputStream).
+6. Метод main(String[] args) класса Solution должен подменять и восстанавливать поток вывода в консоль
+   объекта System.out.
+7. Метод main(String[] args) класса Solution должен вызывать метод printSomething(),объекта testString.
+8. Метод main(String[] args) класса Solution должен модифицировать строки(вставлять контекстную рекламу) выведенные
+   методом printSomething() согласно заданию, и выводить её в консоль.
 */
 
 public class Solution {
