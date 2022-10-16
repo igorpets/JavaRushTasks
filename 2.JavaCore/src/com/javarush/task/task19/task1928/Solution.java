@@ -6,6 +6,11 @@ import java.io.InputStream;
 
 /* 
 Исправить ошибку. Классы и интерфейсы
+1. Класс Solution должен содержать интерфейс Example.
+2. Класс Solution должен содержать класс A который реализует интерфейс Example.
+3. Класс Solution должен содержать класс B который реализует интерфейс Example.
+4. Класс Solution должен содержать класс C который наследуется от класса A.
+5. Исправь всего одну логическую ошибку.
 */
 
 public class Solution {
@@ -42,7 +47,7 @@ public class Solution {
                 }
             }
 
-            if (result instanceof A) {
+            if (result instanceof C) {
                 C p = (C) result;
                 System.out.println(p.getClass().getSimpleName());
             }
