@@ -33,9 +33,9 @@ public class Solution {
         System.out.println(new Solution(4));
     }
 
-    private final String pattern = "dd MMMM yyyy, EEEE";
-    private Date currentDate;
-    private int temperature;
+    transient private final String pattern = "dd MMMM yyyy, EEEE";
+    transient private Date currentDate;
+    transient private int temperature;
     String string;
 
     public Solution(int temperature) {
