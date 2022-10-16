@@ -8,6 +8,14 @@ import java.util.List;
 
 /* 
 Externalizable Person
+Класс Person должен сериализовываться с помощью интерфейса Externalizable.
+Исправь ошибку сериализации.
+Сигнатуры методов менять нельзя.
+
+1. В классе Solution.Person должен быть создан публичный конструктор без параметров.
+2. В классе Solution.Person должен быть создан конструктор с тремя параметрами (String firstName, String lastName, int age).
+3. Класс Solution.Person должен поддерживать интерфейс Externalizable.
+4. Методы readExternal и writeExternal должны позволять корректно сериализовывать и десериализовывать объекты типа Person.
 */
 
 public class Solution {
