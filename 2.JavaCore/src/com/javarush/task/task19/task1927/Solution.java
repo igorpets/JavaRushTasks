@@ -23,6 +23,24 @@ public class Solution {
     public static TestString testString = new TestString();
 
     public static void main(String[] args) {
+        PrintStream original_out = System.out;
+        ByteArrayOutputStream my_out = new ByteArrayOutputStream();
+        PrintStream my_print = new PrintStream(my_out);
+        System.setOut(my_print);
+        testString.printSomething();
+        //**********
+        String[] lines = my_out.toString().split("\\r?\\n");
+        int count = 0;
+        for (String line:lines){
+            count++;
+            original_out.println(line);
+            if (count>=2){
+                original_out.println("JavaRush - курсы Java онлайн");
+                count = 0;
+            }
+        }
+        //**********
+        System.setOut(original_out);
     }
 
     public static class TestString {
