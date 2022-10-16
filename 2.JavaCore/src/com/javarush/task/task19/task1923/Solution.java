@@ -1,9 +1,6 @@
 package com.javarush.task.task19.task1923;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /* 
 Слова с цифрами
@@ -16,6 +13,20 @@ import java.io.IOException;
 
 public class Solution {
     public static void main(String[] args) {
-
+        if (args.length < 2) return;
+        try (BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]))) {
+            String line;
+            while ((line = reader.readLine())!= null){
+                //System.out.println(line);
+                String[] words = line.split(" ");
+                for (String word: words){
+                    if (word.matches("\\S*\\d\\S*")){
+                        writer.write(word+" ");
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 }
