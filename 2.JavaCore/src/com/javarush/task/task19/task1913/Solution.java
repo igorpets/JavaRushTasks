@@ -1,10 +1,10 @@
-package com.javarush.task.task19.task1912;
+package com.javarush.task.task19.task1913;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /* 
-Ридер обертка 2
+Выводим только цифры
 */
 
 public class Solution {
@@ -17,7 +17,7 @@ public class Solution {
         System.setOut(my_print);
         testString.printSomething();
         //**********
-        String orig_text = my_out.toString().replaceAll("te","??");
+        String orig_text = my_out.toString().replaceAll("\\D","");
         //**********
         original_out.println(orig_text);
         System.setOut(original_out);
@@ -25,7 +25,7 @@ public class Solution {
 
     public static class TestString {
         public void printSomething() {
-            System.out.println("it's a text for testing");
+            System.out.println("it's 1 a 23 text 4 f5-6or7 tes8ting");
         }
     }
 }
