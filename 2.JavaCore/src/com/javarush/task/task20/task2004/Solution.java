@@ -1,6 +1,8 @@
 package com.javarush.task.task20.task2004;
 
 import java.io.*;
+import java.util.Date;
+import java.util.Properties;
 
 /* 
 Читаем и пишем в файл статики
@@ -22,25 +24,30 @@ public class Solution {
         //вы можете найти your_file_name.tmp в папке TMP или исправьте outputStream/inputStream в соответствии с путем к вашему реальному файлу
         try {
 
-            File yourFile = File.createTempFile("your_file_name", null);
-            OutputStream outputStream = new FileOutputStream(yourFile);
-            InputStream inputStream = new FileInputStream(yourFile);
 
             ClassWithStatic classWithStatic = new ClassWithStatic();
             classWithStatic.i = 3;
             classWithStatic.j = 4;
+
+            File yourFile = File.createTempFile("prop", null);
+            OutputStream outputStream = new FileOutputStream(yourFile);
             classWithStatic.save(outputStream);
             outputStream.flush();
+            outputStream.close();
+
 
             ClassWithStatic loadedObject = new ClassWithStatic();
             loadedObject.staticString = "something";
             loadedObject.i = 6;
             loadedObject.j = 7;
 
+            InputStream inputStream = new FileInputStream(yourFile);
             loadedObject.load(inputStream);
             //here check that the classWithStatic object is equal to the loadedObject object - проверьте тут, что classWithStatic и loadedObject равны
-
-            outputStream.close();
+            if (loadedObject.equals(classWithStatic) && ClassWithStatic.staticString.equals("This is a static test string"))
+                System.out.println("OK");
+            else
+                System.out.println("ERROR");
             inputStream.close();
 
         } catch (IOException e) {
@@ -59,10 +66,20 @@ public class Solution {
 
         public void save(OutputStream outputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            Properties prop = new Properties();
+            prop.put("staticString", staticString);
+            prop.put("var_i", String.valueOf(i));
+            prop.put("var_j", String.valueOf(j));
+            prop.store(outputStream, new Date().toString());
         }
 
         public void load(InputStream inputStream) throws Exception {
             //implement this method - реализуйте этот метод
+            Properties prop = new Properties();
+            prop.load(inputStream);
+            staticString = prop.getProperty("staticString");
+            i = Integer.parseInt(prop.getProperty("var_i"));
+            j = Integer.parseInt(prop.getProperty("var_j"));
         }
 
         @Override
