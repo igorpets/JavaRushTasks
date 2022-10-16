@@ -7,6 +7,10 @@ import java.util.List;
 
 /* 
 Как сериализовать?
+1. Класс Human должен существовать внутри класса Solution.
+2. Класс Human должен быть статическим.
+3. Класс Human должен быть публичным.
+4. Класс Human должен поддерживать интерфейс Serializable.
 */
 
 public class Solution {
