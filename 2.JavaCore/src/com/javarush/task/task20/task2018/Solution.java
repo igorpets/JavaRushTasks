@@ -2,7 +2,7 @@ package com.javarush.task.task20.task2018;
 
 import java.io.*;
 
-/* 
+/*
 Найти ошибки
 1. Класс B должен быть потомком класса A.
 2. Класс B должен поддерживать интерфейс Serializable.
@@ -12,11 +12,11 @@ import java.io.*;
 6. При десериализации должны корректно восстанавливаться значение полей nameA и nameB.
 */
 
-public class Solution {
+public class Solution implements Serializable {
     public static class A {
-
         protected String nameA = "A";
-
+        public A() {
+        }
         public A(String nameA) {
             this.nameA += nameA;
         }
@@ -26,10 +26,25 @@ public class Solution {
 
         private String nameB;
 
+        public B() {
+        }
+
         public B(String nameA, String nameB) {
             super(nameA);
             this.nameA += nameA;
             this.nameB = nameB;
+        }
+
+        private void writeObject(ObjectOutputStream out) throws IOException {
+            out.defaultWriteObject();
+            out.writeObject(nameA);
+            out.writeObject(nameB);
+        }
+
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            nameA = (String)in.readObject();
+            nameB = (String)in.readObject();
         }
     }
 
