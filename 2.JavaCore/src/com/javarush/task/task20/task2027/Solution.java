@@ -25,15 +25,35 @@ same - (1, 1) - (4, 1)
     }
 
     public static List<Word> detectAllWords(int[][] crossword, String... words) {
-        for (String word:words){
+        ArrayList<Word> result = new ArrayList<>();
+        for (String word : words) {
             char first = word.charAt(0);
+            char second = word.charAt(1);
+            int len_y = crossword.length;
+            int len_x = crossword[0].length;
             int delta_x;
             int delta_y;
-            for (int y=0;y<crossword.length; y++)
-                for(int x=0; x<crossword[y].length;x++){
+            boolean go = true;
+            for (int y = 0; go && (y < len_y); y++)
+                for (int x = 0; go && (x < len_x); x++) {
                     if (crossword[y][x] == first) {
-                        for (int dy=Math.max(0, y-1); dy<Math.max(crossword.length, y+1);dy++)
-                            ;//for
+                        for (int ny = Math.max(0, y - 1); go && (ny < Math.max(len_y, y + 1)); ny++)
+                            for (int nx = Math.max(0, x - 1); go && (nx < Math.max(len_x, y + 1)); nx++) {
+                                if (crossword[ny][nx] == second) {
+                                    System.out.println(x + " " + y + " " + nx + " " + ny);
+                                    delta_x = nx - x;
+                                    delta_y = ny - y;
+                                    for (int next_index = 2; next_index < word.length(); next_index++) {
+                                        if (crossword[y + delta_y * next_index][x + delta_x * next_index] != word.charAt(next_index)) {
+                                            Word res_word = new Word(word);
+                                            res_word.setStartPoint(x, y);
+                                            res_word.setEndPoint(x + delta_x * (word.length() - 1), y + delta_y * (word.length() - 1));
+                                            result.add(res_word);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                     }
                 }
         }
