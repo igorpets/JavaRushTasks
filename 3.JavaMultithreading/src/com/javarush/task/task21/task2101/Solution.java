@@ -44,7 +44,7 @@ public class Solution {
         for (byte b : bytes) {
             int b2 = b & 0xFF;
             String s2 = String.format("%8s", Integer.toBinaryString(b2)).replace(' ', '0');
-            System.out.print(space+s2);
+            System.out.print(space + s2);
             space = " ";
         }
         System.out.println();
