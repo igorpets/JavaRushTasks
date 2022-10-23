@@ -5,6 +5,18 @@ import java.lang.reflect.Modifier;
 
 /* 
 Сравниваем модификаторы
+Реализовать логику метода isModifierSet, который проверяет, содержит ли переданный параметр allModifiers значение
+конкретного модификатора specificModifier.
+
+P.S. Перед выполнением задания ознакомься с классом Modifier и реализацией методов isPublic, isStatic и т.п.
+
+
+Requirements:
++1. Метод isModifierSet должен быть статическим.
++2. Метод isModifierSet должен возвращать значение типа boolean.
++3. Метод isModifierSet должен принимать два параметра типа int.
++4. Метод isModifierSet должен возвращать корректное значение в соответствии с условием задачи
+   (true, если заданный модификатор присутствует в allModifiers, иначе false).
 */
 
 public class Solution {
@@ -18,7 +30,7 @@ public class Solution {
     }
 
     public static boolean isModifierSet(int allModifiers, int specificModifier) {
-        return false;
+        return (allModifiers & specificModifier) >0;
     }
 
     private static Method getMainMethod() {
