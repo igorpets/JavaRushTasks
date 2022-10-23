@@ -26,10 +26,26 @@ public class Solution {
     }
 
     public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this == o) return true;
         if (!(o instanceof Solution))
             return false;
         Solution n = (Solution) o;
-        return n.first.equals(first) && n.last.equals(last);
+        if (first == null) {
+            if (n.first != null) return false;
+        }
+        if (last == null) {
+            if (n.last != null) return false;
+        }
+        if (first == n.first && last == n.last) return true;
+        return first.equals(n.first) && last.equals(n.last);
+    }
+
+    public int hashCode(){
+        int hash = 0;
+        if (first != null) hash = first.hashCode();
+        if (last != null) hash += last.hashCode();
+        return hash;
     }
 
     public static void main(String[] args) {
