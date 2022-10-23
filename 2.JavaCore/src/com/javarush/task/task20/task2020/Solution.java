@@ -14,15 +14,15 @@ import java.util.logging.Logger;
 
 public class Solution {
 
-    public static class Person {
+    public static class Person implements Serializable{
         String firstName;
         String lastName;
-        String fullName;
-        final String greeting;
+        transient String fullName;
+        transient final String greeting;
         String country;
         Sex sex;
-        PrintStream outputStream;
-        Logger logger;
+        transient PrintStream outputStream;
+        transient Logger logger;
 
         Person(String firstName, String lastName, String country, Sex sex) {
             this.firstName = firstName;
