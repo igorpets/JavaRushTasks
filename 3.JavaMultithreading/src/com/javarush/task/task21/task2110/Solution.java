@@ -13,6 +13,12 @@ import java.util.zip.ZipFile;
 
 /* 
 Рефакторинг методов
+Отрефакторите метод writeZipEntriesToFile в соответствии с java7 try-with-resources.
+
+1. Метод writeZipEntriesToFile должен быть объявлен с модификатором доступа public.
+2. Метод writeZipEntriesToFile должен быть статическим.
+3. Тип возвращаемого значения метода writeZipEntriesToFile должен быть void.
+4. Метод writeZipEntriesToFile должен корректно использовать try-with-resources.
 */
 
 public class Solution {
