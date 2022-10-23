@@ -48,15 +48,6 @@ public class Solution {
 
     @Override
     public int hashCode() {
-        /*int result;
-        long temp;
-        result = anInt;
-        result = 31 * result + string.hashCode();
-        temp = aDouble != +0.0d ? Double.doubleToLongBits(aDouble) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + date.hashCode();
-        result = 31 * result + (solution != null ? solution.hashCode() : 0);
-        return result;*/
         return Objects.hash(anInt, aDouble, string, date, solution);
     }
 
