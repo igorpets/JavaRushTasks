@@ -16,7 +16,7 @@ public class Solution {
         Tree tree = new Tree("willow", new String[]{"s1", "s2", "s3", "s4"});
         Tree clone = null;
         try {
-            clone = (Tree)tree.clone();
+            clone = tree.clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class Solution {
             super(name);
             this.branches = branches;
         }
-        public Object clone(){
+        public Tree clone(){
             return new Tree(getName(), branches.clone());
         }
 
