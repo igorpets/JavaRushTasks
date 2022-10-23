@@ -14,7 +14,8 @@ package com.javarush.task.task20.task2026;
 1. В классе Solution должен существовать метод getRectangleCount с одним параметром типа byte[][].
 2. Метод getRectangleCount должен быть публичным.
 3. Метод getRectangleCount должен быть статическим.
-4. Метод getRectangleCount должен возвращать количество прямоугольников (в соответствии с заданием) найденное в полученном массиве.
+4. Метод getRectangleCount должен возвращать количество прямоугольников (в соответствии с заданием) найденное
+   в полученном массиве.
 */
 
 public class Solution {
@@ -39,6 +40,19 @@ public class Solution {
     }
 
     public static int getRectangleCount(byte[][] a) {
-        return 0;
+        int rect_count = 0;
+        byte[] prev_line = new byte[a[0].length];
+        for (int y=0; y<a.length;y++) {
+            int prev_x_val = 0;
+            for (int x=0;x<a[y].length;x++){
+                if (prev_x_val==0 && a[y][x]==1 && prev_line[x]==0) {
+                    rect_count++;
+                }
+                prev_x_val = a[y][x];
+            }
+            prev_line = a[y];
+        }
+
+        return rect_count;
     }
 }
