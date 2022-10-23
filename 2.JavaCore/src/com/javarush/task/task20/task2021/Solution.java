@@ -16,6 +16,12 @@ import java.io.*;
 
 public class Solution implements Serializable {
     public static class SubSolution extends Solution {
+        public void writeObject(ObjectOutputStream out) throws NotSerializableException {
+            throw new NotSerializableException();
+        }
+        private void readObject(ObjectInputStream in) throws NotSerializableException {
+            throw new NotSerializableException();
+        }
     }
 
     public static void main(String[] args) {
