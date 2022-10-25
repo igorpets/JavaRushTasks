@@ -45,6 +45,12 @@ public class Hippodrome {
     }
 
     public void print() {
-
+        for (Horse horse:horses) {
+            if (horse != null){
+                horse.print();
+            }
+        }
+        for (int i = 0; i < 10; i++)
+            System.out.println();
     }
 }
