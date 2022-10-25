@@ -36,7 +36,12 @@ public class Hippodrome {
     }
 
     public void move() {
-
+        for (Horse horse:horses) {
+            if (horse != null){
+                horse.move();
+                horse.print();
+            }
+        }
     }
 
     public void print() {
