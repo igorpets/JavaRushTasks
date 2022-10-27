@@ -5,6 +5,7 @@ package com.javarush.task.task21.task2113;
  */
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Hippodrome {
@@ -14,7 +15,7 @@ public class Hippodrome {
     public static void main(String[] args) throws InterruptedException {
         List<Horse> h = new ArrayList<>();
         h.add(new Horse("Олень", 3, 0));
-        h.add(new Horse("Бегун>", 3, 0));
+        h.add(new Horse("Бегун", 3, 0));
         h.add(new Horse("Мотильда", 3, 0));
         game = new Hippodrome(h);
         game.run();
@@ -34,24 +35,40 @@ public class Hippodrome {
             print();
             Thread.sleep(200);
         }
+        printWinner();
     }
 
     public void move() {
-        for (Horse horse:horses) {
-            if (horse != null){
+        for (Horse horse : horses) {
+            if (horse != null)
                 horse.move();
-                horse.print();
-            }
         }
     }
 
     public void print() {
-        for (Horse horse:horses) {
-            if (horse != null){
+        for (Horse horse : horses) {
+            if (horse != null)
                 horse.print();
-            }
         }
         for (int i = 0; i < 10; i++)
             System.out.println();
+    }
+
+    public Horse getWinner() {
+        if (horses == null || horses.size() == 0) return null;
+        Horse winner = null;
+        for (Horse horse : horses) {
+            if (winner == null || (horse != null && winner.getDistance() < horse.getDistance()))
+                winner = horse;
+        }
+        return winner;
+    }
+
+    public void printWinner() {
+        Horse winner = getWinner();
+        if (winner != null)
+            System.out.println("Winner is " + winner.getName() + "!");
+        else
+            System.out.println("Winner is Unknown!");
     }
 }
