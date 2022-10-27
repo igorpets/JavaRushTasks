@@ -19,6 +19,7 @@ public class Hippodrome {
         h.add(new Horse("Мотильда", 3, 0));
         game = new Hippodrome(h);
         game.run();
+        game.printWinner();
     }
 
     public Hippodrome(List<Horse> horses) {
@@ -35,7 +36,6 @@ public class Hippodrome {
             print();
             Thread.sleep(200);
         }
-        printWinner();
     }
 
     public void move() {
