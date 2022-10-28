@@ -13,6 +13,6 @@ public class Solution {
         return null;
     }
 
-    public static class TooShortStringException {
+    public static class TooShortStringException extends RuntimeException{
     }
 }
