@@ -14,15 +14,27 @@ public class OurUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
     }
 
     protected String getFormattedStringForOtherThread(Thread t, Throwable e, String string) {
-        return null;
+        // RuntimeException : java.lang.StringIndexOutOfBoundsException: String index out of range: -1 : 3#
+        String e_name = e.getClass().getSimpleName();
+        String cause = e.getCause().toString();
+        String result = String.format(string, e_name, cause, t.getName());
+        return result;
     }
 
     protected String getFormattedStringForSecondThread(Thread t, Throwable e, String string) {
-        return null;
+        // java.lang.StringIndexOutOfBoundsException: String index out of range: -1 : StringForSecondThreadTooShortException : 2#
+        String e_name = e.getClass().getSimpleName();
+        String cause = e.getCause().toString();
+        String result = String.format(string, cause, e_name, t.getName());
+        return result;
     }
 
     protected String getFormattedStringForFirstThread(Thread t, Throwable e, String string) {
-        return null;
+        // 1# : StringForFirstThreadTooShortException : java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+        String e_name = e.getClass().getSimpleName();
+        String cause = e.getCause().toString();
+        String result = String.format(string, t.getName(), e_name, cause);
+        return result;
     }
 }
 
