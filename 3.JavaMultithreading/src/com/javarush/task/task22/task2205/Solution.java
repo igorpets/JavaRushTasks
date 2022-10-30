@@ -6,10 +6,11 @@ package com.javarush.task.task22.task2205;
 Исправить метод getFormattedString так, чтобы он возвращал строку с параметрами для форматирования.
 Параметры должны меняться местами.
 
-1. Метод getFormattedString должен быть публичным.
-2. Метод getFormattedString должен быть статическим.
++1. Метод getFormattedString должен быть публичным.
++2. Метод getFormattedString должен быть статическим.
 3. Вывод на экран должен соответствовать условию задачи.
 4. Метод getFormattedString должен возвращать строку с параметрами для форматирования согласно условию задачи.
+ %[argument_index$][flags][width][.precision]conversion
 */
 
 public class Solution {
@@ -20,6 +21,6 @@ public class Solution {
     }
 
     public static String getFormattedString() {
-        return "";
+        return "%3$S %4$s %2$s %1$s";
     }
 }
