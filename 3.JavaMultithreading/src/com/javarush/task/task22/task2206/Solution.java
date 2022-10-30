@@ -7,8 +7,8 @@ import java.util.Date;
 
 Исправить метод getFormattedString так, чтобы он возвращал строку с параметрами для форматирования.
 
-1. Метод getFormattedString должен быть публичным.
-2. Метод getFormattedString должен быть статическим.
++1. Метод getFormattedString должен быть публичным.
++2. Метод getFormattedString должен быть статическим.
 3. Вывод на экран должен соответствовать условию задачи.
 4. Метод getFormattedString должен возвращать строку с параметрами для форматирования согласно условию задачи.
 */
@@ -22,6 +22,6 @@ public class Solution {
     }
 
     public static String getFormattedString() {
-        return "";
+        return "%td:%tm:%ty %tH:%tM:%tS";
     }
 }
