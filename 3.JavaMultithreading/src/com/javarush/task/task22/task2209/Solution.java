@@ -1,11 +1,9 @@
 package com.javarush.task.task22.task2209;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /* 
@@ -21,12 +19,48 @@ import java.util.StringTokenizer;
 
 public class Solution {
     public static void main(String[] args) {
-        //...
-        StringBuilder result = getLine();
-        System.out.println(result.toString());
+        try (Scanner scan = new Scanner(System.in);
+             BufferedReader reader = new BufferedReader(new FileReader(scan.nextLine()))) {
+            //...
+            StringBuilder result = getLine(reader.readLine().split(" "));
+            System.out.println(result.toString());
+        } catch (Exception e) {
+        }
     }
 
     public static StringBuilder getLine(String... words) {
-        return null;
+        StringBuilder data = new StringBuilder();
+        if (words != null) {
+            ArrayList<String> list = new ArrayList<>();
+            for (String word : words) {
+                if (word != null && word.length() > 0) {
+                    if (data.length() == 0)
+                        data.append(word);
+                    else
+                        list.add(word);
+                }
+            }
+            int last_size = 0;
+            while (list.size() != 0 && last_size != list.size()) {
+                last_size = list.size();
+                for (int i = 0; i < list.size(); ) {
+                    String word = list.get(i);
+                    //System.out.println(word);
+                    if (Character.toLowerCase(data.charAt(data.length() - 1)) == Character.toLowerCase(word.charAt(0))) {
+                        data.append(" " + word);
+                        list.remove(i);
+                    } else if (Character.toLowerCase(data.charAt(0)) == Character.toLowerCase(word.charAt(word.length() - 1))) {
+                        data.insert(0, word + " ");
+                        list.remove(i);
+                    } else {
+                        i++;
+                    }
+                }
+            }
+            for (String word : list) {
+                data.append(" " + word);
+            }
+        }
+        return data;
     }
 }
