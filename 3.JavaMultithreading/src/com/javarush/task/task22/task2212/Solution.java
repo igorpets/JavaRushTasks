@@ -68,7 +68,7 @@ public class Solution {
 
         System.out.println("\nВсё, что ниже, должно быть TRUE");
         for (int i = 0; i < strs_true.length; i++) {
-            System.out.println(strs_true[i] + " = " + checkTelNumber(strs_true[i]));
+            System.out.println(strs_true[i] + " = " + checkTelNumber2(strs_true[i]));
         }
     }
     public static boolean checkTelNumber(String telNumber) {
