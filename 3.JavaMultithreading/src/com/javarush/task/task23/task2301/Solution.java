@@ -2,6 +2,10 @@ package com.javarush.task.task23.task2301;
 
 /* 
 Запрети наследование
+1. Класс Listener должен быть создан внутри класса Solution.
+2. Класс Listener должен быть публичным.
+3. Класс Listener должен быть статическим.
+4. Должна быть запрещена возможность стать потомком класса Listener.
 */
 
 public class Solution {
