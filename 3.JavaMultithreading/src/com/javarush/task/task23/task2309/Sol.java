@@ -4,11 +4,11 @@ import com.javarush.task.task23.task2309.vo.*;
 
 import java.util.List;
 
-/* 
+/*
 Анонимность иногда так приятна!
 */
 
-public class Solution {
+public class Sol {
     public static void main(String[] args) {
         Solution solution = new Solution();
         print(solution.getUsers());
@@ -24,47 +24,53 @@ public class Solution {
     }
 
     public List<User> getUsers() {
-        return new AbstractDbSelectExecutor<User>(){
+        AbstractDbSelectExecutor<User> res = new AbstractDbSelectExecutor() {
             @Override
             public String getQuery() {
                 return "SELECT * FROM USER";
             }
-        }.execute();
+        };
+        return res.execute();
     }
-    public List<Location> getLocations() {
-        return new AbstractDbSelectExecutor<Location>(){
 
+    public List<Location> getLocations() {
+        AbstractDbSelectExecutor<Location> res = new AbstractDbSelectExecutor() {
             @Override
             public String getQuery() {
                 return "SELECT * FROM LOCATION";
             }
-        }.execute();
+        };
+        return res.execute();
     }
+
     public List<Server> getServers() {
-        return new AbstractDbSelectExecutor<Server>(){
+        AbstractDbSelectExecutor<Server> res = new AbstractDbSelectExecutor() {
 
             @Override
             public String getQuery() {
                 return "SELECT * FROM SERVER";
             }
-        }.execute();
+        };
+        return res.execute();
     }
-    public List<Subject> getSubjects() {
-        return new AbstractDbSelectExecutor<Subject>(){
 
+    public List<Subject> getSubjects() {
+        AbstractDbSelectExecutor<Subject> res = new AbstractDbSelectExecutor() {
             @Override
             public String getQuery() {
                 return "SELECT * FROM SUBJECT";
             }
-        }.execute();
+        };
+        return res.execute();
     }
-    public List<Subscription> getSubscriptions() {
-        return new AbstractDbSelectExecutor<Subscription>(){
 
+    public List<Subscription> getSubScriptions() {
+        AbstractDbSelectExecutor<Subscription> res = new AbstractDbSelectExecutor() {
             @Override
             public String getQuery() {
                 return "SELECT * FROM SUBSCRIPTION";
             }
-        }.execute();
+        };
+        return res.execute();
     }
 }

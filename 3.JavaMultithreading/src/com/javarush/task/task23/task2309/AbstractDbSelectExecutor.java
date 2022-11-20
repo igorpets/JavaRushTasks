@@ -1,7 +1,6 @@
 package com.javarush.task.task23.task2309;
 
 import com.javarush.task.task23.task2309.vo.NamedItem;
-
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
