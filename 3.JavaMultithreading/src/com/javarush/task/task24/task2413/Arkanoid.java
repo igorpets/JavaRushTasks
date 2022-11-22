@@ -6,6 +6,10 @@ public class Arkanoid {
     public static void main(String[] args) {
 
     }
+    public Arkanoid(int w, int h){
+        width = w;
+        height = h;
+    }
     public int getWidth(){
         return width;
     }
