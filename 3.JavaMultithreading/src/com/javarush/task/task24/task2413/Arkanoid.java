@@ -3,6 +3,7 @@ package com.javarush.task.task24.task2413;
 import java.util.List;
 
 public class Arkanoid {
+    static public Arkanoid game;
     private int width;
     private int height;
     private Ball ball;
@@ -14,6 +15,12 @@ public class Arkanoid {
     public Arkanoid(int w, int h){
         width = w;
         height = h;
+    }
+    public void run(){
+
+    }
+    public void move(){
+
     }
     public int getWidth(){
         return width;
