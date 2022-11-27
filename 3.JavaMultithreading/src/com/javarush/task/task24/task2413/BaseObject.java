@@ -23,7 +23,7 @@ public abstract class BaseObject {
     public abstract void move();
 
     public boolean intersects(BaseObject o) {
-        //if (o == null) return false;
+        if (o == null) return false;
         return Math.hypot(this.x - o.x, this.y - o.y) <= Math.max(this.radius, o.radius);
     }
 
