@@ -23,6 +23,22 @@ public class Canvas {
         matrix = new char[height + 2][width + 2];
     }
 
+    public void clear() {
+        matrix = new char[height + 2][width + 2];
+    }
+
+    public void print() {
+        for (int ny = 0; ny < matrix.length; ny++) {
+            for (int nx = 0; nx < matrix[0].length; nx++) {
+                if (matrix[ny][nx] != 0)
+                    System.out.print(matrix[ny][nx]);
+                else
+                    System.out.print(" ");
+            }
+            System.out.println();
+        }
+    }
+
     public void setPoint(double x, double y, char c) {
         int xx = (int) Math.round(x);
         int yy = (int) Math.round(y);
@@ -39,7 +55,7 @@ public class Canvas {
             for (int ny = 0; ny < y_len; ny++)
                 for (int nx = 0; nx < x_len; nx++) {
                     if (matrix[ny][nx] != 0)
-                        this.matrix[ny+yy][nx+xx] = c;
+                        this.matrix[ny + yy][nx + xx] = c;
                 }
         }
     }
