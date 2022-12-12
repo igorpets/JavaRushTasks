@@ -2,6 +2,12 @@ package com.javarush.task.task24.task2413;
 
 import java.util.List;
 
+/*
+1. В классе Arkanoid должен быть реализован метод checkBricksBump() в соответствии с условием задачи.
+2. В классе Arkanoid должен быть реализован метод checkStandBump() в соответствии с условием задачи.
+3. В классе Arkanoid должно быть создано приватное поле isGameOver типа boolean.
+4. В классе Arkanoid должен быть реализован метод checkEndGame() в соответствии с условием задачи.
+ */
 public class Arkanoid {
     static public Arkanoid game;
     private int width;
