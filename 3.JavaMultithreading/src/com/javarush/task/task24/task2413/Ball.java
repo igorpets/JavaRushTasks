@@ -11,6 +11,12 @@ package com.javarush.task.task24.task2413;
 8. В классе Ball должен существовать корректный публичный геттер для поля direction.
 9. В классе Ball должен существовать корректный публичный геттер для поля dx.
 10. В классе Ball должен существовать корректный публичный геттер для поля dy.
+
+1. Метод move() в классе Ball должен увеличивать значение x на dx, если значение поля isFrozen равно false.
+2. Метод move() в классе Ball должен увеличивать значение y на dy, если значение поля isFrozen равно false.
+3. Метод move() в классе Ball не должен менять значения полей x и y, если значение поля isFrozen равно true.
+4. В классе Ball должен быть реализован метод draw(Canvas canvas) в соответствии с условием задачи.
+5. В классе Ball должен быть реализован метод start() устанавливающий значение поля isFrozen в false.
  */
 public class Ball extends BaseObject {
     private double speed;
@@ -22,6 +28,10 @@ public class Ball extends BaseObject {
     public Ball(double x, double y, double radius) {
         super(x, y, radius);
         isFrozen = true;
+    }
+
+    public void start() {
+        isFrozen = false;
     }
 
     public double getSpeed() {
@@ -49,11 +59,14 @@ public class Ball extends BaseObject {
 
     @Override
     public void draw(Canvas can) {
-
+        can.setPoint(x, y, 'O');
     }
 
     @Override
     public void move() {
-
+        if (!isFrozen) {
+            x += dx;
+            y += dy;
+        }
     }
 }
