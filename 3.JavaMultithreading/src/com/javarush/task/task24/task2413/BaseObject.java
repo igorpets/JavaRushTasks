@@ -1,53 +1,73 @@
 package com.javarush.task.task24.task2413;
 
-/*
-1. В классе BaseObject должно быть создано приватное поле x типа double.
-2. В классе BaseObject должно быть создано приватное поле y типа double.
-3. В классе BaseObject должно быть создано приватное поле radius типа double.
-4. В классе BaseObject должен быть создан корректно работающий конструктор с
-   тремя параметрами типа double (x, y, radius)
+/**
+ * Базовый класс для всех объектов игры.
  */
 public abstract class BaseObject {
+    //координаты
     protected double x;
     protected double y;
+    //радиус объекта
     protected double radius;
 
-    public BaseObject(double x, double y, double radius) {
+    protected BaseObject(double x, double y, double radius) {
         this.x = x;
         this.y = y;
         this.radius = radius;
-    }
-
-    public abstract void draw(Canvas can);
-
-    public abstract void move();
-
-    public boolean intersects(BaseObject o) {
-        if (o == null) return false;
-        return Math.hypot(this.x - o.x, this.y - o.y) <= Math.max(this.radius, o.radius);
     }
 
     public double getX() {
         return x;
     }
 
-    public double getY() {
-        return y;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-
     public void setX(double x) {
         this.x = x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public void setY(double y) {
         this.y = y;
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
     public void setRadius(double radius) {
         this.radius = radius;
+    }
+
+    /**
+     * Метод рисует свой объект на "канвасе".
+     */
+    abstract void draw(Canvas canvas);
+
+    /**
+     * Двигаем себя на один ход.
+     */
+    abstract void move();
+
+    /**
+     * Проверяем - не выходит ли (x,y) за границы.
+     */
+    void checkBorders(double minx, double maxx, double miny, double maxy) {
+        if (x < minx) x = minx;
+        if (x > maxx) x = maxx;
+        if (y < miny) y = miny;
+        if (y > maxy) y = maxy;
+    }
+
+    /**
+     * Проверяем - пересекаются ли переданный(o) и наш(this) объекты.
+     */
+    boolean intersects(BaseObject o) {
+        double dx = x - o.x;
+        double dy = y - o.y;
+        double destination = Math.sqrt(dx * dx + dy * dy);
+        double destination2 = Math.max(radius, o.radius);
+        return destination <= destination2;
     }
 }

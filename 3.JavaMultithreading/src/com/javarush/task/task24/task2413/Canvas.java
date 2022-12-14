@@ -1,86 +1,86 @@
 package com.javarush.task.task24.task2413;
-/*
-1. В классе Canvas должно быть создано приватное поле width типа int.
-2. В классе Canvas должно быть создано приватное поле height типа int.
-3. В классе Canvas должно быть создано приватное поле matrix типа char[][].
-4. В классе Canvas должен быть создан публичный геттер для поля width.
-5. В классе Canvas должен быть создан публичный геттер для поля height.
-6. В классе Canvas должен быть создан публичный геттер для поля matrix.
-7. В классе Canvas должен быть создан публичный сеттер для поля width.
-8. В классе Canvas должен быть создан публичный сеттер для поля height.
-9. В классе Canvas должен быть создан публичный сеттер для поля matrix.
-10. В классе Canvas должен быть создан корректный публичный конструктор с двумя параметрами типа int (width и height).
- */
 
+/**
+ * Класс-холст для отрисовки.
+ */
 public class Canvas {
+    //ширина и высота
     private int width;
     private int height;
+    //матрица, где рисуем. символ - это цвет.
     private char[][] matrix;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-        matrix = new char[height + 2][width + 2];
+        this.matrix = new char[height + 2][width + 2];
     }
 
-    public void clear() {
-        matrix = new char[height + 2][width + 2];
+    /**
+     * Очищаем холст
+     */
+    void clear() {
+        this.matrix = new char[height + 2][width + 2];
     }
 
-    public void print() {
-        for (int ny = 0; ny < matrix.length; ny++) {
-            for (int nx = 0; nx < matrix[0].length; nx++) {
-                if (matrix[ny][nx] != 0)
-                    System.out.print(matrix[ny][nx]);
-                else
-                    System.out.print(" ");
+    /**
+     * Печатаем переданную фигуру в указанных координатах цветом c.
+     * Если переданный массив содержит единицы, то на холсте им будут соответствовать символы - с.
+     */
+    void drawMatrix(double x, double y, int[][] matrix, char c) {
+        int height = matrix.length;
+        int width = matrix[0].length;
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (matrix[i][j] == 1)
+                    setPoint(x + j, y + i, c);
             }
+        }
+    }
+
+    /**
+     * Ставим одну точку на холсте с координатами (x,y) и цветом - c.
+     */
+    void setPoint(double x, double y, char c) {
+        int x0 = (int) Math.round(x);
+        int y0 = (int) Math.round(y);
+        if (y0 < 0 || y0 >= matrix.length) return;
+        if (x0 < 0 || x0 >= matrix[y0].length) return;
+
+        matrix[y0][x0] = c;
+    }
+
+    /**
+     * Печатаем содержимое холста на экран.
+     */
+    void print() {
+        System.out.println();
+
+        for (int i = 0; i < height + 2; i++) {
+            for (int j = 0; j < width + 2; j++) {
+                System.out.print(" ");
+                System.out.print(matrix[i][j]);
+                System.out.print(" ");
+            }
+
             System.out.println();
         }
-    }
 
-    public void setPoint(double x, double y, char c) {
-        int xx = (int) Math.round(x);
-        int yy = (int) Math.round(y);
-        if (xx >= 0 && yy >= 0 && yy < matrix.length && xx < matrix[0].length)
-            matrix[yy][xx] = c;
-    }
-
-    public void drawMatrix(double x, double y, int[][] matrix, char c) {
-        int xx = (int) Math.round(x);
-        int yy = (int) Math.round(y);
-        if (xx >= 0 && yy >= 0 && yy < this.matrix.length && xx < this.matrix[0].length) {
-            int y_len = Math.min(matrix.length, this.matrix.length - yy);
-            int x_len = Math.min(matrix[0].length, this.matrix[0].length - xx);
-            for (int ny = 0; ny < y_len; ny++)
-                for (int nx = 0; nx < x_len; nx++) {
-                    if (matrix[ny][nx] != 0)
-                        this.matrix[ny + yy][nx + xx] = c;
-                }
-        }
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public int getWidth() {
-        return this.width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
+        return width;
     }
 
     public int getHeight() {
-        return this.height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
+        return height;
     }
 
     public char[][] getMatrix() {
-        return this.matrix;
-    }
-
-    public void setMatrix(char[][] matrix) {
-        this.matrix = matrix;
+        return matrix;
     }
 }
