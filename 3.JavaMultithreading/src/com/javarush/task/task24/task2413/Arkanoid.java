@@ -15,12 +15,38 @@ public class Arkanoid {
     private Ball ball;
     private Stand stand;
     private List<Brick> bricks;
+    private boolean isGameOver;
     public static void main(String[] args) {
 
     }
     public Arkanoid(int w, int h){
         width = w;
         height = h;
+        isGameOver = false;
+    }
+    // надо проверить - не столкнулся ли шарик с каким-нибудь из "кирпичей"
+    public void checkBricksBump(){
+        for (Brick b: bricks){
+            if (b.intersects(ball)){
+                double angle = Math.random() * 360;
+                ball.setDirection(angle);
+                bricks.remove(b);
+            }
+        }
+    }
+
+    // надо проверить - не ударился ли шарик о подставку
+    public void checkStandBump(){
+        if (ball.intersects(stand)){
+            double angle = 90 + 20 * (Math.random() - 0.5);
+            ball.setDirection(angle);
+        }
+    }
+    public void checkEndGame(){
+        // Если координата y шарика больше чем высота поля игры (height), значит шарик улетел вниз за границу экрана.
+        if (ball.y > height){
+            isGameOver = true;
+        }
     }
     public void run(){
 
