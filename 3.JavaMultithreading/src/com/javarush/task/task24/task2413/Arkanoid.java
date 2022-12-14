@@ -1,5 +1,6 @@
 package com.javarush.task.task24.task2413;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -26,7 +27,7 @@ public class Arkanoid {
     }
     // надо проверить - не столкнулся ли шарик с каким-нибудь из "кирпичей"
     public void checkBricksBump(){
-        for (Brick b: bricks){
+        for (Brick b:  new ArrayList<>(bricks)){
             if (b.intersects(ball)){
                 double angle = Math.random() * 360;
                 ball.setDirection(angle);
