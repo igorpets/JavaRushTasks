@@ -20,7 +20,7 @@ public class Snake {
     public List<SnakeSection> getSections(){
         return sections;
     }
-    public boolean getIsAlive(){
+    public boolean isAlive(){
         return isAlive;
     }
     public SnakeDirection getDirection(){
