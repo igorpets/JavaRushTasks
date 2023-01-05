@@ -1,21 +1,15 @@
 package com.javarush.task.task23.task2312;
 
-/*
-1. В методе main класса Room должна быть создана новая змея(объект типа Snake).
-2. В методе main класса Room должно быть инициализировано поле game.
-3. В методе main класса Room направление движения змеи должно быть установлено равным SnakeDirection.DOWN.
-4. В классе Room должен быть создан метод run(), тип возвращаемого значения void.
-5. В классе Room должен быть создан метод print(), тип возвращаемого значения void.
-6. В классе Room должно быть создано статическое неприватное поле game типа Room.
-*/
 public class Room {
     private int width;
     private int height;
     private Snake snake;
     private Mouse mouse;
+    public static Room game;
 
     public static void main(String[] args) {
-
+        game = new Room(10,10, new Snake(5,5));
+        game.getSnake().setDirection(SnakeDirection.DOWN);
     }
 
     public Room(int width, int height, Snake snake){
@@ -53,5 +47,11 @@ public class Room {
 
     public void setMouse(Mouse mouse) {
         this.mouse = mouse;
+    }
+    public void print(){
+
+    }
+    public void run(){
+
     }
 }
