@@ -21,7 +21,7 @@ target/
 #/5.OnlineInternship/
 /out/
 lib
-#/JavaRushPlugin.properties
+JavaRushPlugin.properties
 #/Instruction.png
 /out.log
 /out.log.*
