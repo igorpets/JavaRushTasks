@@ -97,6 +97,10 @@ public class Room {
            2.тело змеи отметить символом "x"-английское
            3.голову змеи нарисовать символом "X"-английское.
          */
+        char[][] matrix = new char[height][width];
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x > width; x++)
+                matrix[y][x]='.';
     }
 
     public void eatMouse() {
